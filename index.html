@@ -4,82 +4,101 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Cartivo | E-Commerce Platform</title>
+    <title>Cartivo - E-Commerce Platform</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<!-- ================= LOGIN ================= -->
+<!-- =====================================================
+     LOGIN
+===================================================== -->
 
 <section id="loginPage" class="login-page">
 
-    <div class="login-left">
-        <div class="login-brand">cartivo<span>.</span></div>
+    <div class="login-brand-side">
 
-        <div class="login-content">
-            <p class="small-label">WELCOME TO CARTIVO</p>
+        <div class="brand big-brand">
+            cartivo<span>.</span>
+        </div>
+
+        <div class="login-copy">
+
+            <p class="orange-label">YOUR EVERYDAY STORE</p>
 
             <h1>
-                Everything you need.
-                <span>All in one place.</span>
+                Find it.<br>
+                <span>Love it.</span><br>
+                Cart it.
             </h1>
 
             <p>
-                Shop products, manage your orders and enjoy a simple
-                shopping experience with Cartivo.
+                Shop electronics, fashion, home essentials and
+                lifestyle products — all in one place.
             </p>
 
-            <div class="login-points">
-                <div>✓ Easy product discovery</div>
-                <div>✓ Secure checkout experience</div>
-                <div>✓ Simple order tracking</div>
+            <div class="login-features">
+                <div>✓ Fast delivery across India</div>
+                <div>✓ Secure checkout</div>
+                <div>✓ Easy 7-day returns</div>
             </div>
+
         </div>
+
     </div>
 
-    <div class="login-right">
+
+    <div class="login-form-side">
 
         <div class="login-box">
 
-            <div class="mobile-brand">cartivo<span>.</span></div>
+            <div class="brand mobile-brand">
+                cartivo<span>.</span>
+            </div>
 
-            <h2>Welcome back</h2>
+            <p class="orange-label">WELCOME BACK</p>
 
-            <p>Login to continue shopping</p>
+            <h2>Sign in to Cartivo</h2>
+
+            <p class="muted">
+                Enter your details to continue shopping.
+            </p>
 
             <form id="loginForm">
 
-                <label>Email</label>
+                <label>Email address</label>
+
                 <input
-                    type="email"
                     id="loginEmail"
-                    placeholder="Enter your email"
+                    type="email"
+                    placeholder="you@example.com"
                     required
                 >
 
                 <label>Password</label>
+
                 <input
-                    type="password"
                     id="loginPassword"
-                    placeholder="Enter your password"
+                    type="password"
+                    placeholder="Enter password"
                     required
                 >
 
-                <button type="submit" class="primary-btn">
-                    Login
+                <button class="primary-btn full-btn" type="submit">
+                    Continue →
                 </button>
 
             </form>
 
-            <p class="demo-login">
-                Demo: use any valid email and password.
-            </p>
+            <div class="demo-login">
+                <strong>Admin demo:</strong>
+                admin@cartivo.com / admin123
+            </div>
 
         </div>
 
@@ -88,9 +107,19 @@
 </section>
 
 
-<!-- ================= CUSTOMER APP ================= -->
+<!-- =====================================================
+     STORE
+===================================================== -->
 
 <section id="storePage" class="hidden">
+
+    <!-- PROMO -->
+    <div class="promo-bar">
+        <span class="promo-badge">POPULAR</span>
+        Free shipping on orders above ₹999
+        <span> • Weekend Sale — Up to 50% OFF • Easy returns within 7 days</span>
+    </div>
+
 
     <!-- NAVBAR -->
 
@@ -98,40 +127,51 @@
 
         <div class="nav-inner">
 
-            <div class="logo" onclick="showStore()">
+            <div class="brand logo" onclick="showHome()">
                 cartivo<span>.</span>
             </div>
 
-            <nav>
-                <a onclick="showStore()">Home</a>
-                <a onclick="scrollToShop()">Shop</a>
-                <a onclick="scrollToCategories()">Categories</a>
+            <nav class="main-nav">
+                <a onclick="showHome()">Home</a>
+                <a onclick="showShop()">Shop</a>
+                <a onclick="showCategories()">Categories</a>
                 <a onclick="showOrders()">Orders</a>
             </nav>
 
+            <div class="nav-search">
+                <span>⌕</span>
+                <input
+                    id="globalSearch"
+                    type="text"
+                    placeholder="Search products..."
+                >
+            </div>
+
             <div class="nav-actions">
 
-                <div class="nav-search">
-                    <span>⌕</span>
-                    <input
-                        type="text"
-                        id="navSearch"
-                        placeholder="Search products..."
-                    >
-                </div>
-
-                <button class="icon-btn" onclick="showWishlist()">
+                <button
+                    class="nav-icon"
+                    onclick="showWishlist()"
+                    title="Wishlist"
+                >
                     ♡
                     <span id="wishlistCount">0</span>
                 </button>
 
-                <button class="cart-btn" onclick="openCart()">
-                    Cart
+                <button
+                    class="nav-cart"
+                    onclick="openCart()"
+                >
+                    🛒 Cart
                     <span id="cartCount">0</span>
                 </button>
 
-                <button class="profile-btn" onclick="toggleProfileMenu()">
-                    <span id="userInitial">A</span>
+                <button
+                    class="profile-circle"
+                    onclick="toggleProfileMenu()"
+                    id="profileInitial"
+                >
+                    A
                 </button>
 
                 <div id="profileMenu" class="profile-menu hidden">
@@ -152,7 +192,18 @@
                         Wishlist
                     </button>
 
-                    <button onclick="logout()" class="logout-btn">
+                    <button
+                        id="adminMenuButton"
+                        class="hidden"
+                        onclick="openAdmin()"
+                    >
+                        Admin Panel
+                    </button>
+
+                    <button
+                        class="logout-menu"
+                        onclick="logout()"
+                    >
                         Logout
                     </button>
 
@@ -165,7 +216,9 @@
     </header>
 
 
-    <!-- HERO -->
+    <!-- =================================================
+         HOME
+    ================================================== -->
 
     <main id="homeSection">
 
@@ -173,67 +226,93 @@
 
             <div class="hero-content">
 
-                <p class="eyebrow">SMARTER SHOPPING</p>
+                <p class="orange-label">
+                    WELCOME TO CARTIVO
+                </p>
 
                 <h1>
-                    Find what you love.
-                    <span>Buy what you need.</span>
+                    Find it.<br>
+                    <span>Love it.</span><br>
+                    Cart it.
                 </h1>
 
-                <p class="hero-text">
-                    Discover carefully selected products with an easy
-                    shopping experience designed for everyday life.
+                <p class="hero-description">
+                    Shop electronics, fashion, home essentials and
+                    everyday lifestyle products — all in one place.
                 </p>
 
                 <div class="hero-buttons">
-                    <button class="primary-btn" onclick="scrollToShop()">
-                        Explore Products
+
+                    <button
+                        class="primary-btn"
+                        onclick="showShop()"
+                    >
+                        Start Shopping →
                     </button>
 
-                    <button class="outline-btn" onclick="scrollToCategories()">
-                        Browse Categories
+                    <button
+                        class="secondary-btn"
+                        onclick="showCategories()"
+                    >
+                        Explore Categories
                     </button>
+
                 </div>
 
                 <div class="hero-stats">
 
                     <div>
-                        <strong>500+</strong>
-                        <span>Products</span>
-                    </div>
-
-                    <div>
                         <strong>10K+</strong>
-                        <span>Customers</span>
+                        <small>Happy shoppers</small>
                     </div>
 
                     <div>
                         <strong>4.8/5</strong>
-                        <span>Experience</span>
+                        <small>Customer rating</small>
+                    </div>
+
+                    <div>
+                        <strong>7 Days</strong>
+                        <small>Easy returns</small>
                     </div>
 
                 </div>
 
             </div>
 
+
             <div class="hero-visual">
 
-                <div class="hero-card">
-                    <div class="hero-image-wrap">
-                        <img
-                            src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1000&q=85"
-                            alt="Cartivo shopping"
-                        >
-                    </div>
+                <div class="hero-art">
 
-                    <div class="floating-card">
-                        <span>✦</span>
+                    <div class="art-circle"></div>
 
-                        <div>
-                            <strong>Easy shopping</strong>
-                            <small>Everything in one place</small>
+                    <div class="art-card art-phone">
+                        <div class="phone-screen">
+                            <span>cartivo</span>
+                            <b>SHOP</b>
+                            <small>Everything you need</small>
                         </div>
                     </div>
+
+                    <div class="art-card art-bag">
+                        🛍️
+                    </div>
+
+                    <div class="art-card art-headphone">
+                        🎧
+                    </div>
+
+                    <div class="art-card art-box">
+                        📦
+                    </div>
+
+                    <div class="sale-card">
+                        <small>WEEKEND</small>
+                        <strong>50%</strong>
+                        <span>OFF</span>
+                    </div>
+
                 </div>
 
             </div>
@@ -241,39 +320,39 @@
         </section>
 
 
-        <!-- FEATURES -->
+        <!-- BENEFITS -->
 
-        <section class="features-section">
+        <section class="benefits">
 
-            <div class="feature">
-                <div class="feature-icon">🚚</div>
+            <div class="benefit">
+                <div class="benefit-icon">🚚</div>
                 <div>
                     <strong>Fast Delivery</strong>
-                    <p>Quick and reliable delivery</p>
+                    <p>Quick delivery across India</p>
                 </div>
             </div>
 
-            <div class="feature">
-                <div class="feature-icon">↩</div>
+            <div class="benefit">
+                <div class="benefit-icon">🔒</div>
+                <div>
+                    <strong>Secure Payments</strong>
+                    <p>Safe and simple checkout</p>
+                </div>
+            </div>
+
+            <div class="benefit">
+                <div class="benefit-icon">↩</div>
                 <div>
                     <strong>Easy Returns</strong>
-                    <p>Simple return process</p>
+                    <p>Hassle-free 7 day returns</p>
                 </div>
             </div>
 
-            <div class="feature">
-                <div class="feature-icon">✓</div>
+            <div class="benefit">
+                <div class="benefit-icon">♡</div>
                 <div>
                     <strong>Quality Products</strong>
-                    <p>Products you can trust</p>
-                </div>
-            </div>
-
-            <div class="feature">
-                <div class="feature-icon">🔒</div>
-                <div>
-                    <strong>Secure Checkout</strong>
-                    <p>Safe shopping experience</p>
+                    <p>Carefully selected products</p>
                 </div>
             </div>
 
@@ -282,139 +361,160 @@
 
         <!-- CATEGORIES -->
 
-        <section id="categoriesSection" class="section">
+        <section
+            id="categoriesSection"
+            class="content-section"
+        >
 
             <div class="section-heading">
 
                 <div>
-                    <p class="eyebrow">EXPLORE</p>
-                    <h2>Shop by category</h2>
+                    <p class="orange-label">SHOP BY CATEGORY</p>
+                    <h2>Find what you need</h2>
                 </div>
 
-                <button class="text-btn" onclick="showAllProducts()">
+                <button
+                    class="text-btn"
+                    onclick="showShop()"
+                >
                     View all →
                 </button>
 
             </div>
 
-            <div id="categoryCards" class="category-grid"></div>
+            <div
+                id="categoryGrid"
+                class="category-grid"
+            ></div>
 
         </section>
 
 
-        <!-- SHOP -->
+        <!-- BEST SELLERS -->
 
-        <section id="shopSection" class="section shop-section">
-
-            <div class="section-heading">
-
-                <div>
-                    <p class="eyebrow">OUR COLLECTION</p>
-                    <h2>Explore products</h2>
-                </div>
-
-            </div>
-
-
-            <!-- FILTER BAR -->
-
-            <div class="filter-bar">
-
-                <div class="filter-search">
-
-                    <span>⌕</span>
-
-                    <input
-                        type="text"
-                        id="shopSearch"
-                        placeholder="Search products..."
-                    >
-
-                </div>
-
-
-                <select id="categoryFilter">
-
-                    <option value="All">All Categories</option>
-
-                </select>
-
-
-                <select id="priceFilter">
-
-                    <option value="All">Any Price</option>
-                    <option value="0-1000">Under ₹1,000</option>
-                    <option value="1000-5000">₹1,000 - ₹5,000</option>
-                    <option value="5000-15000">₹5,000 - ₹15,000</option>
-                    <option value="15000+">₹15,000+</option>
-
-                </select>
-
-
-                <select id="sortFilter">
-
-                    <option value="featured">Featured</option>
-                    <option value="low">Price: Low to High</option>
-                    <option value="high">Price: High to Low</option>
-                    <option value="rating">Top Rated</option>
-                    <option value="new">Newest</option>
-
-                </select>
-
-            </div>
-
-
-            <div id="productGrid" class="product-grid"></div>
-
-            <div id="emptyProducts" class="empty-state hidden">
-
-                <div>⌕</div>
-
-                <h3>No products found</h3>
-
-                <p>
-                    Try changing your search or filters.
-                </p>
-
-            </div>
-
-        </section>
-
-
-        <!-- WISHLIST -->
-
-        <section id="wishlistSection" class="section hidden">
+        <section class="content-section">
 
             <div class="section-heading">
 
                 <div>
-                    <p class="eyebrow">SAVED ITEMS</p>
-                    <h2>Your wishlist</h2>
+                    <p class="orange-label">POPULAR PICKS</p>
+                    <h2>Best sellers</h2>
                 </div>
+
+                <button
+                    class="text-btn"
+                    onclick="showShop()"
+                >
+                    Shop all →
+                </button>
 
             </div>
 
-            <div id="wishlistGrid" class="product-grid"></div>
+            <div
+                id="homeProducts"
+                class="product-grid"
+            ></div>
 
         </section>
 
     </main>
 
 
-    <!-- ORDERS -->
+    <!-- =================================================
+         SHOP
+    ================================================== -->
 
-    <section id="ordersSection" class="section hidden">
+    <section
+        id="shopSection"
+        class="content-section hidden"
+    >
+
+        <div class="section-heading">
+            <div>
+                <p class="orange-label">STORE</p>
+                <h2>All Products</h2>
+            </div>
+        </div>
+
+        <div class="filter-bar">
+
+            <input
+                id="shopSearch"
+                type="text"
+                placeholder="Search products..."
+            >
+
+            <select id="categoryFilter">
+                <option value="all">All Categories</option>
+            </select>
+
+            <select id="priceFilter">
+                <option value="all">All Prices</option>
+                <option value="0-1000">Under ₹1,000</option>
+                <option value="1000-3000">₹1,000 - ₹3,000</option>
+                <option value="3000-10000">₹3,000 - ₹10,000</option>
+                <option value="10000+">Above ₹10,000</option>
+            </select>
+
+            <select id="sortFilter">
+                <option value="featured">Featured</option>
+                <option value="priceLow">Price: Low to High</option>
+                <option value="priceHigh">Price: High to Low</option>
+                <option value="rating">Top Rated</option>
+                <option value="name">Name A-Z</option>
+            </select>
+
+        </div>
+
+        <div
+            id="shopProducts"
+            class="product-grid"
+        ></div>
+
+    </section>
+
+
+    <!-- =================================================
+         WISHLIST
+    ================================================== -->
+
+    <section
+        id="wishlistSection"
+        class="content-section hidden"
+    >
 
         <div class="section-heading">
 
             <div>
-                <p class="eyebrow">YOUR ACCOUNT</p>
-                <h2>My Orders</h2>
+                <p class="orange-label">SAVED FOR LATER</p>
+                <h2>My Wishlist</h2>
             </div>
 
-            <button class="outline-btn" onclick="showStore()">
-                Continue Shopping
-            </button>
+        </div>
+
+        <div
+            id="wishlistProducts"
+            class="product-grid"
+        ></div>
+
+    </section>
+
+
+    <!-- =================================================
+         ORDERS
+    ================================================== -->
+
+    <section
+        id="ordersSection"
+        class="content-section hidden"
+    >
+
+        <div class="section-heading">
+
+            <div>
+                <p class="orange-label">YOUR ACCOUNT</p>
+                <h2>My Orders</h2>
+            </div>
 
         </div>
 
@@ -423,46 +523,292 @@
     </section>
 
 
-    <!-- FOOTER -->
+    <!-- =================================================
+         CART
+    ================================================== -->
+
+    <div
+        id="cartOverlay"
+        class="overlay hidden"
+        onclick="closeCart()"
+    ></div>
+
+    <aside
+        id="cartDrawer"
+        class="cart-drawer"
+    >
+
+        <div class="drawer-header">
+
+            <div>
+                <p class="orange-label">YOUR BAG</p>
+                <h2>Your Cart</h2>
+            </div>
+
+            <button
+                class="close-btn"
+                onclick="closeCart()"
+            >
+                ×
+            </button>
+
+        </div>
+
+        <div
+            id="cartItems"
+            class="cart-items"
+        ></div>
+
+        <div class="cart-summary">
+
+            <div class="summary-row">
+                <span>Subtotal</span>
+                <strong id="cartTotal">₹0</strong>
+            </div>
+
+            <small>
+                Taxes and delivery charges calculated at checkout.
+            </small>
+
+            <button
+                class="primary-btn full-btn"
+                onclick="openCheckout()"
+            >
+                Proceed to Checkout
+            </button>
+
+            <button
+                class="secondary-btn full-btn"
+                onclick="closeCart()"
+            >
+                Continue Shopping
+            </button>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =================================================
+         PRODUCT MODAL
+    ================================================== -->
+
+    <div
+        id="productModal"
+        class="modal hidden"
+    >
+
+        <div class="modal-box product-modal">
+
+            <button
+                class="modal-close"
+                onclick="closeProductModal()"
+            >
+                ×
+            </button>
+
+            <div id="productDetail"></div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================================
+         CHECKOUT MODAL
+    ================================================== -->
+
+    <div
+        id="checkoutModal"
+        class="modal hidden"
+    >
+
+        <div class="modal-box checkout-modal">
+
+            <button
+                class="modal-close"
+                onclick="closeCheckout()"
+            >
+                ×
+            </button>
+
+            <p class="orange-label">CHECKOUT</p>
+
+            <h2>Complete your order</h2>
+
+            <form id="checkoutForm">
+
+                <div class="form-grid">
+
+                    <div>
+                        <label>Full Name</label>
+                        <input id="checkoutName" required>
+                    </div>
+
+                    <div>
+                        <label>Email</label>
+                        <input id="checkoutEmail" type="email" required>
+                    </div>
+
+                    <div>
+                        <label>Phone</label>
+                        <input id="checkoutPhone" required>
+                    </div>
+
+                    <div>
+                        <label>City</label>
+                        <input id="checkoutCity" required>
+                    </div>
+
+                    <div>
+                        <label>PIN Code</label>
+                        <input id="checkoutZip" required>
+                    </div>
+
+                    <div class="full">
+                        <label>Address</label>
+                        <textarea
+                            id="checkoutAddress"
+                            required
+                        ></textarea>
+                    </div>
+
+                </div>
+
+
+                <h3 class="payment-title">
+                    Payment Method
+                </h3>
+
+                <div class="payment-options">
+
+                    <label class="payment-option">
+                        <input
+                            type="radio"
+                            name="payment"
+                            value="COD"
+                            checked
+                        >
+                        Cash on Delivery
+                    </label>
+
+                    <label class="payment-option">
+                        <input
+                            type="radio"
+                            name="payment"
+                            value="UPI"
+                        >
+                        UPI
+                    </label>
+
+                    <label class="payment-option">
+                        <input
+                            type="radio"
+                            name="payment"
+                            value="Card"
+                        >
+                        Credit / Debit Card
+                    </label>
+
+                </div>
+
+                <button
+                    type="submit"
+                    class="primary-btn full-btn checkout-btn"
+                >
+                    Place Order
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================================
+         SUCCESS MODAL
+    ================================================== -->
+
+    <div
+        id="successModal"
+        class="modal hidden"
+    >
+
+        <div class="modal-box success-box">
+
+            <div class="success-icon">✓</div>
+
+            <p class="orange-label">ORDER CONFIRMED</p>
+
+            <h2>Thank you for your order!</h2>
+
+            <p>
+                Your order has been successfully placed.
+            </p>
+
+            <div class="order-success-id">
+                Order ID:
+                <strong id="successOrderId"></strong>
+            </div>
+
+            <button
+                class="primary-btn"
+                onclick="closeSuccess(); showOrders();"
+            >
+                View My Orders
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================================
+         FOOTER
+    ================================================== -->
 
     <footer>
 
-        <div class="footer-top">
+        <div class="footer-inner">
 
-            <div>
+            <div class="footer-brand">
 
-                <div class="logo footer-logo">
+                <div class="brand">
                     cartivo<span>.</span>
                 </div>
 
                 <p>
-                    Simple shopping. Better experience.
+                    Your everyday online store for products
+                    you actually want.
                 </p>
 
             </div>
 
             <div>
                 <h4>Shop</h4>
-                <a onclick="scrollToShop()">All Products</a>
-                <a onclick="scrollToCategories()">Categories</a>
+                <a onclick="showShop()">All Products</a>
+                <a onclick="showCategories()">Categories</a>
+                <a onclick="showWishlist()">Wishlist</a>
             </div>
 
             <div>
                 <h4>Account</h4>
                 <a onclick="showOrders()">My Orders</a>
-                <a onclick="showWishlist()">Wishlist</a>
+                <a onclick="toggleProfileMenu()">Profile</a>
             </div>
 
             <div>
-                <h4>Support</h4>
-                <a>Help Center</a>
-                <a>Contact Us</a>
+                <h4>Help</h4>
+                <a>Shipping</a>
+                <a>Returns</a>
+                <a>Support</a>
             </div>
 
         </div>
 
         <div class="footer-bottom">
-            © 2026 Cartivo. All rights reserved.
+            © 2026 Cartivo. E-Commerce & Inventory Management Platform.
         </div>
 
     </footer>
@@ -470,294 +816,69 @@
 </section>
 
 
-<!-- ================= CART DRAWER ================= -->
-
-<div id="cartOverlay" class="overlay hidden" onclick="closeCart()"></div>
-
-<aside id="cartDrawer" class="cart-drawer">
-
-    <div class="drawer-header">
-
-        <div>
-            <p class="eyebrow">YOUR BAG</p>
-            <h2>Shopping Cart</h2>
-        </div>
-
-        <button onclick="closeCart()">×</button>
-
-    </div>
-
-    <div id="cartItems" class="cart-items"></div>
-
-    <div class="cart-summary">
-
-        <div>
-            <span>Subtotal</span>
-            <strong id="cartSubtotal">₹0</strong>
-        </div>
-
-        <div>
-            <span>Delivery</span>
-            <strong>FREE</strong>
-        </div>
-
-        <div class="total-row">
-            <span>Total</span>
-            <strong id="cartTotal">₹0</strong>
-        </div>
-
-        <button class="primary-btn full-btn" onclick="openCheckout()">
-            Proceed to Checkout
-        </button>
-
-    </div>
-
-</aside>
-
-
-<!-- ================= PRODUCT MODAL ================= -->
-
-<div id="productModal" class="modal hidden">
-
-    <div class="modal-box product-modal-box">
-
-        <button class="modal-close" onclick="closeProductModal()">
-            ×
-        </button>
-
-        <div id="productDetails"></div>
-
-    </div>
-
-</div>
-
-
-<!-- ================= CHECKOUT MODAL ================= -->
-
-<div id="checkoutModal" class="modal hidden">
-
-    <div class="modal-box checkout-box">
-
-        <button class="modal-close" onclick="closeCheckout()">
-            ×
-        </button>
-
-        <p class="eyebrow">CHECKOUT</p>
-
-        <h2>Complete your order</h2>
-
-        <form id="checkoutForm">
-
-            <div class="form-grid">
-
-                <div class="form-field full">
-                    <label>Full Name</label>
-                    <input id="checkoutName" required>
-                </div>
-
-                <div class="form-field">
-                    <label>Email</label>
-                    <input id="checkoutEmail" type="email" required>
-                </div>
-
-                <div class="form-field">
-                    <label>Phone</label>
-                    <input id="checkoutPhone" required>
-                </div>
-
-                <div class="form-field full">
-                    <label>Address</label>
-                    <textarea id="checkoutAddress" required></textarea>
-                </div>
-
-                <div class="form-field">
-                    <label>City</label>
-                    <input id="checkoutCity" required>
-                </div>
-
-                <div class="form-field">
-                    <label>Postal Code</label>
-                    <input id="checkoutZip" required>
-                </div>
-
-            </div>
-
-
-            <h3 class="payment-title">Payment Method</h3>
-
-            <div class="payment-options">
-
-                <label class="payment-option">
-
-                    <input
-                        type="radio"
-                        name="payment"
-                        value="Cash on Delivery"
-                        checked
-                    >
-
-                    <span>
-                        <strong>Cash on Delivery</strong>
-                        <small>Pay when your order arrives</small>
-                    </span>
-
-                </label>
-
-
-                <label class="payment-option">
-
-                    <input
-                        type="radio"
-                        name="payment"
-                        value="UPI"
-                    >
-
-                    <span>
-                        <strong>UPI</strong>
-                        <small>Demo payment option</small>
-                    </span>
-
-                </label>
-
-
-                <label class="payment-option">
-
-                    <input
-                        type="radio"
-                        name="payment"
-                        value="Card"
-                    >
-
-                    <span>
-                        <strong>Credit / Debit Card</strong>
-                        <small>Demo payment option</small>
-                    </span>
-
-                </label>
-
-            </div>
-
-
-            <div class="checkout-total">
-
-                <span>Total Amount</span>
-
-                <strong id="checkoutTotal">
-                    ₹0
-                </strong>
-
-            </div>
-
-
-            <button class="primary-btn full-btn">
-                Place Order
-            </button>
-
-        </form>
-
-    </div>
-
-</div>
-
-
-<!-- ================= ORDER SUCCESS ================= -->
-
-<div id="successModal" class="modal hidden">
-
-    <div class="modal-box success-box">
-
-        <div class="success-icon">✓</div>
-
-        <p class="eyebrow">ORDER CONFIRMED</p>
-
-        <h2>Thank you for your order!</h2>
-
-        <p>
-            Your order has been successfully placed.
-        </p>
-
-        <div class="order-number">
-            Order ID:
-            <strong id="successOrderId"></strong>
-        </div>
-
-        <button class="primary-btn full-btn" onclick="viewLatestOrder()">
-            Track Order
-        </button>
-
-        <button class="outline-btn full-btn" onclick="closeSuccess()">
-            Continue Shopping
-        </button>
-
-    </div>
-
-</div>
-
-
-<!-- ================= ADMIN ================= -->
-
-<section id="adminPage" class="admin-page hidden">
+<!-- =====================================================
+     ADMIN
+===================================================== -->
+
+<section
+    id="adminPage"
+    class="admin-page hidden"
+>
 
     <aside class="admin-sidebar">
 
-        <div class="admin-logo">
+        <div class="brand admin-brand">
             cartivo<span>.</span>
-            <small>ADMIN</small>
         </div>
 
-        <nav>
+        <p class="admin-label">ADMIN PANEL</p>
 
-            <button
-                class="admin-nav active"
-                onclick="adminSection('dashboard', this)"
-            >
-                <span>▦</span>
-                Dashboard
-            </button>
+        <button
+            class="admin-nav active"
+            onclick="adminSection('dashboard', this)"
+        >
+            Dashboard
+        </button>
 
-            <button
-                class="admin-nav"
-                onclick="adminSection('products', this)"
-            >
-                <span>□</span>
-                Products
-            </button>
+        <button
+            class="admin-nav"
+            onclick="adminSection('products', this)"
+        >
+            Products
+        </button>
 
-            <button
-                class="admin-nav"
-                onclick="adminSection('inventory', this)"
-            >
-                <span>◫</span>
-                Inventory
-            </button>
+        <button
+            class="admin-nav"
+            onclick="adminSection('inventory', this)"
+        >
+            Inventory
+        </button>
 
-            <button
-                class="admin-nav"
-                onclick="adminSection('categories', this)"
-            >
-                <span>◉</span>
-                Categories
-            </button>
+        <button
+            class="admin-nav"
+            onclick="adminSection('categories', this)"
+        >
+            Categories
+        </button>
 
-            <button
-                class="admin-nav"
-                onclick="adminSection('users', this)"
-            >
-                <span>♙</span>
-                Users
-            </button>
+        <button
+            class="admin-nav"
+            onclick="adminSection('users', this)"
+        >
+            Customers
+        </button>
 
-            <button
-                class="admin-nav"
-                onclick="adminSection('orders', this)"
-            >
-                <span>≡</span>
-                Orders
-            </button>
+        <button
+            class="admin-nav"
+            onclick="adminSection('orders', this)"
+        >
+            Orders
+        </button>
 
-        </nav>
-
-        <button class="admin-back" onclick="showStore()">
+        <button
+            class="admin-back"
+            onclick="closeAdmin()"
+        >
             ← Back to Store
         </button>
 
@@ -769,34 +890,41 @@
         <header class="admin-header">
 
             <div>
-                <p class="eyebrow">CARTIVO MANAGEMENT</p>
-                <h1 id="adminTitle">Dashboard</h1>
+                <p class="orange-label">CARTIVO ADMIN</p>
+                <h1 id="adminPageTitle">
+                    Dashboard
+                </h1>
             </div>
 
-            <div class="admin-user">
-                <span>Admin</span>
-                <div>AD</div>
-            </div>
+            <button
+                class="profile-circle"
+                onclick="closeAdmin()"
+            >
+                A
+            </button>
 
         </header>
 
 
-        <!-- DASHBOARD -->
+        <!-- ADMIN DASHBOARD -->
 
-        <section id="adminDashboard" class="admin-section">
+        <section
+            id="adminDashboard"
+            class="admin-section"
+        >
 
             <div class="admin-stats">
 
                 <div class="stat-card">
-                    <span>Total Sales</span>
+                    <span>Total Revenue</span>
                     <strong id="adminSales">₹0</strong>
-                    <small>All placed orders</small>
+                    <small>From all orders</small>
                 </div>
 
                 <div class="stat-card">
                     <span>Total Orders</span>
                     <strong id="adminOrders">0</strong>
-                    <small>Customer orders</small>
+                    <small>All customer orders</small>
                 </div>
 
                 <div class="stat-card">
@@ -814,38 +942,22 @@
             </div>
 
 
-            <div class="admin-grid">
+            <div class="admin-two-column">
 
                 <div class="admin-card">
 
-                    <div class="admin-card-head">
-                        <div>
-                            <p class="eyebrow">RECENT</p>
-                            <h3>Recent Orders</h3>
-                        </div>
-
-                        <button
-                            class="text-btn"
-                            onclick="adminSectionByName('orders')"
-                        >
-                            View all
-                        </button>
+                    <div class="admin-card-title">
+                        <h3>Recent Orders</h3>
                     </div>
 
                     <div id="recentOrders"></div>
 
                 </div>
 
-
                 <div class="admin-card">
 
-                    <div class="admin-card-head">
-
-                        <div>
-                            <p class="eyebrow">STOCK</p>
-                            <h3>Inventory Alert</h3>
-                        </div>
-
+                    <div class="admin-card-title">
+                        <h3>Inventory Alerts</h3>
                     </div>
 
                     <div id="inventoryAlert"></div>
@@ -857,18 +969,24 @@
         </section>
 
 
-        <!-- PRODUCTS -->
+        <!-- ADMIN PRODUCTS -->
 
-        <section id="adminProductsSection" class="admin-section hidden">
+        <section
+            id="adminProductsSection"
+            class="admin-section hidden"
+        >
 
             <div class="admin-toolbar">
 
                 <div>
-                    <p class="eyebrow">CATALOG</p>
-                    <h2>Manage Products</h2>
+                    <p class="orange-label">CATALOG</p>
+                    <h2>Products</h2>
                 </div>
 
-                <button class="primary-btn" onclick="openAddProduct()">
+                <button
+                    class="primary-btn"
+                    onclick="openProductAdminModal()"
+                >
                     + Add Product
                 </button>
 
@@ -881,16 +999,13 @@
                     <table>
 
                         <thead>
-
                             <tr>
                                 <th>Product</th>
                                 <th>Category</th>
                                 <th>Price</th>
                                 <th>Stock</th>
-                                <th>Status</th>
                                 <th>Actions</th>
                             </tr>
-
                         </thead>
 
                         <tbody id="productsTable"></tbody>
@@ -904,15 +1019,18 @@
         </section>
 
 
-        <!-- INVENTORY -->
+        <!-- ADMIN INVENTORY -->
 
-        <section id="adminInventorySection" class="admin-section hidden">
+        <section
+            id="adminInventorySection"
+            class="admin-section hidden"
+        >
 
             <div class="admin-toolbar">
 
                 <div>
-                    <p class="eyebrow">STOCK CONTROL</p>
-                    <h2>Inventory Management</h2>
+                    <p class="orange-label">STOCK CONTROL</p>
+                    <h2>Inventory</h2>
                 </div>
 
             </div>
@@ -924,15 +1042,12 @@
                     <table>
 
                         <thead>
-
                             <tr>
                                 <th>Product</th>
                                 <th>Category</th>
-                                <th>Current Stock</th>
-                                <th>Stock Status</th>
-                                <th>Update Stock</th>
+                                <th>Stock</th>
+                                <th>Update</th>
                             </tr>
-
                         </thead>
 
                         <tbody id="inventoryTable"></tbody>
@@ -946,37 +1061,49 @@
         </section>
 
 
-        <!-- CATEGORIES -->
+        <!-- ADMIN CATEGORIES -->
 
-        <section id="adminCategoriesSection" class="admin-section hidden">
+        <section
+            id="adminCategoriesSection"
+            class="admin-section hidden"
+        >
 
             <div class="admin-toolbar">
 
                 <div>
-                    <p class="eyebrow">CATALOG STRUCTURE</p>
-                    <h2>Manage Categories</h2>
+                    <p class="orange-label">ORGANIZATION</p>
+                    <h2>Categories</h2>
                 </div>
 
-                <button class="primary-btn" onclick="addCategory()">
+                <button
+                    class="primary-btn"
+                    onclick="addCategory()"
+                >
                     + Add Category
                 </button>
 
             </div>
 
-            <div id="adminCategoryGrid" class="admin-category-grid"></div>
+            <div
+                id="adminCategoryGrid"
+                class="admin-category-grid"
+            ></div>
 
         </section>
 
 
-        <!-- USERS -->
+        <!-- ADMIN USERS -->
 
-        <section id="adminUsersSection" class="admin-section hidden">
+        <section
+            id="adminUsersSection"
+            class="admin-section hidden"
+        >
 
             <div class="admin-toolbar">
 
                 <div>
-                    <p class="eyebrow">CUSTOMERS</p>
-                    <h2>Manage Users</h2>
+                    <p class="orange-label">CUSTOMERS</p>
+                    <h2>Customers</h2>
                 </div>
 
             </div>
@@ -988,14 +1115,12 @@
                     <table>
 
                         <thead>
-
                             <tr>
-                                <th>Customer</th>
+                                <th>Name</th>
                                 <th>Email</th>
                                 <th>Orders</th>
-                                <th>Status</th>
+                                <th>Total Spent</th>
                             </tr>
-
                         </thead>
 
                         <tbody id="usersTable"></tbody>
@@ -1009,15 +1134,18 @@
         </section>
 
 
-        <!-- ORDERS -->
+        <!-- ADMIN ORDERS -->
 
-        <section id="adminOrdersSection" class="admin-section hidden">
+        <section
+            id="adminOrdersSection"
+            class="admin-section hidden"
+        >
 
             <div class="admin-toolbar">
 
                 <div>
-                    <p class="eyebrow">ORDER MANAGEMENT</p>
-                    <h2>Manage Orders</h2>
+                    <p class="orange-label">SALES</p>
+                    <h2>Orders</h2>
                 </div>
 
             </div>
@@ -1029,19 +1157,16 @@
                     <table>
 
                         <thead>
-
                             <tr>
-                                <th>Order ID</th>
+                                <th>Order</th>
                                 <th>Customer</th>
-                                <th>Date</th>
-                                <th>Amount</th>
-                                <th>Payment</th>
+                                <th>Total</th>
                                 <th>Status</th>
+                                <th>Update</th>
                             </tr>
-
                         </thead>
 
-                        <tbody id="ordersTable"></tbody>
+                        <tbody id="adminOrdersTable"></tbody>
 
                     </table>
 
@@ -1056,17 +1181,25 @@
 </section>
 
 
-<!-- ADD PRODUCT MODAL -->
+<!-- =====================================================
+     PRODUCT ADMIN MODAL
+===================================================== -->
 
-<div id="productAdminModal" class="modal hidden">
+<div
+    id="productAdminModal"
+    class="modal hidden"
+>
 
     <div class="modal-box">
 
-        <button class="modal-close" onclick="closeAdminProductModal()">
+        <button
+            class="modal-close"
+            onclick="closeProductAdminModal()"
+        >
             ×
         </button>
 
-        <p class="eyebrow">PRODUCT MANAGEMENT</p>
+        <p class="orange-label">CATALOG</p>
 
         <h2 id="productAdminTitle">
             Add Product
@@ -1074,16 +1207,24 @@
 
         <form id="productForm">
 
-            <input type="hidden" id="editProductId">
-
-            <div class="form-field">
-                <label>Product Name</label>
-                <input id="adminProductName" required>
-            </div>
+            <input
+                id="editProductId"
+                type="hidden"
+            >
 
             <div class="form-grid">
 
-                <div class="form-field">
+                <div class="full">
+                    <label>Product Name</label>
+                    <input id="adminProductName" required>
+                </div>
+
+                <div>
+                    <label>Category</label>
+                    <select id="adminProductCategory" required></select>
+                </div>
+
+                <div>
                     <label>Price</label>
                     <input
                         id="adminProductPrice"
@@ -1093,7 +1234,7 @@
                     >
                 </div>
 
-                <div class="form-field">
+                <div>
                     <label>Stock</label>
                     <input
                         id="adminProductStock"
@@ -1103,36 +1244,34 @@
                     >
                 </div>
 
-            </div>
+                <div>
+                    <label>Rating</label>
+                    <input
+                        id="adminProductRating"
+                        type="number"
+                        min="1"
+                        max="5"
+                        step="0.1"
+                        value="4.5"
+                    >
+                </div>
 
-            <div class="form-field">
+                <div class="full">
+                    <label>Image URL</label>
+                    <input id="adminProductImage">
+                </div>
 
-                <label>Category</label>
-
-                <select id="adminProductCategory" required></select>
-
-            </div>
-
-            <div class="form-field">
-
-                <label>Image URL</label>
-
-                <input
-                    id="adminProductImage"
-                    placeholder="https://..."
-                >
-
-            </div>
-
-            <div class="form-field">
-
-                <label>Description</label>
-
-                <textarea id="adminProductDescription"></textarea>
+                <div class="full">
+                    <label>Description</label>
+                    <textarea id="adminProductDescription"></textarea>
+                </div>
 
             </div>
 
-            <button class="primary-btn full-btn">
+            <button
+                class="primary-btn full-btn"
+                type="submit"
+            >
                 Save Product
             </button>
 
@@ -1145,10 +1284,7 @@
 
 <!-- TOAST -->
 
-<div id="toast" class="toast">
-    <span>✓</span>
-    <p>Done</p>
-</div>
+<div id="toast" class="toast"></div>
 
 
 <script src="script.js"></script>

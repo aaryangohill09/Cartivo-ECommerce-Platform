@@ -1,258 +1,260 @@
 /* =========================================================
-   CARTIVO - E-COMMERCE & INVENTORY MANAGEMENT PLATFORM
-   Frontend demo using HTML, CSS and JavaScript
-   ========================================================= */
-
-
-/* ================= DATA ================= */
+   DEFAULT PRODUCTS
+========================================================= */
 
 const defaultProducts = [
-
     {
         id: 1,
         name: "Wireless Headphones",
         category: "Electronics",
         price: 2499,
         stock: 18,
-        rating: 4.7,
-        image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800&q=80",
-        description: "Comfortable wireless headphones with clear sound, modern design and long battery life.",
-        createdAt: 8
+        rating: 4.8,
+        image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=900&q=85",
+        description: "Comfortable wireless headphones with clear sound, long battery life and a modern everyday design."
     },
-
     {
         id: 2,
-        name: "Smart Watch Pro",
+        name: "Smart Watch",
         category: "Electronics",
-        price: 4999,
+        price: 3299,
         stock: 12,
-        rating: 4.6,
-        image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=80",
-        description: "A stylish smartwatch designed for everyday activity tracking and notifications.",
-        createdAt: 7
+        rating: 4.7,
+        image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=900&q=85",
+        description: "A stylish smartwatch for notifications, activity tracking and everyday convenience."
     },
-
     {
         id: 3,
-        name: "Minimal Backpack",
+        name: "Premium Backpack",
         category: "Fashion",
-        price: 1799,
-        stock: 25,
-        rating: 4.5,
-        image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=800&q=80",
-        description: "Minimal everyday backpack with a spacious interior and clean modern styling.",
-        createdAt: 6
+        price: 1899,
+        stock: 22,
+        rating: 4.6,
+        image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=900&q=85",
+        description: "A practical premium backpack for work, travel and everyday use."
     },
-
     {
         id: 4,
-        name: "Classic Sneakers",
+        name: "Running Sneakers",
         category: "Fashion",
-        price: 3299,
-        stock: 8,
+        price: 2799,
+        stock: 15,
         rating: 4.8,
-        image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80",
-        description: "Comfortable everyday sneakers combining classic style with lightweight comfort.",
-        createdAt: 5
+        image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=900&q=85",
+        description: "Lightweight sneakers designed for comfort, walking and daily activity."
     },
-
     {
         id: 5,
-        name: "Modern Table Lamp",
+        name: "Minimal Table Lamp",
         category: "Home",
         price: 1499,
-        stock: 14,
-        rating: 4.4,
-        image: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=800&q=80",
-        description: "Elegant table lamp that adds a warm and modern touch to your room.",
-        createdAt: 4
+        stock: 8,
+        rating: 4.5,
+        image: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=900&q=85",
+        description: "Minimal modern table lamp that adds warm lighting to your room."
     },
-
     {
         id: 6,
-        name: "Ceramic Coffee Set",
+        name: "Ceramic Coffee Mug",
         category: "Home",
-        price: 999,
-        stock: 31,
-        rating: 4.3,
-        image: "https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?auto=format&fit=crop&w=800&q=80",
-        description: "A clean ceramic coffee set perfect for everyday coffee moments.",
-        createdAt: 3
+        price: 599,
+        stock: 30,
+        rating: 4.4,
+        image: "https://images.unsplash.com/photo-1514228742587-6b1558fcf93a?auto=format&fit=crop&w=900&q=85",
+        description: "Clean ceramic coffee mug for your morning coffee and tea."
     },
-
     {
         id: 7,
-        name: "Portable Speaker",
+        name: "Portable Bluetooth Speaker",
         category: "Electronics",
         price: 2199,
-        stock: 5,
-        rating: 4.6,
-        image: "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?auto=format&fit=crop&w=800&q=80",
-        description: "Compact portable speaker with powerful sound and a travel-friendly design.",
-        createdAt: 2
+        stock: 14,
+        rating: 4.7,
+        image: "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?auto=format&fit=crop&w=900&q=85",
+        description: "Portable speaker with powerful sound and compact design."
     },
-
     {
         id: 8,
-        name: "Premium Sunglasses",
+        name: "Classic Sunglasses",
         category: "Fashion",
-        price: 1999,
-        stock: 16,
+        price: 1299,
+        stock: 20,
         rating: 4.5,
-        image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=800&q=80",
-        description: "Modern sunglasses with a timeless frame designed for everyday wear.",
-        createdAt: 1
+        image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=900&q=85",
+        description: "Classic sunglasses with a versatile everyday frame."
     },
-
     {
         id: 9,
-        name: "Desk Organizer",
+        name: "Modern Desk Organizer",
         category: "Home",
-        price: 699,
-        stock: 22,
-        rating: 4.2,
-        image: "https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?auto=format&fit=crop&w=800&q=80",
-        description: "Keep your workspace clean and organized with this simple desk organizer.",
-        createdAt: 9
+        price: 799,
+        stock: 16,
+        rating: 4.3,
+        image: "https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?auto=format&fit=crop&w=900&q=85",
+        description: "Keep your desk clean and organized with this simple organizer."
     },
-
     {
         id: 10,
-        name: "Mechanical Keyboard",
-        category: "Electronics",
-        price: 3799,
-        stock: 10,
-        rating: 4.9,
-        image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=800&q=80",
-        description: "Responsive mechanical keyboard designed for productivity and gaming.",
-        createdAt: 10
+        name: "Fitness Bottle",
+        category: "Lifestyle",
+        price: 899,
+        stock: 25,
+        rating: 4.6,
+        image: "https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=900&q=85",
+        description: "Reusable fitness bottle for gym, travel and daily hydration."
     },
-
     {
         id: 11,
-        name: "Everyday Hoodie",
-        category: "Fashion",
-        price: 1599,
-        stock: 20,
-        rating: 4.6,
-        image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=800&q=80",
-        description: "Soft everyday hoodie with a relaxed fit and comfortable fabric.",
-        createdAt: 11
+        name: "Travel Wallet",
+        category: "Lifestyle",
+        price: 1099,
+        stock: 13,
+        rating: 4.4,
+        image: "https://images.unsplash.com/photo-1627123424574-724758594e93?auto=format&fit=crop&w=900&q=85",
+        description: "Compact travel wallet with enough space for cards and essentials."
     },
-
     {
         id: 12,
-        name: "Minimal Wall Clock",
-        category: "Home",
-        price: 1199,
-        stock: 7,
-        rating: 4.4,
-        image: "https://images.unsplash.com/photo-1563861826100-9cb868fdbe1c?auto=format&fit=crop&w=800&q=80",
-        description: "Minimal wall clock that fits naturally into modern interiors.",
-        createdAt: 12
+        name: "Wireless Mouse",
+        category: "Electronics",
+        price: 999,
+        stock: 19,
+        rating: 4.5,
+        image: "https://images.unsplash.com/photo-1527814050087-3793815479db?auto=format&fit=crop&w=900&q=85",
+        description: "Smooth and comfortable wireless mouse for work and everyday use."
     }
-
 ];
 
 
 const defaultCategories = [
-    {
-        id: 1,
-        name: "Electronics",
-        image: "https://images.unsplash.com/photo-1498049794561-7780e7231661?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        id: 2,
-        name: "Fashion",
-        image: "https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        id: 3,
-        name: "Home",
-        image: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        id: 4,
-        name: "Lifestyle",
-        image: "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?auto=format&fit=crop&w=800&q=80"
-    }
+    "Electronics",
+    "Fashion",
+    "Home",
+    "Lifestyle"
 ];
 
 
-let products = loadData("cartivoProducts", defaultProducts);
-
-let categories = loadData(
-    "cartivoCategories",
-    defaultCategories
-);
-
-let cart = loadData(
-    "cartivoCart",
-    []
-);
-
-let orders = loadData(
-    "cartivoOrders",
-    []
-);
-
-let wishlist = loadData(
-    "cartivoWishlist",
-    []
-);
-
-let currentUser = loadData(
-    "cartivoCurrentUser",
-    null
-);
+const orderStatuses = [
+    "Placed",
+    "Confirmed",
+    "Packed",
+    "Shipped",
+    "Delivered"
+];
 
 
-/* ================= HELPERS ================= */
+/* =========================================================
+   LOCAL STORAGE
+========================================================= */
 
-function loadData(key, fallback) {
+let products = JSON.parse(
+    localStorage.getItem("cartivoProducts")
+) || defaultProducts;
 
-    try {
+let categories = JSON.parse(
+    localStorage.getItem("cartivoCategories")
+) || defaultCategories;
 
-        const data = localStorage.getItem(key);
+let cart = JSON.parse(
+    localStorage.getItem("cartivoCart")
+) || [];
 
-        if (!data) {
-            return JSON.parse(JSON.stringify(fallback));
-        }
+let wishlist = JSON.parse(
+    localStorage.getItem("cartivoWishlist")
+) || [];
 
-        return JSON.parse(data);
+let orders = JSON.parse(
+    localStorage.getItem("cartivoOrders")
+) || [];
 
-    } catch (error) {
-
-        return JSON.parse(JSON.stringify(fallback));
-
-    }
-
-}
+let currentUser = JSON.parse(
+    localStorage.getItem("cartivoCurrentUser")
+) || null;
 
 
-function saveData(key, data) {
-    localStorage.setItem(key, JSON.stringify(data));
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function saveData() {
+
+    localStorage.setItem(
+        "cartivoProducts",
+        JSON.stringify(products)
+    );
+
+    localStorage.setItem(
+        "cartivoCategories",
+        JSON.stringify(categories)
+    );
+
+    localStorage.setItem(
+        "cartivoCart",
+        JSON.stringify(cart)
+    );
+
+    localStorage.setItem(
+        "cartivoWishlist",
+        JSON.stringify(wishlist)
+    );
+
+    localStorage.setItem(
+        "cartivoOrders",
+        JSON.stringify(orders)
+    );
+
+    localStorage.setItem(
+        "cartivoCurrentUser",
+        JSON.stringify(currentUser)
+    );
 }
 
 
 function money(value) {
-    return "₹" + Number(value).toLocaleString("en-IN");
+
+    return "₹" + Number(value || 0).toLocaleString("en-IN");
 }
 
 
-function escapeHtml(value) {
+function escapeHTML(value) {
 
-    return String(value)
+    return String(value ?? "")
         .replaceAll("&", "&amp;")
         .replaceAll("<", "&lt;")
         .replaceAll(">", "&gt;")
         .replaceAll('"', "&quot;")
         .replaceAll("'", "&#039;");
-
 }
 
 
-/* ================= LOGIN ================= */
+function getProduct(id) {
+
+    return products.find(
+        product => Number(product.id) === Number(id)
+    );
+}
+
+
+function showToast(message) {
+
+    const toast = document.getElementById("toast");
+
+    if (!toast) return;
+
+    toast.textContent = message;
+    toast.classList.add("show");
+
+    clearTimeout(window.toastTimer);
+
+    window.toastTimer = setTimeout(() => {
+        toast.classList.remove("show");
+    }, 2500);
+}
+
+
+/* =========================================================
+   LOGIN
+========================================================= */
 
 document
     .getElementById("loginForm")
@@ -260,80 +262,60 @@ document
 
         event.preventDefault();
 
-        const email = document
-            .getElementById("loginEmail")
-            .value
-            .trim();
+        const email =
+            document.getElementById("loginEmail").value.trim();
 
-        const password = document
-            .getElementById("loginPassword")
-            .value;
+        const password =
+            document.getElementById("loginPassword").value.trim();
 
         if (!email || !password) {
             showToast("Please enter email and password.");
             return;
         }
 
-        currentUser = {
-            name: email
-                .split("@")[0]
-                .replace(/[._-]/g, " ")
-                .replace(/\b\w/g, char => char.toUpperCase()),
+        const isAdmin =
+            email.toLowerCase() === "admin@cartivo.com" &&
+            password === "admin123";
 
-            email: email
+        currentUser = {
+            name: isAdmin ? "Cartivo Admin" : email.split("@")[0],
+            email: email,
+            role: isAdmin ? "admin" : "customer"
         };
 
-        saveData(
-            "cartivoCurrentUser",
-            currentUser
-        );
-
-        updateUserUI();
+        saveData();
 
         document
             .getElementById("loginPage")
             .classList.add("hidden");
 
-        document
-            .getElementById("storePage")
-            .classList.remove("hidden");
+        if (isAdmin) {
+            openAdmin();
+        } else {
+            document
+                .getElementById("storePage")
+                .classList.remove("hidden");
 
-        showStore();
+            refreshStore();
+        }
 
-        showToast("Welcome to Cartivo!");
-
+        showToast(
+            isAdmin
+                ? "Welcome to Admin Panel"
+                : "Welcome to Cartivo"
+        );
     });
 
 
-function updateUserUI() {
-
-    if (!currentUser) return;
-
-    const name =
-        currentUser.name || "Customer";
-
-    const email =
-        currentUser.email || "customer@example.com";
-
-    document.getElementById("profileName").textContent =
-        name;
-
-    document.getElementById("profileEmail").textContent =
-        email;
-
-    document.getElementById("userInitial").textContent =
-        name.charAt(0).toUpperCase();
-
-}
-
+/* =========================================================
+   LOGOUT
+========================================================= */
 
 function logout() {
 
     currentUser = null;
 
-    localStorage.removeItem(
-        "cartivoCurrentUser"
-    );
+    saveData();
 
     document
         .getElementById("storePage")
@@ -347,312 +329,406 @@ function logout() {
         .getElementById("loginPage")
         .classList.remove("hidden");
 
-    showToast("Logged out successfully.");
+    document
+        .getElementById("loginForm")
+        .reset();
 
+    toggleProfileMenu(true);
 }
 
 
-/* ================= INITIALIZATION ================= */
+/* =========================================================
+   PROFILE
+========================================================= */
 
-document.addEventListener(
-    "DOMContentLoaded",
-    function() {
+function updateProfile() {
 
-        updateUserUI();
+    if (!currentUser) return;
 
-        populateCategories();
+    const name =
+        document.getElementById("profileName");
 
-        renderCategoryCards();
+    const email =
+        document.getElementById("profileEmail");
 
-        renderProducts();
+    const initial =
+        document.getElementById("profileInitial");
 
-        updateCartUI();
-
-        updateWishlistCount();
-
-        setupSearch();
-
+    if (name) {
+        name.textContent = currentUser.name;
     }
-);
+
+    if (email) {
+        email.textContent = currentUser.email;
+    }
+
+    if (initial) {
+        initial.textContent =
+            currentUser.name.charAt(0).toUpperCase();
+    }
+
+    const adminButton =
+        document.getElementById("adminMenuButton");
+
+    if (adminButton) {
+
+        adminButton.classList.toggle(
+            "hidden",
+            currentUser.role !== "admin"
+        );
+    }
+}
 
 
-/* ================= STORE NAVIGATION ================= */
+function toggleProfileMenu(forceClose = false) {
 
-function showStore() {
+    const menu =
+        document.getElementById("profileMenu");
 
-    document
-        .getElementById("loginPage")
-        .classList.add("hidden");
+    if (!menu) return;
 
-    document
-        .getElementById("adminPage")
-        .classList.add("hidden");
+    if (forceClose) {
+        menu.classList.add("hidden");
+        return;
+    }
 
-    document
-        .getElementById("storePage")
-        .classList.remove("hidden");
+    menu.classList.toggle("hidden");
+}
 
-    hideCustomerSections();
 
-    document
-        .getElementById("homeSection")
-        .classList.remove("hidden");
+/* =========================================================
+   NAVIGATION
+========================================================= */
 
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
+function hideAllStoreSections() {
+
+    [
+        "homeSection",
+        "shopSection",
+        "wishlistSection",
+        "ordersSection"
+    ].forEach(id => {
+
+        const element =
+            document.getElementById(id);
+
+        if (element) {
+            element.classList.add("hidden");
+        }
     });
 
-    updateUserUI();
-
+    toggleProfileMenu(true);
 }
 
 
-function hideCustomerSections() {
+function showHome() {
 
-    document
-        .getElementById("ordersSection")
-        .classList.add("hidden");
-
-    document
-        .getElementById("wishlistSection")
-        .classList.add("hidden");
+    hideAllStoreSections();
 
     document
         .getElementById("homeSection")
         .classList.remove("hidden");
 
+    refreshStore();
 }
 
 
-function scrollToShop() {
+function showShop() {
 
-    showStore();
+    hideAllStoreSections();
 
-    setTimeout(() => {
+    document
+        .getElementById("shopSection")
+        .classList.remove("hidden");
 
-        document
-            .getElementById("shopSection")
-            .scrollIntoView({
-                behavior: "smooth"
-            });
-
-    }, 50);
-
+    renderShop();
 }
 
 
-function scrollToCategories() {
+function showCategories() {
 
-    showStore();
+    showHome();
 
     setTimeout(() => {
 
         document
             .getElementById("categoriesSection")
-            .scrollIntoView({
+            ?.scrollIntoView({
                 behavior: "smooth"
             });
 
     }, 50);
-
 }
 
 
-function showAllProducts() {
+function showWishlist() {
 
-    showStore();
-
-    setTimeout(() => {
-
-        document
-            .getElementById("categoryFilter")
-            .value = "All";
-
-        renderProducts();
-
-        scrollToShop();
-
-    }, 50);
-
-}
-
-
-/* ================= PROFILE ================= */
-
-function toggleProfileMenu() {
+    hideAllStoreSections();
 
     document
-        .getElementById("profileMenu")
-        .classList.toggle("hidden");
+        .getElementById("wishlistSection")
+        .classList.remove("hidden");
 
+    renderWishlist();
 }
 
 
-/* ================= CATEGORIES ================= */
+function showOrders() {
 
-function populateCategories() {
+    hideAllStoreSections();
 
-    const filter =
+    document
+        .getElementById("ordersSection")
+        .classList.remove("hidden");
+
+    renderOrders();
+}
+
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+document
+    .getElementById("globalSearch")
+    .addEventListener("input", function() {
+
+        const value =
+            this.value.trim();
+
+        if (!value) return;
+
+        showShop();
+
+        document
+            .getElementById("shopSearch")
+            .value = value;
+
+        renderShop();
+    });
+
+
+document
+    .getElementById("shopSearch")
+    .addEventListener("input", renderShop);
+
+document
+    .getElementById("categoryFilter")
+    .addEventListener("change", renderShop);
+
+document
+    .getElementById("priceFilter")
+    .addEventListener("change", renderShop);
+
+document
+    .getElementById("sortFilter")
+    .addEventListener("change", renderShop);
+
+
+/* =========================================================
+   CATEGORY RENDER
+========================================================= */
+
+function renderCategories() {
+
+    const grid =
+        document.getElementById("categoryGrid");
+
+    if (!grid) return;
+
+    const icons = {
+        Electronics: "🎧",
+        Fashion: "👟",
+        Home: "🏠",
+        Lifestyle: "✨"
+    };
+
+    grid.innerHTML = categories.map(category => {
+
+        const count =
+            products.filter(
+                product => product.category === category
+            ).length;
+
+        return `
+            <div
+                class="category-card"
+                onclick="filterCategory('${escapeHTML(category)}')"
+            >
+                <h3>${escapeHTML(category)}</h3>
+                <p>${count} products</p>
+                <div class="category-icon">
+                    ${icons[category] || "✦"}
+                </div>
+            </div>
+        `;
+
+    }).join("");
+}
+
+
+function populateCategoryFilter() {
+
+    const select =
         document.getElementById("categoryFilter");
 
     const adminSelect =
         document.getElementById("adminProductCategory");
 
-    filter.innerHTML =
-        `<option value="All">All Categories</option>`;
+    if (select) {
 
-    adminSelect.innerHTML = "";
+        select.innerHTML =
+            `<option value="all">All Categories</option>` +
+            categories.map(category =>
+                `<option value="${escapeHTML(category)}">
+                    ${escapeHTML(category)}
+                </option>`
+            ).join("");
+    }
 
-    categories.forEach(category => {
+    if (adminSelect) {
 
-        filter.innerHTML += `
-            <option value="${escapeHtml(category.name)}">
-                ${escapeHtml(category.name)}
-            </option>
-        `;
-
-        adminSelect.innerHTML += `
-            <option value="${escapeHtml(category.name)}">
-                ${escapeHtml(category.name)}
-            </option>
-        `;
-
-    });
-
+        adminSelect.innerHTML =
+            categories.map(category =>
+                `<option value="${escapeHTML(category)}">
+                    ${escapeHTML(category)}
+                </option>`
+            ).join("");
+    }
 }
 
 
-function renderCategoryCards() {
+function filterCategory(category) {
 
-    const container =
-        document.getElementById("categoryCards");
-
-    container.innerHTML = "";
-
-    categories.forEach(category => {
-
-        const count =
-            products.filter(
-                product =>
-                    product.category === category.name
-            ).length;
-
-        container.innerHTML += `
-
-            <div
-                class="category-card"
-                onclick="filterByCategory('${escapeHtml(category.name)}')"
-            >
-
-                <img
-                    src="${category.image}"
-                    alt="${escapeHtml(category.name)}"
-                >
-
-                <div class="category-card-content">
-
-                    <h3>
-                        ${escapeHtml(category.name)}
-                    </h3>
-
-                    <p>
-                        ${count} products
-                    </p>
-
-                </div>
-
-            </div>
-
-        `;
-
-    });
-
-}
-
-
-function filterByCategory(category) {
-
-    showStore();
+    showShop();
 
     document
         .getElementById("categoryFilter")
         .value = category;
 
-    renderProducts();
-
-    setTimeout(() => {
-
-        document
-            .getElementById("shopSection")
-            .scrollIntoView({
-                behavior: "smooth"
-            });
-
-    }, 50);
-
+    renderShop();
 }
 
 
-/* ================= SEARCH + FILTER ================= */
+/* =========================================================
+   PRODUCT CARD
+========================================================= */
 
-function setupSearch() {
+function productCard(product) {
 
-    document
-        .getElementById("shopSearch")
-        .addEventListener(
-            "input",
-            renderProducts
-        );
+    const isWishlisted =
+        wishlist.includes(Number(product.id));
 
-    document
-        .getElementById("navSearch")
-        .addEventListener(
-            "input",
-            function() {
+    const badge =
+        Number(product.stock) <= 5
+            ? "LOW STOCK"
+            : Number(product.id) <= 4
+                ? "POPULAR"
+                : "";
 
-                document
-                    .getElementById("shopSearch")
-                    .value = this.value;
+    return `
+        <article
+            class="product-card"
+            onclick="openProduct(${product.id})"
+        >
 
-                showStore();
+            <div class="product-image-wrap">
 
-                renderProducts();
+                <img
+                    src="${escapeHTML(product.image)}"
+                    alt="${escapeHTML(product.name)}"
+                    onerror="this.style.opacity='.2'"
+                >
 
-            }
-        );
+                ${
+                    badge
+                        ? `<span class="product-badge">
+                            ${badge}
+                           </span>`
+                        : ""
+                }
 
-    document
-        .getElementById("categoryFilter")
-        .addEventListener(
-            "change",
-            renderProducts
-        );
+                <button
+                    class="product-wishlist ${isWishlisted ? "active" : ""}"
+                    onclick="event.stopPropagation(); toggleWishlist(${product.id})"
+                >
+                    ${isWishlisted ? "♥" : "♡"}
+                </button>
 
-    document
-        .getElementById("priceFilter")
-        .addEventListener(
-            "change",
-            renderProducts
-        );
+            </div>
 
-    document
-        .getElementById("sortFilter")
-        .addEventListener(
-            "change",
-            renderProducts
-        );
+            <div class="product-info">
 
+                <div class="product-category">
+                    ${escapeHTML(product.category)}
+                </div>
+
+                <h3>
+                    ${escapeHTML(product.name)}
+                </h3>
+
+                <div class="product-rating">
+                    <span>
+                        ★ ${product.rating}
+                    </span>
+
+                    <small>
+                        Customer rating
+                    </small>
+                </div>
+
+                <div class="product-bottom">
+
+                    <strong class="product-price">
+                        ${money(product.price)}
+                    </strong>
+
+                    <button
+                        class="add-cart-btn"
+                        onclick="event.stopPropagation(); addToCart(${product.id})"
+                        ${product.stock <= 0 ? "disabled" : ""}
+                    >
+                        ${product.stock <= 0 ? "Sold Out" : "+ Cart"}
+                    </button>
+
+                </div>
+
+            </div>
+
+        </article>
+    `;
 }
 
 
-function renderProducts() {
+/* =========================================================
+   HOME PRODUCTS
+========================================================= */
+
+function renderHomeProducts() {
 
     const grid =
-        document.getElementById("productGrid");
+        document.getElementById("homeProducts");
 
-    const empty =
-        document.getElementById("emptyProducts");
+    if (!grid) return;
+
+    grid.innerHTML =
+        products
+            .slice(0, 8)
+            .map(productCard)
+            .join("");
+}
+
+
+/* =========================================================
+   SHOP
+========================================================= */
+
+function renderShop() {
+
+    const grid =
+        document.getElementById("shopProducts");
+
+    if (!grid) return;
 
     const search =
         document
@@ -670,247 +746,154 @@ function renderProducts() {
     const sort =
         document.getElementById("sortFilter").value;
 
+    let filtered =
+        [...products];
 
-    let filtered = products.filter(product => {
+    if (search) {
 
-        const matchesSearch =
-            product.name
-                .toLowerCase()
-                .includes(search) ||
-
-            product.category
-                .toLowerCase()
-                .includes(search);
-
-        const matchesCategory =
-            category === "All" ||
-            product.category === category;
-
-        let matchesPrice = true;
-
-        if (price === "0-1000") {
-            matchesPrice =
-                product.price < 1000;
-        }
-
-        if (price === "1000-5000") {
-            matchesPrice =
-                product.price >= 1000 &&
-                product.price <= 5000;
-        }
-
-        if (price === "5000-15000") {
-            matchesPrice =
-                product.price > 5000 &&
-                product.price <= 15000;
-        }
-
-        if (price === "15000+") {
-            matchesPrice =
-                product.price > 15000;
-        }
-
-        return (
-            matchesSearch &&
-            matchesCategory &&
-            matchesPrice
-        );
-
-    });
-
-
-    if (sort === "low") {
-
-        filtered.sort(
-            (a, b) =>
-                a.price - b.price
-        );
-
+        filtered =
+            filtered.filter(product =>
+                product.name.toLowerCase().includes(search) ||
+                product.category.toLowerCase().includes(search)
+            );
     }
 
-    if (sort === "high") {
+    if (category !== "all") {
+
+        filtered =
+            filtered.filter(
+                product => product.category === category
+            );
+    }
+
+    if (price !== "all") {
+
+        filtered =
+            filtered.filter(product => {
+
+                const p =
+                    Number(product.price);
+
+                if (price === "0-1000") {
+                    return p < 1000;
+                }
+
+                if (price === "1000-3000") {
+                    return p >= 1000 && p <= 3000;
+                }
+
+                if (price === "3000-10000") {
+                    return p > 3000 && p <= 10000;
+                }
+
+                if (price === "10000+") {
+                    return p > 10000;
+                }
+
+                return true;
+            });
+    }
+
+    if (sort === "priceLow") {
 
         filtered.sort(
-            (a, b) =>
-                b.price - a.price
+            (a,b) => a.price - b.price
         );
+    }
 
+    if (sort === "priceHigh") {
+
+        filtered.sort(
+            (a,b) => b.price - a.price
+        );
     }
 
     if (sort === "rating") {
 
         filtered.sort(
-            (a, b) =>
-                b.rating - a.rating
+            (a,b) => b.rating - a.rating
         );
-
     }
 
-    if (sort === "new") {
+    if (sort === "name") {
 
         filtered.sort(
-            (a, b) =>
-                b.createdAt - a.createdAt
+            (a,b) => a.name.localeCompare(b.name)
         );
-
     }
 
+    if (!filtered.length) {
 
-    grid.innerHTML = "";
-
-
-    filtered.forEach(product => {
-
-        const isWishlisted =
-            wishlist.includes(product.id);
-
-        const outOfStock =
-            product.stock <= 0;
-
-
-        grid.innerHTML += `
-
-            <article class="product-card">
-
-                <div class="product-image">
-
-                    <img
-                        src="${product.image}"
-                        alt="${escapeHtml(product.name)}"
-                    >
-
-                    ${
-                        outOfStock
-                        ?
-                        `<div class="stock-label">
-                            Out of stock
-                        </div>`
-                        :
-                        product.stock <= 5
-                        ?
-                        `<div class="stock-label">
-                            Only ${product.stock} left
-                        </div>`
-                        :
-                        ""
-                    }
-
-                    <button
-                        class="wishlist-btn ${
-                            isWishlisted
-                            ? "active"
-                            : ""
-                        }"
-                        onclick="toggleWishlist(${product.id})"
-                    >
-                        ${isWishlisted ? "♥" : "♡"}
-                    </button>
-
-                </div>
-
-
-                <div class="product-info">
-
-                    <span class="product-category">
-                        ${escapeHtml(product.category)}
-                    </span>
-
-                    <h3
-                        onclick="openProduct(${product.id})"
-                        style="cursor:pointer"
-                    >
-                        ${escapeHtml(product.name)}
-                    </h3>
-
-                    <div class="product-rating">
-                        ★ ${product.rating}
-                    </div>
-
-
-                    <div class="product-bottom">
-
-                        <span class="product-price">
-                            ${money(product.price)}
-                        </span>
-
-                        <button
-                            class="add-btn"
-                            onclick="addToCart(${product.id})"
-                            ${
-                                outOfStock
-                                ? "disabled"
-                                : ""
-                            }
-                        >
-                            +
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </article>
-
+        grid.innerHTML = `
+            <div class="empty-state">
+                <strong>No products found</strong>
+                Try another search or filter.
+            </div>
         `;
 
-    });
-
-
-    if (filtered.length === 0) {
-
-        empty.classList.remove("hidden");
-
-    } else {
-
-        empty.classList.add("hidden");
-
+        return;
     }
 
+    grid.innerHTML =
+        filtered.map(productCard).join("");
 }
 
 
-/* ================= PRODUCT DETAILS ================= */
+/* =========================================================
+   PRODUCT DETAIL
+========================================================= */
 
 function openProduct(id) {
 
     const product =
-        products.find(
-            item => item.id === id
-        );
+        getProduct(id);
 
     if (!product) return;
 
     const modal =
         document.getElementById("productModal");
 
-    const details =
-        document.getElementById("productDetails");
+    const detail =
+        document.getElementById("productDetail");
 
-    details.innerHTML = `
+    const stockClass =
+        product.stock <= 0
+            ? "stock-out"
+            : product.stock <= 5
+                ? "stock-low"
+                : "stock-good";
 
-        <div class="product-detail">
+    const stockText =
+        product.stock <= 0
+            ? "Out of stock"
+            : product.stock <= 5
+                ? `Only ${product.stock} left`
+                : `${product.stock} items available`;
 
-            <div class="product-detail-image">
+    detail.innerHTML = `
+        <div class="product-detail-layout">
 
+            <div class="detail-image">
                 <img
-                    src="${product.image}"
-                    alt="${escapeHtml(product.name)}"
+                    src="${escapeHTML(product.image)}"
+                    alt="${escapeHTML(product.name)}"
                 >
-
             </div>
 
-            <div class="product-detail-info">
+            <div class="detail-info">
 
-                <p class="eyebrow">
-                    ${escapeHtml(product.category)}
+                <p class="orange-label">
+                    ${escapeHTML(product.category)}
                 </p>
 
                 <h2>
-                    ${escapeHtml(product.name)}
+                    ${escapeHTML(product.name)}
                 </h2>
 
                 <div class="product-rating">
-                    ★ ${product.rating} / 5
+                    <span>
+                        ★ ${product.rating}
+                    </span>
                 </div>
 
                 <div class="detail-price">
@@ -918,41 +901,27 @@ function openProduct(id) {
                 </div>
 
                 <p class="detail-description">
-                    ${escapeHtml(product.description)}
+                    ${escapeHTML(product.description)}
                 </p>
 
-                <div class="detail-stock">
-
-                    ${
-                        product.stock > 0
-                        ?
-                        `✓ ${product.stock} units available`
-                        :
-                        `✕ Currently out of stock`
-                    }
-
+                <div class="detail-stock ${stockClass}">
+                    ${stockText}
                 </div>
 
                 <button
-                    class="primary-btn full-btn"
+                    class="primary-btn"
                     onclick="addToCart(${product.id}); closeProductModal();"
-                    ${
-                        product.stock <= 0
-                        ? "disabled"
-                        : ""
-                    }
+                    ${product.stock <= 0 ? "disabled" : ""}
                 >
-                    Add to Cart
+                    ${product.stock <= 0 ? "Out of Stock" : "Add to Cart"}
                 </button>
 
             </div>
 
         </div>
-
     `;
 
     modal.classList.remove("hidden");
-
 }
 
 
@@ -961,20 +930,23 @@ function closeProductModal() {
     document
         .getElementById("productModal")
         .classList.add("hidden");
-
 }
 
 
-/* ================= WISHLIST ================= */
+/* =========================================================
+   WISHLIST
+========================================================= */
 
 function toggleWishlist(id) {
 
-    const index =
-        wishlist.indexOf(id);
+    id = Number(id);
 
-    if (index >= 0) {
+    if (wishlist.includes(id)) {
 
-        wishlist.splice(index, 1);
+        wishlist =
+            wishlist.filter(
+                item => item !== id
+            );
 
         showToast("Removed from wishlist.");
 
@@ -983,362 +955,134 @@ function toggleWishlist(id) {
         wishlist.push(id);
 
         showToast("Added to wishlist.");
-
     }
 
-    saveData(
-        "cartivoWishlist",
-        wishlist
-    );
+    saveData();
 
-    updateWishlistCount();
+    updateCounts();
 
-    renderProducts();
-
+    renderHomeProducts();
+    renderShop();
+    renderWishlist();
 }
 
 
-function updateWishlistCount() {
-
-    document
-        .getElementById("wishlistCount")
-        .textContent =
-        wishlist.length;
-
-}
-
-
-function showWishlist() {
-
-    hideCustomerSections();
-
-    document
-        .getElementById("wishlistSection")
-        .classList.remove("hidden");
+function renderWishlist() {
 
     const grid =
-        document.getElementById("wishlistGrid");
+        document.getElementById("wishlistProducts");
+
+    if (!grid) return;
 
     const items =
         products.filter(
-            product =>
-                wishlist.includes(product.id)
+            product => wishlist.includes(Number(product.id))
         );
 
-    grid.innerHTML = "";
-
-    items.forEach(product => {
-
-        grid.innerHTML += `
-
-            <article class="product-card">
-
-                <div class="product-image">
-
-                    <img
-                        src="${product.image}"
-                        alt="${escapeHtml(product.name)}"
-                    >
-
-                    <button
-                        class="wishlist-btn active"
-                        onclick="toggleWishlist(${product.id})"
-                    >
-                        ♥
-                    </button>
-
-                </div>
-
-                <div class="product-info">
-
-                    <span class="product-category">
-                        ${escapeHtml(product.category)}
-                    </span>
-
-                    <h3>
-                        ${escapeHtml(product.name)}
-                    </h3>
-
-                    <div class="product-bottom">
-
-                        <span class="product-price">
-                            ${money(product.price)}
-                        </span>
-
-                        <button
-                            class="add-btn"
-                            onclick="addToCart(${product.id})"
-                        >
-                            +
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </article>
-
-        `;
-
-    });
-
-
-    if (items.length === 0) {
+    if (!items.length) {
 
         grid.innerHTML = `
-
             <div class="empty-state">
-
-                <div>♡</div>
-
-                <h3>Your wishlist is empty</h3>
-
-                <p>
-                    Save products you like and find them here.
-                </p>
-
+                <strong>Your wishlist is empty</strong>
+                Save products you love and find them here later.
             </div>
-
         `;
 
+        return;
     }
 
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
-
+    grid.innerHTML =
+        items.map(productCard).join("");
 }
 
 
-/* ================= CART ================= */
+/* =========================================================
+   CART
+========================================================= */
 
 function addToCart(id) {
 
     const product =
-        products.find(
-            item => item.id === id
-        );
+        getProduct(id);
 
     if (!product) return;
 
     if (product.stock <= 0) {
 
         showToast("This product is out of stock.");
-
         return;
-
     }
-
 
     const existing =
         cart.find(
-            item => item.id === id
+            item => Number(item.id) === Number(id)
         );
-
 
     if (existing) {
 
-        if (existing.quantity >= product.stock) {
+        if (existing.qty >= product.stock) {
 
             showToast("Maximum available stock reached.");
-
             return;
-
         }
 
-        existing.quantity++;
+        existing.qty += 1;
 
     } else {
 
         cart.push({
-            id: id,
-            quantity: 1
+            id: Number(id),
+            qty: 1
         });
-
     }
 
+    saveData();
 
-    saveData(
-        "cartivoCart",
-        cart
+    updateCounts();
+
+    renderCart();
+
+    showToast(
+        `${product.name} added to cart.`
     );
-
-    updateCartUI();
-
-    showToast("Added to cart.");
-
 }
 
 
-function updateCartUI() {
-
-    const totalItems =
-        cart.reduce(
-            (sum, item) =>
-                sum + item.quantity,
-            0
-        );
-
-    document
-        .getElementById("cartCount")
-        .textContent =
-        totalItems;
-
-
-    const container =
-        document.getElementById("cartItems");
-
-    if (cart.length === 0) {
-
-        container.innerHTML = `
-
-            <div class="empty-state">
-
-                <div>🛒</div>
-
-                <h3>Your cart is empty</h3>
-
-                <p>
-                    Add products to start shopping.
-                </p>
-
-            </div>
-
-        `;
-
-        updateCartTotals();
-
-        return;
-
-    }
-
-
-    container.innerHTML = "";
-
-
-    cart.forEach(item => {
-
-        const product =
-            products.find(
-                product =>
-                    product.id === item.id
-            );
-
-        if (!product) return;
-
-
-        container.innerHTML += `
-
-            <div class="cart-item">
-
-                <img
-                    src="${product.image}"
-                    alt="${escapeHtml(product.name)}"
-                >
-
-                <div>
-
-                    <h4>
-                        ${escapeHtml(product.name)}
-                    </h4>
-
-                    <div class="cart-item-price">
-                        ${money(product.price)}
-                    </div>
-
-
-                    <div class="quantity-control">
-
-                        <button
-                            onclick="changeQuantity(${product.id}, -1)"
-                        >
-                            −
-                        </button>
-
-                        <strong>
-                            ${item.quantity}
-                        </strong>
-
-                        <button
-                            onclick="changeQuantity(${product.id}, 1)"
-                        >
-                            +
-                        </button>
-
-                        <button
-                            class="remove-cart"
-                            onclick="removeFromCart(${product.id})"
-                        >
-                            Remove
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        `;
-
-    });
-
-
-    updateCartTotals();
-
-}
-
-
-function changeQuantity(id, amount) {
+function changeCartQty(id, amount) {
 
     const item =
         cart.find(
-            item =>
-                item.id === id
+            item => Number(item.id) === Number(id)
         );
 
     const product =
-        products.find(
-            product =>
-                product.id === id
-        );
+        getProduct(id);
 
     if (!item || !product) return;
 
+    item.qty += amount;
 
-    item.quantity += amount;
-
-
-    if (item.quantity <= 0) {
+    if (item.qty <= 0) {
 
         cart =
             cart.filter(
-                item =>
-                    item.id !== id
+                cartItem =>
+                    Number(cartItem.id) !== Number(id)
             );
-
     }
 
+    if (item.qty > product.stock) {
 
-    if (item.quantity > product.stock) {
+        item.qty = product.stock;
 
-        item.quantity =
-            product.stock;
-
-        showToast(
-            "Available stock limit reached."
-        );
-
+        showToast("Maximum available stock reached.");
     }
 
+    saveData();
 
-    saveData(
-        "cartivoCart",
-        cart
-    );
+    updateCounts();
 
-    updateCartUI();
-
+    renderCart();
 }
 
 
@@ -1347,64 +1091,144 @@ function removeFromCart(id) {
     cart =
         cart.filter(
             item =>
-                item.id !== id
+                Number(item.id) !== Number(id)
         );
 
-    saveData(
-        "cartivoCart",
-        cart
-    );
+    saveData();
 
-    updateCartUI();
+    updateCounts();
 
-    showToast("Item removed.");
+    renderCart();
 
+    showToast("Product removed from cart.");
 }
 
 
-function getCartTotal() {
+function cartTotalValue() {
 
     return cart.reduce(
         (total, item) => {
 
             const product =
-                products.find(
-                    product =>
-                        product.id === item.id
-                );
-
-            if (!product) return total;
+                getProduct(item.id);
 
             return total +
-                product.price *
-                item.quantity;
+                (product
+                    ? product.price * item.qty
+                    : 0);
 
         },
         0
     );
-
 }
 
 
-function updateCartTotals() {
+function cartItemCount() {
+
+    return cart.reduce(
+        (total,item) =>
+            total + Number(item.qty),
+        0
+    );
+}
+
+
+function renderCart() {
+
+    const container =
+        document.getElementById("cartItems");
 
     const total =
-        getCartTotal();
+        document.getElementById("cartTotal");
 
-    document
-        .getElementById("cartSubtotal")
-        .textContent =
-        money(total);
+    if (!container || !total) return;
 
-    document
-        .getElementById("cartTotal")
-        .textContent =
-        money(total);
+    if (!cart.length) {
 
+        container.innerHTML = `
+            <div class="empty-state">
+                <strong>Your cart is empty</strong>
+                <span>Add something you love to get started.</span>
+            </div>
+        `;
+
+        total.textContent = "₹0";
+
+        return;
+    }
+
+    container.innerHTML =
+        cart.map(item => {
+
+            const product =
+                getProduct(item.id);
+
+            if (!product) return "";
+
+            return `
+                <div class="cart-item">
+
+                    <img
+                        src="${escapeHTML(product.image)}"
+                        alt="${escapeHTML(product.name)}"
+                    >
+
+                    <div>
+
+                        <h4>
+                            ${escapeHTML(product.name)}
+                        </h4>
+
+                        <small>
+                            ${money(product.price)}
+                        </small>
+
+                        <div class="qty-controls">
+
+                            <button
+                                onclick="changeCartQty(${product.id}, -1)"
+                            >
+                                −
+                            </button>
+
+                            <span>
+                                ${item.qty}
+                            </span>
+
+                            <button
+                                onclick="changeCartQty(${product.id}, 1)"
+                            >
+                                +
+                            </button>
+
+                        </div>
+
+                        <button
+                            class="remove-btn"
+                            onclick="removeFromCart(${product.id})"
+                        >
+                            Remove
+                        </button>
+
+                    </div>
+
+                    <div class="cart-item-price">
+                        ${money(product.price * item.qty)}
+                    </div>
+
+                </div>
+            `;
+
+        }).join("");
+
+    total.textContent =
+        money(cartTotalValue());
 }
 
 
 function openCart() {
+
+    renderCart();
 
     document
         .getElementById("cartOverlay")
@@ -1413,7 +1237,6 @@ function openCart() {
     document
         .getElementById("cartDrawer")
         .classList.add("open");
-
 }
 
 
@@ -1426,49 +1249,36 @@ function closeCart() {
     document
         .getElementById("cartDrawer")
         .classList.remove("open");
-
 }
 
 
-/* ================= CHECKOUT ================= */
+/* =========================================================
+   CHECKOUT
+========================================================= */
 
 function openCheckout() {
 
-    if (cart.length === 0) {
+    if (!cart.length) {
 
         showToast("Your cart is empty.");
-
         return;
-
     }
 
     closeCart();
 
     document
-        .getElementById("checkoutTotal")
-        .textContent =
-        money(getCartTotal());
+        .getElementById("checkoutName")
+        .value =
+        currentUser?.name || "";
 
-
-    if (currentUser) {
-
-        document
-            .getElementById("checkoutName")
-            .value =
-            currentUser.name || "";
-
-        document
-            .getElementById("checkoutEmail")
-            .value =
-            currentUser.email || "";
-
-    }
-
+    document
+        .getElementById("checkoutEmail")
+        .value =
+        currentUser?.email || "";
 
     document
         .getElementById("checkoutModal")
         .classList.remove("hidden");
-
 }
 
 
@@ -1477,205 +1287,133 @@ function closeCheckout() {
     document
         .getElementById("checkoutModal")
         .classList.add("hidden");
-
 }
 
 
 document
     .getElementById("checkoutForm")
-    .addEventListener(
-        "submit",
-        function(event) {
+    .addEventListener("submit", function(event) {
 
-            event.preventDefault();
+        event.preventDefault();
 
-            if (cart.length === 0) {
+        if (!cart.length) {
 
-                closeCheckout();
+            showToast("Your cart is empty.");
+            return;
+        }
 
-                showToast(
-                    "Your cart is empty."
-                );
+        const orderId =
+            "CT-" +
+            Math.floor(
+                10000 +
+                Math.random() * 90000
+            );
 
-                return;
+        const payment =
+            document.querySelector(
+                'input[name="payment"]:checked'
+            )?.value || "COD";
 
-            }
-
-
-            const customerName =
-                document
-                    .getElementById("checkoutName")
-                    .value
-                    .trim();
-
-            const email =
-                document
-                    .getElementById("checkoutEmail")
-                    .value
-                    .trim();
-
-            const phone =
-                document
-                    .getElementById("checkoutPhone")
-                    .value
-                    .trim();
-
-            const address =
-                document
-                    .getElementById("checkoutAddress")
-                    .value
-                    .trim();
-
-            const city =
-                document
-                    .getElementById("checkoutCity")
-                    .value
-                    .trim();
-
-            const zip =
-                document
-                    .getElementById("checkoutZip")
-                    .value
-                    .trim();
-
-            const payment =
-                document.querySelector(
-                    'input[name="payment"]:checked'
-                ).value;
-
-
-            const orderItems =
-                cart.map(item => {
-
-                    const product =
-                        products.find(
-                            product =>
-                                product.id === item.id
-                        );
-
-                    return {
-                        id: product.id,
-                        name: product.name,
-                        price: product.price,
-                        quantity: item.quantity,
-                        image: product.image
-                    };
-
-                });
-
-
-            const total =
-                getCartTotal();
-
-
-            const order = {
-
-                id:
-                    "CT-" +
-                    Math.floor(
-                        10000 +
-                        Math.random() * 90000
-                    ),
-
-                customer:
-                    customerName,
-
-                email:
-                    email,
-
-                phone:
-                    phone,
-
-                address:
-                    address,
-
-                city:
-                    city,
-
-                zip:
-                    zip,
-
-                payment:
-                    payment,
-
-                items:
-                    orderItems,
-
-                total:
-                    total,
-
-                status:
-                    "Placed",
-
-                date:
-                    new Date().toISOString()
-
-            };
-
-
-            /* Reduce inventory */
-
-            cart.forEach(item => {
+        const orderItems =
+            cart.map(item => {
 
                 const product =
-                    products.find(
-                        product =>
-                            product.id === item.id
-                    );
+                    getProduct(item.id);
 
-                if (product) {
-
-                    product.stock =
-                        Math.max(
-                            0,
-                            product.stock -
-                            item.quantity
-                        );
-
-                }
-
+                return {
+                    id: product.id,
+                    name: product.name,
+                    price: product.price,
+                    qty: item.qty,
+                    image: product.image
+                };
             });
 
+        const order = {
 
-            orders.unshift(order);
+            id: orderId,
 
-            cart = [];
+            customer: {
+                name:
+                    document
+                        .getElementById("checkoutName")
+                        .value.trim(),
+
+                email:
+                    document
+                        .getElementById("checkoutEmail")
+                        .value.trim(),
+
+                phone:
+                    document
+                        .getElementById("checkoutPhone")
+                        .value.trim(),
+
+                city:
+                    document
+                        .getElementById("checkoutCity")
+                        .value.trim(),
+
+                zip:
+                    document
+                        .getElementById("checkoutZip")
+                        .value.trim(),
+
+                address:
+                    document
+                        .getElementById("checkoutAddress")
+                        .value.trim()
+            },
+
+            payment,
+
+            items: orderItems,
+
+            total: cartTotalValue(),
+
+            status: "Placed",
+
+            date: new Date().toISOString()
+        };
 
 
-            saveData(
-                "cartivoOrders",
-                orders
-            );
+        /* Reduce stock */
 
-            saveData(
-                "cartivoProducts",
-                products
-            );
+        cart.forEach(item => {
 
-            saveData(
-                "cartivoCart",
-                cart
-            );
+            const product =
+                getProduct(item.id);
 
+            if (product) {
 
-            document
-                .getElementById("successOrderId")
-                .textContent =
-                order.id;
+                product.stock =
+                    Math.max(
+                        0,
+                        Number(product.stock) -
+                        Number(item.qty)
+                    );
+            }
+        });
 
 
-            closeCheckout();
+        orders.unshift(order);
 
-            updateCartUI();
+        cart = [];
 
-            renderProducts();
+        saveData();
 
-            document
-                .getElementById("successModal")
-                .classList.remove("hidden");
+        closeCheckout();
 
-        }
-    );
+        document
+            .getElementById("successOrderId")
+            .textContent = orderId;
+
+        document
+            .getElementById("successModal")
+            .classList.remove("hidden");
+
+        refreshStore();
+    });
 
 
 function closeSuccess() {
@@ -1683,293 +1421,149 @@ function closeSuccess() {
     document
         .getElementById("successModal")
         .classList.add("hidden");
-
-    showStore();
-
 }
 
 
-function viewLatestOrder() {
-
-    closeSuccess();
-
-    showOrders();
-
-}
-
-
-/* ================= ORDERS ================= */
-
-function showOrders() {
-
-    hideCustomerSections();
-
-    document
-        .getElementById("ordersSection")
-        .classList.remove("hidden");
-
-    renderOrders();
-
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
-
-}
-
+/* =========================================================
+   ORDERS
+========================================================= */
 
 function renderOrders() {
 
     const container =
         document.getElementById("ordersList");
 
-    if (orders.length === 0) {
+    if (!container) return;
+
+    const email =
+        currentUser?.email;
+
+    const myOrders =
+        orders.filter(
+            order =>
+                order.customer?.email === email
+        );
+
+    if (!myOrders.length) {
 
         container.innerHTML = `
-
             <div class="empty-state">
-
-                <div>📦</div>
-
-                <h3>No orders yet</h3>
-
-                <p>
-                    Your placed orders will appear here.
-                </p>
-
-                <br>
-
-                <button
-                    class="primary-btn"
-                    onclick="scrollToShop()"
-                >
-                    Start Shopping
-                </button>
-
+                <strong>No orders yet</strong>
+                Your placed orders will appear here.
             </div>
-
         `;
 
         return;
-
     }
 
+    container.innerHTML =
+        myOrders.map(order => {
 
-    container.innerHTML = "";
+            const currentIndex =
+                orderStatuses.indexOf(order.status);
 
+            return `
+                <div class="order-card">
 
-    orders.forEach(order => {
+                    <div class="order-top">
 
-        container.innerHTML += createOrderHTML(
-            order
-        );
+                        <div>
+                            <div class="order-id">
+                                ${escapeHTML(order.id)}
+                            </div>
 
-    });
+                            <div class="order-date">
+                                ${new Date(order.date).toLocaleString("en-IN")}
+                            </div>
+                        </div>
 
-}
+                        <span class="status-pill">
+                            ${escapeHTML(order.status)}
+                        </span>
 
-
-function createOrderHTML(order) {
-
-    const statusClass =
-        "status-" +
-        order.status.toLowerCase();
-
-
-    const productHTML =
-        order.items.map(item => `
-
-            <div class="order-product-mini">
-
-                <img
-                    src="${item.image}"
-                    alt="${escapeHtml(item.name)}"
-                >
-
-                <span>
-                    ${escapeHtml(item.name)}
-                    × ${item.quantity}
-                </span>
-
-            </div>
-
-        `).join("");
-
-
-    return `
-
-        <div class="order-card">
-
-            <div class="order-head">
-
-                <div>
-
-                    <div class="order-id">
-                        ${order.id}
                     </div>
 
-                    <div class="order-date">
-                        ${formatDate(order.date)}
+
+                    <div class="order-products">
+
+                        ${order.items.map(item => `
+                            <div class="order-product">
+
+                                <img
+                                    src="${escapeHTML(item.image)}"
+                                    alt="${escapeHTML(item.name)}"
+                                >
+
+                                <div>
+                                    <strong>
+                                        ${escapeHTML(item.name)}
+                                    </strong>
+
+                                    <small>
+                                        ${item.qty} × ${money(item.price)}
+                                    </small>
+                                </div>
+
+                            </div>
+                        `).join("")}
+
+                    </div>
+
+
+                    <div class="order-bottom">
+
+                        <span>
+                            ${order.payment}
+                        </span>
+
+                        <strong>
+                            Total ${money(order.total)}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="tracking">
+
+                        ${orderStatuses.map(
+                            (status,index) => `
+                                <div
+                                    class="track-step ${
+                                        index <= currentIndex
+                                            ? "active"
+                                            : ""
+                                    }"
+                                >
+                                    <div class="track-dot"></div>
+                                    <small>
+                                        ${status}
+                                    </small>
+                                </div>
+                            `
+                        ).join("")}
+
                     </div>
 
                 </div>
+            `;
 
-                <span
-                    class="status-badge ${statusClass}"
-                >
-                    ${order.status}
-                </span>
-
-            </div>
-
-
-            <div class="order-products">
-                ${productHTML}
-            </div>
-
-
-            <div class="order-bottom">
-
-                <div>
-
-                    <span class="order-total">
-                        ${money(order.total)}
-                    </span>
-
-                    <small>
-                        · ${escapeHtml(order.payment)}
-                    </small>
-
-                </div>
-
-                <button
-                    class="track-btn"
-                    onclick="toggleTracking('${order.id}')"
-                >
-                    Track Order
-                </button>
-
-            </div>
-
-
-            <div
-                id="tracking-${order.id}"
-                class="tracking hidden"
-            >
-                ${createTrackingHTML(order.status)}
-            </div>
-
-        </div>
-
-    `;
-
+        }).join("");
 }
 
 
-function toggleTracking(orderId) {
-
-    const tracking =
-        document.getElementById(
-            "tracking-" + orderId
-        );
-
-    tracking.classList.toggle("hidden");
-
-}
-
-
-function createTrackingHTML(status) {
-
-    const statuses = [
-        "Placed",
-        "Confirmed",
-        "Packed",
-        "Shipped",
-        "Delivered"
-    ];
-
-    let currentIndex =
-        statuses.indexOf(status);
-
-    if (currentIndex < 0) {
-        currentIndex = 0;
-    }
-
-
-    const percent =
-        (currentIndex / 4) * 100;
-
-
-    const steps =
-        statuses.map(
-            (item, index) => `
-
-                <div
-                    class="tracking-step ${
-                        index <= currentIndex
-                        ? "active"
-                        : ""
-                    }"
-                >
-
-                    <div class="circle">
-                        ${
-                            index <= currentIndex
-                            ? "✓"
-                            : index + 1
-                        }
-                    </div>
-
-                    <small>
-                        ${item}
-                    </small>
-
-                </div>
-
-            `
-        ).join("");
-
-
-    return `
-
-        <div class="tracking-line">
-
-            <div class="tracking-connector">
-
-                <div
-                    class="tracking-connector-fill"
-                    style="width:${percent}%"
-                ></div>
-
-            </div>
-
-            ${steps}
-
-        </div>
-
-    `;
-
-}
-
-
-function formatDate(date) {
-
-    return new Date(date)
-        .toLocaleDateString(
-            "en-IN",
-            {
-                day: "numeric",
-                month: "short",
-                year: "numeric"
-            }
-        );
-
-}
-
-
-/* ================= ADMIN ACCESS ================= */
+/* =========================================================
+   ADMIN
+========================================================= */
 
 function openAdmin() {
+
+    if (
+        !currentUser ||
+        currentUser.role !== "admin"
+    ) {
+        showToast("Admin access required.");
+        return;
+    }
 
     document
         .getElementById("storePage")
@@ -1988,192 +1582,100 @@ function openAdmin() {
         document.querySelector(".admin-nav")
     );
 
-    updateAdminDashboard();
-
+    refreshAdmin();
 }
 
 
-/* Add Admin button dynamically */
+function closeAdmin() {
 
-const adminButton =
-    document.createElement("button");
+    document
+        .getElementById("adminPage")
+        .classList.add("hidden");
 
-adminButton.className =
-    "outline-btn";
+    document
+        .getElementById("storePage")
+        .classList.remove("hidden");
 
-adminButton.textContent =
-    "Admin";
+    refreshStore();
+}
 
-adminButton.style.marginLeft =
-    "5px";
-
-adminButton.onclick =
-    openAdmin;
-
-document
-    .querySelector(".nav-actions")
-    .appendChild(adminButton);
-
-
-/* ================= ADMIN SECTIONS ================= */
 
 function adminSection(section, button) {
 
+    const sections = {
+        dashboard: "adminDashboard",
+        products: "adminProductsSection",
+        inventory: "adminInventorySection",
+        categories: "adminCategoriesSection",
+        users: "adminUsersSection",
+        orders: "adminOrdersSection"
+    };
+
+    Object.values(sections).forEach(id => {
+
+        document
+            .getElementById(id)
+            ?.classList.add("hidden");
+    });
+
     document
-        .querySelectorAll(".admin-section")
-        .forEach(
-            element =>
-                element.classList.add("hidden")
-        );
+        .getElementById(sections[section])
+        ?.classList.remove("hidden");
 
 
     document
         .querySelectorAll(".admin-nav")
-        .forEach(
-            element =>
-                element.classList.remove("active")
+        .forEach(nav =>
+            nav.classList.remove("active")
         );
+
+    if (button) {
+        button.classList.add("active");
+    }
 
 
     const titles = {
-
-        dashboard:
-            "Dashboard",
-
-        products:
-            "Products",
-
-        inventory:
-            "Inventory",
-
-        categories:
-            "Categories",
-
-        users:
-            "Users",
-
-        orders:
-            "Orders"
-
+        dashboard: "Dashboard",
+        products: "Products",
+        inventory: "Inventory",
+        categories: "Categories",
+        users: "Customers",
+        orders: "Orders"
     };
 
-
     document
-        .getElementById("adminTitle")
+        .getElementById("adminPageTitle")
         .textContent =
         titles[section];
 
-
-    const sectionMap = {
-
-        dashboard:
-            "adminDashboard",
-
-        products:
-            "adminProductsSection",
-
-        inventory:
-            "adminInventorySection",
-
-        categories:
-            "adminCategoriesSection",
-
-        users:
-            "adminUsersSection",
-
-        orders:
-            "adminOrdersSection"
-
-    };
-
-
-    document
-        .getElementById(sectionMap[section])
-        .classList.remove("hidden");
-
-
-    if (button) {
-
-        button.classList.add("active");
-
-    }
-
-
-    if (section === "dashboard") {
-        updateAdminDashboard();
-    }
-
-    if (section === "products") {
-        renderProductsTable();
-    }
-
-    if (section === "inventory") {
-        renderInventoryTable();
-    }
-
-    if (section === "categories") {
-        renderAdminCategories();
-    }
-
-    if (section === "users") {
-        renderUsersTable();
-    }
-
-    if (section === "orders") {
-        renderOrdersTable();
-    }
-
+    refreshAdmin();
 }
 
 
-function adminSectionByName(section) {
-
-    openAdmin();
-
-    const buttons =
-        document.querySelectorAll(
-            ".admin-nav"
-        );
-
-    const indexMap = {
-        dashboard: 0,
-        products: 1,
-        inventory: 2,
-        categories: 3,
-        users: 4,
-        orders: 5
-    };
-
-    adminSection(
-        section,
-        buttons[indexMap[section]]
-    );
-
-}
-
-
-/* ================= ADMIN DASHBOARD ================= */
+/* =========================================================
+   ADMIN DASHBOARD
+========================================================= */
 
 function updateAdminDashboard() {
 
-    const sales =
+    const revenue =
         orders.reduce(
-            (sum, order) =>
-                sum + order.total,
+            (total,order) =>
+                total + Number(order.total || 0),
             0
         );
 
     const lowStock =
         products.filter(
             product =>
-                product.stock <= 5
+                Number(product.stock) <= 5
         ).length;
 
 
     document
         .getElementById("adminSales")
         .textContent =
-        money(sales);
+        money(revenue);
 
     document
         .getElementById("adminOrders")
@@ -2191,214 +1693,140 @@ function updateAdminDashboard() {
         lowStock;
 
 
-    renderRecentOrders();
-
-    renderInventoryAlert();
-
-}
-
-
-function renderRecentOrders() {
-
-    const container =
-        document.getElementById(
-            "recentOrders"
-        );
-
     const recent =
-        orders.slice(0, 5);
+        document.getElementById("recentOrders");
 
+    if (recent) {
 
-    if (recent.length === 0) {
+        if (!orders.length) {
 
-        container.innerHTML = `
+            recent.innerHTML = `
+                <div class="empty-state">
+                    No orders yet.
+                </div>
+            `;
 
-            <div class="empty-state">
-                <p>No orders yet.</p>
-            </div>
+        } else {
 
-        `;
+            recent.innerHTML =
+                orders.slice(0,5).map(order => `
+                    <div class="admin-order-row">
 
-        return;
+                        <div>
+                            <strong>
+                                ${escapeHTML(order.id)}
+                            </strong>
 
+                            <small>
+                                ${escapeHTML(
+                                    order.customer?.name || "Customer"
+                                )}
+                            </small>
+                        </div>
+
+                        <div>
+                            <strong>
+                                ${money(order.total)}
+                            </strong>
+
+                            <small>
+                                ${escapeHTML(order.status)}
+                            </small>
+                        </div>
+
+                    </div>
+                `).join("");
+        }
     }
 
 
-    container.innerHTML = "";
+    const alertBox =
+        document.getElementById("inventoryAlert");
 
+    if (alertBox) {
 
-    recent.forEach(order => {
-
-        container.innerHTML += `
-
-            <div class="admin-order-row">
-
-                <div>
-
-                    <strong>
-                        ${order.id}
-                    </strong>
-
-                    <small>
-                        ${escapeHtml(order.customer)}
-                    </small>
-
-                </div>
-
-                <div>
-
-                    <strong>
-                        ${money(order.total)}
-                    </strong>
-
-                    <small>
-                        ${order.status}
-                    </small>
-
-                </div>
-
-            </div>
-
-        `;
-
-    });
-
-}
-
-
-function renderInventoryAlert() {
-
-    const container =
-        document.getElementById(
-            "inventoryAlert"
-        );
-
-    const low =
-        products
-            .filter(
+        const lowProducts =
+            products.filter(
                 product =>
-                    product.stock <= 5
-            )
-            .sort(
-                (a, b) =>
-                    a.stock - b.stock
+                    Number(product.stock) <= 5
             );
 
+        if (!lowProducts.length) {
 
-    if (low.length === 0) {
-
-        container.innerHTML = `
-
-            <div class="empty-state">
-                <p>All products have healthy stock.</p>
-            </div>
-
-        `;
-
-        return;
-
-    }
-
-
-    container.innerHTML = "";
-
-
-    low.forEach(product => {
-
-        container.innerHTML += `
-
-            <div class="inventory-alert-row">
-
-                <div>
-
-                    <strong>
-                        ${escapeHtml(product.name)}
-                    </strong>
-
-                    <small>
-                        ${escapeHtml(product.category)}
-                    </small>
-
+            alertBox.innerHTML = `
+                <div class="empty-state">
+                    <strong>All good ✓</strong>
+                    No low-stock products.
                 </div>
+            `;
 
-                <strong class="${
-                    product.stock === 0
-                    ? "stock-out"
-                    : "stock-low"
-                }">
+        } else {
 
-                    ${
-                        product.stock === 0
-                        ? "Out of stock"
-                        :
-                        `${product.stock} left`
-                    }
+            alertBox.innerHTML =
+                lowProducts.map(product => `
+                    <div class="inventory-alert-row">
 
-                </strong>
+                        <div>
+                            <strong>
+                                ${escapeHTML(product.name)}
+                            </strong>
 
-            </div>
+                            <small>
+                                ${escapeHTML(product.category)}
+                            </small>
+                        </div>
 
-        `;
+                        <strong class="${
+                            product.stock <= 0
+                                ? "stock-out"
+                                : "stock-low"
+                        }">
+                            ${product.stock <= 0
+                                ? "OUT"
+                                : `${product.stock} left`
+                            }
+                        </strong>
 
-    });
-
+                    </div>
+                `).join("");
+        }
+    }
 }
 
 
-/* ================= ADMIN PRODUCTS ================= */
+/* =========================================================
+   ADMIN PRODUCTS
+========================================================= */
 
-function renderProductsTable() {
+function renderAdminProducts() {
 
-    const tbody =
-        document.getElementById(
-            "productsTable"
-        );
+    const table =
+        document.getElementById("productsTable");
 
-    tbody.innerHTML = "";
+    if (!table) return;
 
-
-    products.forEach(product => {
-
-        let status = "In Stock";
-        let statusClass = "stock-good";
-
-
-        if (product.stock === 0) {
-
-            status = "Out of Stock";
-            statusClass = "stock-out";
-
-        } else if (product.stock <= 5) {
-
-            status = "Low Stock";
-            statusClass = "stock-low";
-
-        }
-
-
-        tbody.innerHTML += `
+    table.innerHTML =
+        products.map(product => `
 
             <tr>
 
                 <td>
 
-                    <div class="product-table-info">
+                    <div class="table-product">
 
                         <img
-                            src="${product.image}"
+                            src="${escapeHTML(product.image)}"
                             alt=""
                         >
 
                         <div>
-
                             <strong>
-                                ${escapeHtml(product.name)}
+                                ${escapeHTML(product.name)}
                             </strong>
 
                             <small>
-                                ID: ${product.id}
+                                #${product.id}
                             </small>
-
                         </div>
 
                     </div>
@@ -2406,7 +1834,7 @@ function renderProductsTable() {
                 </td>
 
                 <td>
-                    ${escapeHtml(product.category)}
+                    ${escapeHTML(product.category)}
                 </td>
 
                 <td>
@@ -2415,10 +1843,6 @@ function renderProductsTable() {
 
                 <td>
                     ${product.stock}
-                </td>
-
-                <td class="${statusClass}">
-                    ${status}
                 </td>
 
                 <td>
@@ -2441,888 +1865,649 @@ function renderProductsTable() {
 
             </tr>
 
-        `;
-
-    });
-
+        `).join("");
 }
 
 
-/* ================= ADD / EDIT PRODUCT ================= */
+/* =========================================================
+   ADD / EDIT PRODUCT
+========================================================= */
 
-function openAddProduct() {
+function openProductAdminModal(product = null) {
 
-    document
-        .getElementById("productAdminTitle")
-        .textContent =
-        "Add Product";
+    populateCategoryFilter();
+
+    const modal =
+        document.getElementById("productAdminModal");
+
+    const title =
+        document.getElementById("productAdminTitle");
 
     document
         .getElementById("productForm")
         .reset();
 
-    document
-        .getElementById("editProductId")
-        .value = "";
+    if (product) {
 
-    populateCategories();
+        title.textContent = "Edit Product";
+
+        document
+            .getElementById("editProductId")
+            .value = product.id;
+
+        document
+            .getElementById("adminProductName")
+            .value = product.name;
+
+        document
+            .getElementById("adminProductCategory")
+            .value = product.category;
+
+        document
+            .getElementById("adminProductPrice")
+            .value = product.price;
+
+        document
+            .getElementById("adminProductStock")
+            .value = product.stock;
+
+        document
+            .getElementById("adminProductRating")
+            .value = product.rating;
+
+        document
+            .getElementById("adminProductImage")
+            .value = product.image;
+
+        document
+            .getElementById("adminProductDescription")
+            .value = product.description;
+
+    } else {
+
+        title.textContent = "Add Product";
+
+        document
+            .getElementById("editProductId")
+            .value = "";
+    }
+
+    modal.classList.remove("hidden");
+}
+
+
+function closeProductAdminModal() {
 
     document
         .getElementById("productAdminModal")
-        .classList.remove("hidden");
-
+        .classList.add("hidden");
 }
 
 
 function editProduct(id) {
 
     const product =
-        products.find(
-            item =>
-                item.id === id
-        );
+        getProduct(id);
 
-    if (!product) return;
-
-
-    document
-        .getElementById("productAdminTitle")
-        .textContent =
-        "Edit Product";
-
-
-    document
-        .getElementById("editProductId")
-        .value =
-        product.id;
-
-    document
-        .getElementById("adminProductName")
-        .value =
-        product.name;
-
-    document
-        .getElementById("adminProductPrice")
-        .value =
-        product.price;
-
-    document
-        .getElementById("adminProductStock")
-        .value =
-        product.stock;
-
-    document
-        .getElementById("adminProductCategory")
-        .value =
-        product.category;
-
-    document
-        .getElementById("adminProductImage")
-        .value =
-        product.image;
-
-    document
-        .getElementById("adminProductDescription")
-        .value =
-        product.description;
-
-
-    document
-        .getElementById("productAdminModal")
-        .classList.remove("hidden");
-
+    if (product) {
+        openProductAdminModal(product);
+    }
 }
 
 
 document
     .getElementById("productForm")
-    .addEventListener(
-        "submit",
-        function(event) {
+    .addEventListener("submit", function(event) {
 
-            event.preventDefault();
+        event.preventDefault();
 
+        const editId =
+            document
+                .getElementById("editProductId")
+                .value;
 
-            const id =
-                document
-                    .getElementById("editProductId")
-                    .value;
+        const productData = {
 
-
-            const name =
+            name:
                 document
                     .getElementById("adminProductName")
-                    .value
-                    .trim();
+                    .value.trim(),
 
-            const price =
+            category:
+                document
+                    .getElementById("adminProductCategory")
+                    .value,
+
+            price:
                 Number(
                     document
                         .getElementById("adminProductPrice")
                         .value
-                );
+                ),
 
-            const stock =
+            stock:
                 Number(
                     document
                         .getElementById("adminProductStock")
                         .value
-                );
+                ),
 
-            const category =
-                document
-                    .getElementById("adminProductCategory")
-                    .value;
+            rating:
+                Number(
+                    document
+                        .getElementById("adminProductRating")
+                        .value
+                ) || 4.5,
 
-            const image =
+            image:
                 document
                     .getElementById("adminProductImage")
-                    .value
-                    .trim();
+                    .value.trim() ||
+                "https://images.unsplash.com/photo-1567016432779-094069958ea5?auto=format&fit=crop&w=900&q=85",
 
-            const description =
+            description:
                 document
                     .getElementById("adminProductDescription")
-                    .value
-                    .trim();
+                    .value.trim()
+        };
 
 
-            if (id) {
+        if (editId) {
 
-                const product =
-                    products.find(
-                        item =>
-                            item.id === Number(id)
-                    );
+            const product =
+                getProduct(editId);
 
-                if (product) {
+            if (product) {
 
-                    product.name =
-                        name;
-
-                    product.price =
-                        price;
-
-                    product.stock =
-                        stock;
-
-                    product.category =
-                        category;
-
-                    if (image) {
-                        product.image =
-                            image;
-                    }
-
-                    product.description =
-                        description;
-
-                }
-
-                showToast(
-                    "Product updated."
+                Object.assign(
+                    product,
+                    productData
                 );
 
-            } else {
-
-                const newProduct = {
-
-                    id:
-                        Date.now(),
-
-                    name:
-                        name,
-
-                    category:
-                        category,
-
-                    price:
-                        price,
-
-                    stock:
-                        stock,
-
-                    rating:
-                        4.5,
-
-                    image:
-                        image ||
-                        "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?auto=format&fit=crop&w=800&q=80",
-
-                    description:
-                        description ||
-                        "New Cartivo product.",
-
-                    createdAt:
-                        Date.now()
-
-                };
-
-
-                products.push(
-                    newProduct
-                );
-
-                showToast(
-                    "Product added."
-                );
-
+                showToast("Product updated.");
             }
 
+        } else {
 
-            saveData(
-                "cartivoProducts",
-                products
-            );
+            const newId =
+                products.length
+                    ? Math.max(
+                        ...products.map(
+                            product =>
+                                Number(product.id)
+                        )
+                    ) + 1
+                    : 1;
 
+            products.push({
+                id: newId,
+                ...productData
+            });
 
-            closeAdminProductModal();
-
-            renderProducts();
-
-            renderCategoryCards();
-
-            renderProductsTable();
-
-            updateAdminDashboard();
-
+            showToast("Product added.");
         }
-    );
 
+        saveData();
 
-function closeAdminProductModal() {
+        closeProductAdminModal();
 
-    document
-        .getElementById("productAdminModal")
-        .classList.add("hidden");
+        refreshAdmin();
 
-}
+        refreshStore();
+    });
 
 
 function deleteProduct(id) {
 
     const product =
-        products.find(
-            item =>
-                item.id === id
-        );
+        getProduct(id);
 
     if (!product) return;
-
 
     const confirmed =
         confirm(
             `Delete "${product.name}"?`
         );
 
-
     if (!confirmed) return;
-
 
     products =
         products.filter(
-            product =>
-                product.id !== id
+            item =>
+                Number(item.id) !== Number(id)
         );
-
 
     cart =
         cart.filter(
             item =>
-                item.id !== id
+                Number(item.id) !== Number(id)
         );
-
 
     wishlist =
         wishlist.filter(
             item =>
-                item !== id
+                Number(item) !== Number(id)
         );
 
+    saveData();
 
-    saveData(
-        "cartivoProducts",
-        products
-    );
+    refreshAdmin();
 
-    saveData(
-        "cartivoCart",
-        cart
-    );
+    refreshStore();
 
-    saveData(
-        "cartivoWishlist",
-        wishlist
-    );
-
-
-    renderProducts();
-
-    updateCartUI();
-
-    updateWishlistCount();
-
-    renderCategoryCards();
-
-    renderProductsTable();
-
-    updateAdminDashboard();
-
-    showToast(
-        "Product deleted."
-    );
-
+    showToast("Product deleted.");
 }
 
 
-/* ================= INVENTORY ================= */
+/* =========================================================
+   INVENTORY
+========================================================= */
 
-function renderInventoryTable() {
+function renderInventory() {
 
-    const tbody =
-        document.getElementById(
-            "inventoryTable"
-        );
+    const table =
+        document.getElementById("inventoryTable");
 
-    tbody.innerHTML = "";
+    if (!table) return;
 
-
-    products.forEach(product => {
-
-        let status =
-            "Healthy";
-
-        let className =
-            "stock-good";
-
-
-        if (product.stock === 0) {
-
-            status =
-                "Out of Stock";
-
-            className =
-                "stock-out";
-
-        } else if (product.stock <= 5) {
-
-            status =
-                "Low Stock";
-
-            className =
-                "stock-low";
-
-        }
-
-
-        tbody.innerHTML += `
+    table.innerHTML =
+        products.map(product => `
 
             <tr>
 
                 <td>
-                    <strong>
-                        ${escapeHtml(product.name)}
-                    </strong>
+
+                    <div class="table-product">
+
+                        <img
+                            src="${escapeHTML(product.image)}"
+                            alt=""
+                        >
+
+                        <strong>
+                            ${escapeHTML(product.name)}
+                        </strong>
+
+                    </div>
+
                 </td>
 
                 <td>
-                    ${escapeHtml(product.category)}
+                    ${escapeHTML(product.category)}
                 </td>
 
                 <td>
                     ${product.stock}
                 </td>
 
-                <td class="${className}">
-                    ${status}
-                </td>
-
                 <td>
 
                     <input
+                        id="stock-${product.id}"
+                        class="stock-input"
                         type="number"
                         min="0"
                         value="${product.stock}"
-                        style="width:90px;padding:7px;border:1px solid #ddd;border-radius:6px"
-                        onchange="updateStock(${product.id}, this.value)"
                     >
+
+                    <button
+                        class="action-btn stock-save"
+                        onclick="updateStock(${product.id})"
+                    >
+                        Save
+                    </button>
 
                 </td>
 
             </tr>
 
-        `;
-
-    });
-
+        `).join("");
 }
 
 
-function updateStock(id, value) {
+function updateStock(id) {
 
-    const product =
-        products.find(
-            item =>
-                item.id === id
+    const input =
+        document.getElementById(
+            `stock-${id}`
         );
 
-    if (!product) return;
+    const product =
+        getProduct(id);
 
+    if (!input || !product) return;
 
     product.stock =
         Math.max(
             0,
-            Number(value)
+            Number(input.value)
         );
 
+    saveData();
 
-    saveData(
-        "cartivoProducts",
-        products
-    );
-
-
-    renderInventoryTable();
-
-    renderProducts();
-
-    renderProductsTable();
+    renderInventory();
 
     updateAdminDashboard();
 
-    showToast(
-        "Inventory updated."
-    );
+    refreshStore();
 
+    showToast("Stock updated.");
 }
 
 
-/* ================= CATEGORIES ADMIN ================= */
+/* =========================================================
+   CATEGORIES
+========================================================= */
 
 function renderAdminCategories() {
 
-    const container =
-        document.getElementById(
-            "adminCategoryGrid"
-        );
+    const grid =
+        document.getElementById("adminCategoryGrid");
 
-    container.innerHTML = "";
+    if (!grid) return;
 
+    grid.innerHTML =
+        categories.map(category => {
 
-    categories.forEach(category => {
+            const count =
+                products.filter(
+                    product =>
+                        product.category === category
+                ).length;
 
-        const count =
-            products.filter(
-                product =>
-                    product.category === category.name
-            ).length;
+            return `
+                <div class="admin-category-card">
 
+                    <h3>
+                        ${escapeHTML(category)}
+                    </h3>
 
-        container.innerHTML += `
+                    <p>
+                        ${count} products
+                    </p>
 
-            <div class="admin-category-card">
+                    <div class="category-actions">
 
-                <h3>
-                    ${escapeHtml(category.name)}
-                </h3>
+                        <button
+                            class="action-btn edit-btn"
+                            onclick="renameCategory('${escapeHTML(category)}')"
+                        >
+                            Rename
+                        </button>
 
-                <p>
-                    ${count} products
-                </p>
+                        <button
+                            class="action-btn delete-btn"
+                            onclick="deleteCategory('${escapeHTML(category)}')"
+                        >
+                            Delete
+                        </button>
 
-                <button
-                    class="action-btn edit-btn"
-                    onclick="renameCategory(${category.id})"
-                >
-                    Edit
-                </button>
+                    </div>
 
-                <button
-                    class="action-btn delete-btn"
-                    onclick="deleteCategory(${category.id})"
-                >
-                    Delete
-                </button>
+                </div>
+            `;
 
-            </div>
-
-        `;
-
-    });
-
+        }).join("");
 }
 
 
 function addCategory() {
 
     const name =
-        prompt(
-            "Enter new category name:"
-        );
+        prompt("Enter new category name:");
 
     if (!name) return;
 
+    const clean =
+        name.trim();
 
-    const exists =
+    if (!clean) return;
+
+    if (
         categories.some(
             category =>
-                category.name.toLowerCase() ===
-                name.trim().toLowerCase()
-        );
-
-
-    if (exists) {
-
-        showToast(
-            "Category already exists."
-        );
-
+                category.toLowerCase() ===
+                clean.toLowerCase()
+        )
+    ) {
+        showToast("Category already exists.");
         return;
-
     }
 
+    categories.push(clean);
 
-    categories.push({
+    saveData();
 
-        id:
-            Date.now(),
+    refreshAdmin();
 
-        name:
-            name.trim(),
+    refreshStore();
 
-        image:
-            "https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?auto=format&fit=crop&w=800&q=80"
-
-    });
-
-
-    saveData(
-        "cartivoCategories",
-        categories
-    );
-
-
-    populateCategories();
-
-    renderCategoryCards();
-
-    renderAdminCategories();
-
-    showToast(
-        "Category added."
-    );
-
+    showToast("Category added.");
 }
 
 
-function renameCategory(id) {
-
-    const category =
-        categories.find(
-            item =>
-                item.id === id
-        );
-
-    if (!category) return;
-
+function renameCategory(oldName) {
 
     const newName =
         prompt(
             "Enter new category name:",
-            category.name
+            oldName
         );
-
 
     if (!newName) return;
 
-
-    const oldName =
-        category.name;
-
-    category.name =
+    const clean =
         newName.trim();
 
+    if (!clean || clean === oldName) return;
+
+    if (categories.includes(clean)) {
+
+        showToast("Category already exists.");
+        return;
+    }
+
+    const index =
+        categories.indexOf(oldName);
+
+    if (index === -1) return;
+
+    categories[index] = clean;
 
     products.forEach(product => {
 
-        if (
-            product.category === oldName
-        ) {
-
-            product.category =
-                category.name;
-
+        if (product.category === oldName) {
+            product.category = clean;
         }
-
     });
 
+    saveData();
 
-    saveData(
-        "cartivoCategories",
-        categories
-    );
+    refreshAdmin();
 
-    saveData(
-        "cartivoProducts",
-        products
-    );
+    refreshStore();
 
-
-    populateCategories();
-
-    renderCategoryCards();
-
-    renderAdminCategories();
-
-    renderProducts();
-
-    showToast(
-        "Category updated."
-    );
-
+    showToast("Category renamed.");
 }
 
 
-function deleteCategory(id) {
+function deleteCategory(category) {
 
-    const category =
-        categories.find(
-            item =>
-                item.id === id
-        );
-
-    if (!category) return;
-
-
-    const used =
-        products.some(
+    const count =
+        products.filter(
             product =>
-                product.category ===
-                category.name
-        );
+                product.category === category
+        ).length;
 
-
-    if (used) {
+    if (count > 0) {
 
         showToast(
-            "Cannot delete category with products."
+            "Move products before deleting this category."
         );
 
         return;
-
     }
-
 
     const confirmed =
         confirm(
-            `Delete "${category.name}"?`
+            `Delete "${category}" category?`
         );
-
 
     if (!confirmed) return;
 
-
     categories =
         categories.filter(
-            item =>
-                item.id !== id
+            item => item !== category
         );
 
+    saveData();
 
-    saveData(
-        "cartivoCategories",
-        categories
-    );
+    refreshAdmin();
 
+    refreshStore();
 
-    populateCategories();
-
-    renderCategoryCards();
-
-    renderAdminCategories();
-
-    showToast(
-        "Category deleted."
-    );
-
+    showToast("Category deleted.");
 }
 
 
-/* ================= USERS ================= */
+/* =========================================================
+   ADMIN USERS
+========================================================= */
 
-function getUsers() {
+function renderUsers() {
 
-    const userMap = {};
+    const table =
+        document.getElementById("usersTable");
 
+    if (!table) return;
+
+    const users = {};
 
     orders.forEach(order => {
 
-        if (!userMap[order.email]) {
+        const email =
+            order.customer?.email ||
+            "unknown@example.com";
 
-            userMap[order.email] = {
+        if (!users[email]) {
 
+            users[email] = {
                 name:
-                    order.customer,
+                    order.customer?.name ||
+                    "Customer",
 
-                email:
-                    order.email,
+                email,
 
-                orders:
-                    0
+                orders: 0,
 
+                spent: 0
             };
-
         }
 
+        users[email].orders += 1;
 
-        userMap[order.email].orders++;
-
+        users[email].spent +=
+            Number(order.total || 0);
     });
 
 
     if (
         currentUser &&
-        !userMap[currentUser.email]
+        currentUser.role !== "admin" &&
+        !users[currentUser.email]
     ) {
 
-        userMap[currentUser.email] = {
-
-            name:
-                currentUser.name,
-
-            email:
-                currentUser.email,
-
-            orders:
-                0
-
+        users[currentUser.email] = {
+            name: currentUser.name,
+            email: currentUser.email,
+            orders: 0,
+            spent: 0
         };
-
     }
 
 
-    return Object.values(
-        userMap
-    );
+    const list =
+        Object.values(users);
 
-}
+    if (!list.length) {
 
-
-function renderUsersTable() {
-
-    const tbody =
-        document.getElementById(
-            "usersTable"
-        );
-
-    const users =
-        getUsers();
-
-
-    tbody.innerHTML = "";
-
-
-    if (users.length === 0) {
-
-        tbody.innerHTML = `
-
+        table.innerHTML = `
             <tr>
-
                 <td colspan="4">
                     No customers yet.
                 </td>
-
             </tr>
-
         `;
 
         return;
-
     }
 
-
-    users.forEach(user => {
-
-        tbody.innerHTML += `
+    table.innerHTML =
+        list.map(user => `
 
             <tr>
 
                 <td>
-                    <strong>
-                        ${escapeHtml(user.name)}
-                    </strong>
+                    ${escapeHTML(user.name)}
                 </td>
 
                 <td>
-                    ${escapeHtml(user.email)}
+                    ${escapeHTML(user.email)}
                 </td>
 
                 <td>
                     ${user.orders}
                 </td>
 
-                <td class="stock-good">
-                    Active
+                <td>
+                    ${money(user.spent)}
                 </td>
 
             </tr>
 
-        `;
-
-    });
-
+        `).join("");
 }
 
 
-/* ================= ADMIN ORDERS ================= */
+/* =========================================================
+   ADMIN ORDERS
+========================================================= */
 
-function renderOrdersTable() {
+function renderAdminOrders() {
 
-    const tbody =
-        document.getElementById(
-            "ordersTable"
-        );
+    const table =
+        document.getElementById("adminOrdersTable");
 
-    tbody.innerHTML = "";
+    if (!table) return;
 
+    if (!orders.length) {
 
-    if (orders.length === 0) {
-
-        tbody.innerHTML = `
-
+        table.innerHTML = `
             <tr>
-
-                <td colspan="6">
+                <td colspan="5">
                     No orders yet.
                 </td>
-
             </tr>
-
         `;
 
         return;
-
     }
 
-
-    orders.forEach(order => {
-
-        tbody.innerHTML += `
+    table.innerHTML =
+        orders.map(order => `
 
             <tr>
 
                 <td>
                     <strong>
-                        ${order.id}
+                        ${escapeHTML(order.id)}
                     </strong>
                 </td>
 
                 <td>
-                    ${escapeHtml(order.customer)}
-                </td>
-
-                <td>
-                    ${formatDate(order.date)}
+                    ${escapeHTML(
+                        order.customer?.name || "Customer"
+                    )}
                 </td>
 
                 <td>
@@ -3330,39 +2515,23 @@ function renderOrdersTable() {
                 </td>
 
                 <td>
-                    ${escapeHtml(order.payment)}
+                    ${escapeHTML(order.status)}
                 </td>
 
                 <td>
 
                     <select
-                        onchange="updateOrderStatus('${order.id}', this.value)"
+                        onchange="updateOrderStatus('${escapeHTML(order.id)}', this.value)"
                     >
 
-                        ${[
-                            "Placed",
-                            "Confirmed",
-                            "Packed",
-                            "Shipped",
-                            "Delivered",
-                            "Cancelled"
-                        ]
-                        .map(status => `
-
+                        ${orderStatuses.map(status => `
                             <option
                                 value="${status}"
-                                ${
-                                    status ===
-                                    order.status
-                                    ? "selected"
-                                    : ""
-                                }
+                                ${order.status === status ? "selected" : ""}
                             >
                                 ${status}
                             </option>
-
-                        `)
-                        .join("")}
+                        `).join("")}
 
                     </select>
 
@@ -3370,84 +2539,152 @@ function renderOrdersTable() {
 
             </tr>
 
-        `;
-
-    });
-
+        `).join("");
 }
 
 
-function updateOrderStatus(
-    orderId,
-    status
-) {
+function updateOrderStatus(orderId, status) {
 
     const order =
         orders.find(
-            order =>
-                order.id === orderId
+            item =>
+                item.id === orderId
         );
 
     if (!order) return;
 
+    order.status = status;
 
-    order.status =
-        status;
+    saveData();
 
-
-    saveData(
-        "cartivoOrders",
-        orders
-    );
-
-
-    renderOrdersTable();
+    renderAdminOrders();
 
     renderOrders();
 
     updateAdminDashboard();
 
     showToast(
-        `Order ${orderId} updated.`
+        `Order ${orderId} updated to ${status}.`
     );
-
 }
 
 
-/* ================= TOAST ================= */
+/* =========================================================
+   REFRESH
+========================================================= */
 
-let toastTimer;
+function updateCounts() {
 
-
-function showToast(message) {
-
-    const toast =
-        document.getElementById(
-            "toast"
-        );
-
-    toast.querySelector("p")
+    document
+        .getElementById("cartCount")
         .textContent =
-        message;
+        cartItemCount();
 
-    toast.classList.add("show");
-
-
-    clearTimeout(
-        toastTimer
-    );
-
-
-    toastTimer =
-        setTimeout(
-            () => {
-
-                toast.classList.remove(
-                    "show"
-                );
-
-            },
-            2200
-        );
-
+    document
+        .getElementById("wishlistCount")
+        .textContent =
+        wishlist.length;
 }
+
+
+function refreshStore() {
+
+    updateProfile();
+
+    updateCounts();
+
+    populateCategoryFilter();
+
+    renderCategories();
+
+    renderHomeProducts();
+
+    renderShop();
+
+    renderWishlist();
+
+    renderCart();
+}
+
+
+function refreshAdmin() {
+
+    updateAdminDashboard();
+
+    renderAdminProducts();
+
+    renderInventory();
+
+    renderAdminCategories();
+
+    renderUsers();
+
+    renderAdminOrders();
+
+    populateCategoryFilter();
+}
+
+
+/* =========================================================
+   GLOBAL ESCAPE
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (event.key !== "Escape") return;
+
+        closeCart();
+        closeProductModal();
+        closeCheckout();
+        closeSuccess();
+        closeProductAdminModal();
+        toggleProfileMenu(true);
+    }
+);
+
+
+/* =========================================================
+   INITIAL LOAD
+========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+        if (currentUser) {
+
+            document
+                .getElementById("loginPage")
+                .classList.add("hidden");
+
+            if (currentUser.role === "admin") {
+
+                openAdmin();
+
+            } else {
+
+                document
+                    .getElementById("storePage")
+                    .classList.remove("hidden");
+
+                refreshStore();
+            }
+
+        } else {
+
+            document
+                .getElementById("loginPage")
+                .classList.remove("hidden");
+
+            document
+                .getElementById("storePage")
+                .classList.add("hidden");
+
+            document
+                .getElementById("adminPage")
+                .classList.add("hidden");
+        }
+    }
+);
