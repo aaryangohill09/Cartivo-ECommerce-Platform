@@ -1164,13 +1164,13 @@ app.delete(
 // START SERVER
 // ======================================================
 
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
 
     console.log("");
     console.log("======================================");
     console.log("       CARTIVO BACKEND SERVER");
     console.log("======================================");
-    console.log(`Server running on http://localhost:${PORT}`);
+    console.log(`Server running on port ${PORT}`);
     console.log("Database: cartivo.db");
     console.log("======================================");
     console.log("");
