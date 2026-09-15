@@ -3,7 +3,7 @@
    Frontend + Backend Integration
 ========================================================= */
 
-const API_URL = "http://localhost:5000/api";
+const API_URL = "https://cartivo-ecommerce-platform-production.up.railway.app/api";
 
 /* =========================================================
    DEFAULT DATA
