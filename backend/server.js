@@ -7,7 +7,7 @@ const db = require("./database");
 
 const app = express();
 
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 const JWT_SECRET = "cartivo_secret_key_2026";
 
 app.use(cors());
