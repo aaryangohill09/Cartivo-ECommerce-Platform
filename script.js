@@ -1,5 +1,12 @@
 /* =========================================================
-   DEFAULT PRODUCTS
+   CARTIVO - E-COMMERCE & INVENTORY MANAGEMENT PLATFORM
+   Frontend + Backend Integration
+========================================================= */
+
+const API_URL = "http://localhost:5000/api";
+
+/* =========================================================
+   DEFAULT DATA
 ========================================================= */
 
 const defaultProducts = [
@@ -125,7 +132,6 @@ const defaultProducts = [
     }
 ];
 
-
 const defaultCategories = [
     "Electronics",
     "Fashion",
@@ -133,51 +139,113 @@ const defaultCategories = [
     "Lifestyle"
 ];
 
-
 const orderStatuses = [
     "Placed",
     "Confirmed",
     "Packed",
     "Shipped",
-    "Delivered"
+    "Delivered",
+    "Cancelled"
 ];
 
-
 /* =========================================================
-   LOCAL STORAGE
+   LOCAL STATE
 ========================================================= */
 
 let products = JSON.parse(
-    localStorage.getItem("cartivoProducts")
+    localStorage.getItem("cartivoProducts") || "null"
 ) || defaultProducts;
 
 let categories = JSON.parse(
-    localStorage.getItem("cartivoCategories")
+    localStorage.getItem("cartivoCategories") || "null"
 ) || defaultCategories;
 
 let cart = JSON.parse(
-    localStorage.getItem("cartivoCart")
-) || [];
+    localStorage.getItem("cartivoCart") || "[]"
+);
 
 let wishlist = JSON.parse(
-    localStorage.getItem("cartivoWishlist")
-) || [];
+    localStorage.getItem("cartivoWishlist") || "[]"
+);
 
 let orders = JSON.parse(
-    localStorage.getItem("cartivoOrders")
-) || [];
+    localStorage.getItem("cartivoOrders") || "[]"
+);
+
+let users = [];
 
 let currentUser = JSON.parse(
-    localStorage.getItem("cartivoCurrentUser")
-) || null;
+    localStorage.getItem("cartivoCurrentUser") || "null"
+);
 
+let adminDashboardData = null;
 
 /* =========================================================
    HELPERS
 ========================================================= */
 
-function saveData() {
+function token() {
+    return localStorage.getItem("cartivoToken");
+}
 
+function authHeaders() {
+    const headers = {
+        "Content-Type": "application/json"
+    };
+
+    if (token()) {
+        headers.Authorization = `Bearer ${token()}`;
+    }
+
+    return headers;
+}
+
+async function apiRequest(url, options = {}) {
+    const config = {
+        ...options,
+        headers: {
+            ...authHeaders(),
+            ...(options.headers || {})
+        }
+    };
+
+    const response = await fetch(`${API_URL}${url}`, config);
+
+    let data = {};
+
+    try {
+        data = await response.json();
+    } catch {
+        data = {};
+    }
+
+    if (!response.ok) {
+        throw new Error(data.message || "Request failed");
+    }
+
+    return data;
+}
+
+function money(value) {
+    return "₹" + Number(value || 0).toLocaleString("en-IN");
+}
+
+function escapeHTML(value) {
+    return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+}
+
+function getProduct(id) {
+    return products.find(
+        product => Number(product.id) === Number(id)
+    );
+}
+
+function saveLocalData() {
     localStorage.setItem(
         "cartivoProducts",
         JSON.stringify(products)
@@ -209,34 +277,7 @@ function saveData() {
     );
 }
 
-
-function money(value) {
-
-    return "₹" + Number(value || 0).toLocaleString("en-IN");
-}
-
-
-function escapeHTML(value) {
-
-    return String(value ?? "")
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-}
-
-
-function getProduct(id) {
-
-    return products.find(
-        product => Number(product.id) === Number(id)
-    );
-}
-
-
 function showToast(message) {
-
     const toast = document.getElementById("toast");
 
     if (!toast) return;
@@ -251,127 +292,275 @@ function showToast(message) {
     }, 2500);
 }
 
-
 /* =========================================================
-   LOGIN
+   DATA NORMALIZATION
 ========================================================= */
 
-document
-    .getElementById("loginForm")
-    .addEventListener("submit", function(event) {
+function normalizeCategoryList(data) {
+    const list = data?.categories || [];
 
+    return list.map(category => {
+        if (typeof category === "string") {
+            return category;
+        }
+
+        return category.name;
+    });
+}
+
+function normalizeProduct(product) {
+    return {
+        id: Number(product.id),
+        name: product.name || "",
+        category: product.category || "",
+        price: Number(product.price || 0),
+        stock: Number(product.stock || 0),
+        rating: Number(product.rating || 0),
+        image: product.image || "",
+        description: product.description || ""
+    };
+}
+
+function normalizeOrder(order) {
+    return {
+        id: order.order_number || order.orderNumber || order.id,
+        dbId: order.id,
+        date: order.created_at || order.date || new Date().toISOString(),
+        status: order.status || "Placed",
+        total: Number(order.total || 0),
+        payment: order.payment_method || order.payment || "COD",
+        customer: {
+            name: order.customer_name || order.customer?.name || "Customer",
+            email: order.email || order.customer?.email || "",
+            phone: order.phone || ""
+        },
+        address: order.address || "",
+        city: order.city || "",
+        zip: order.zip || "",
+        items: (order.items || []).map(item => ({
+            id: Number(item.product_id || item.productId || item.id),
+            name: item.product_name || item.name || "Product",
+            price: Number(item.price || 0),
+            qty: Number(item.quantity || item.qty || 1),
+            image: item.image || getProduct(item.product_id)?.image || ""
+        }))
+    };
+}
+
+/* =========================================================
+   AUTH - LOGIN
+========================================================= */
+
+const loginForm = document.getElementById("loginForm");
+
+if (loginForm) {
+    loginForm.addEventListener("submit", async function(event) {
         event.preventDefault();
 
-        const email =
-            document.getElementById("loginEmail").value.trim();
+        const email = document
+            .getElementById("loginEmail")
+            .value
+            .trim()
+            .toLowerCase();
 
-        const password =
-            document.getElementById("loginPassword").value.trim();
+        const password = document
+            .getElementById("loginPassword")
+            .value
+            .trim();
 
         if (!email || !password) {
             showToast("Please enter email and password.");
             return;
         }
 
-        const isAdmin =
-            email.toLowerCase() === "admin@cartivo.com" &&
-            password === "admin123";
+        try {
+            showToast("Logging in...");
 
-        currentUser = {
-            name: isAdmin ? "Cartivo Admin" : email.split("@")[0],
-            email: email,
-            role: isAdmin ? "admin" : "customer"
-        };
+            const data = await apiRequest("/auth/login", {
+                method: "POST",
+                body: JSON.stringify({
+                    email,
+                    password
+                })
+            });
 
-        saveData();
+            localStorage.setItem(
+                "cartivoToken",
+                data.token
+            );
 
-        document
-            .getElementById("loginPage")
-            .classList.add("hidden");
+            currentUser = {
+                id: data.user.id,
+                name: data.user.name,
+                email: data.user.email,
+                role: data.user.role
+            };
 
-        if (isAdmin) {
-            openAdmin();
-        } else {
+            saveLocalData();
+
             document
-                .getElementById("storePage")
-                .classList.remove("hidden");
+                .getElementById("loginPage")
+                ?.classList.add("hidden");
 
-            refreshStore();
+            if (currentUser.role === "admin") {
+                openAdmin();
+                showToast("Welcome to Admin Panel");
+            } else {
+                document
+                    .getElementById("storePage")
+                    ?.classList.remove("hidden");
+
+                await refreshStore();
+                showToast("Welcome to Cartivo");
+            }
+
+        } catch (error) {
+            console.error("Login error:", error);
+            showToast(error.message || "Invalid email or password.");
+        }
+    });
+}
+
+/* =========================================================
+   AUTH - REGISTER
+========================================================= */
+
+const registerForm = document.getElementById("registerForm");
+
+if (registerForm) {
+    registerForm.addEventListener("submit", async function(event) {
+        event.preventDefault();
+
+        const name = document
+            .getElementById("registerName")
+            .value
+            .trim();
+
+        const email = document
+            .getElementById("registerEmail")
+            .value
+            .trim()
+            .toLowerCase();
+
+        const password = document
+            .getElementById("registerPassword")
+            .value
+            .trim();
+
+        if (!name || !email || !password) {
+            showToast("Please fill all fields.");
+            return;
         }
 
-        showToast(
-            isAdmin
-                ? "Welcome to Admin Panel"
-                : "Welcome to Cartivo"
-        );
-    });
+        if (password.length < 6) {
+            showToast("Password must be at least 6 characters.");
+            return;
+        }
 
+        try {
+            showToast("Creating account...");
+
+            const data = await apiRequest("/auth/register", {
+                method: "POST",
+                body: JSON.stringify({
+                    name,
+                    email,
+                    password
+                })
+            });
+
+            localStorage.setItem(
+                "cartivoToken",
+                data.token
+            );
+
+            currentUser = {
+                id: data.user.id,
+                name: data.user.name,
+                email: data.user.email,
+                role: data.user.role
+            };
+
+            saveLocalData();
+
+            document
+                .getElementById("loginPage")
+                ?.classList.add("hidden");
+
+            document
+                .getElementById("storePage")
+                ?.classList.remove("hidden");
+
+            await refreshStore();
+
+            showToast("Account created successfully!");
+
+        } catch (error) {
+            console.error("Registration error:", error);
+            showToast(error.message || "Registration failed.");
+        }
+    });
+}
 
 /* =========================================================
    LOGOUT
 ========================================================= */
 
 function logout() {
-
     currentUser = null;
 
-    saveData();
+    localStorage.removeItem("cartivoToken");
+    localStorage.removeItem("cartivoCurrentUser");
 
     document
         .getElementById("storePage")
-        .classList.add("hidden");
+        ?.classList.add("hidden");
 
     document
         .getElementById("adminPage")
-        .classList.add("hidden");
+        ?.classList.add("hidden");
 
     document
         .getElementById("loginPage")
-        .classList.remove("hidden");
+        ?.classList.remove("hidden");
 
     document
         .getElementById("loginForm")
-        .reset();
+        ?.reset();
 
     toggleProfileMenu(true);
-}
 
+    showToast("Logged out successfully.");
+}
 
 /* =========================================================
    PROFILE
 ========================================================= */
 
 function updateProfile() {
-
     if (!currentUser) return;
 
-    const name =
-        document.getElementById("profileName");
-
-    const email =
-        document.getElementById("profileEmail");
-
-    const initial =
-        document.getElementById("profileInitial");
+    const name = document.getElementById("profileName");
+    const email = document.getElementById("profileEmail");
+    const initial = document.getElementById("profileInitial");
+    const adminButton = document.getElementById("adminMenuButton");
 
     if (name) {
-        name.textContent = currentUser.name;
+        name.textContent = currentUser.name || "User";
     }
 
     if (email) {
-        email.textContent = currentUser.email;
+        email.textContent = currentUser.email || "";
     }
 
     if (initial) {
         initial.textContent =
-            currentUser.name.charAt(0).toUpperCase();
+            (currentUser.name || "U")
+                .charAt(0)
+                .toUpperCase();
     }
 
-    const adminButton =
-        document.getElementById("adminMenuButton");
-
     if (adminButton) {
-
         adminButton.classList.toggle(
             "hidden",
             currentUser.role !== "admin"
@@ -379,11 +568,8 @@ function updateProfile() {
     }
 }
 
-
 function toggleProfileMenu(forceClose = false) {
-
-    const menu =
-        document.getElementById("profileMenu");
+    const menu = document.getElementById("profileMenu");
 
     if (!menu) return;
 
@@ -395,142 +581,125 @@ function toggleProfileMenu(forceClose = false) {
     menu.classList.toggle("hidden");
 }
 
-
 /* =========================================================
    NAVIGATION
 ========================================================= */
 
 function hideAllStoreSections() {
-
     [
         "homeSection",
         "shopSection",
         "wishlistSection",
         "ordersSection"
     ].forEach(id => {
-
-        const element =
-            document.getElementById(id);
-
-        if (element) {
-            element.classList.add("hidden");
-        }
+        document
+            .getElementById(id)
+            ?.classList.add("hidden");
     });
 
     toggleProfileMenu(true);
 }
 
-
-function showHome() {
-
+async function showHome() {
     hideAllStoreSections();
 
     document
         .getElementById("homeSection")
-        .classList.remove("hidden");
+        ?.classList.remove("hidden");
 
-    refreshStore();
+    await refreshStore();
 }
 
-
-function showShop() {
-
+async function showShop() {
     hideAllStoreSections();
 
     document
         .getElementById("shopSection")
-        .classList.remove("hidden");
+        ?.classList.remove("hidden");
 
     renderShop();
 }
 
-
-function showCategories() {
-
-    showHome();
+async function showCategories() {
+    await showHome();
 
     setTimeout(() => {
-
         document
             .getElementById("categoriesSection")
             ?.scrollIntoView({
                 behavior: "smooth"
             });
-
-    }, 50);
+    }, 100);
 }
 
-
-function showWishlist() {
-
+async function showWishlist() {
     hideAllStoreSections();
 
     document
         .getElementById("wishlistSection")
-        .classList.remove("hidden");
+        ?.classList.remove("hidden");
 
+    await loadWishlist();
     renderWishlist();
 }
 
-
-function showOrders() {
-
+async function showOrders() {
     hideAllStoreSections();
 
     document
         .getElementById("ordersSection")
-        .classList.remove("hidden");
+        ?.classList.remove("hidden");
 
+    await loadMyOrders();
     renderOrders();
 }
-
 
 /* =========================================================
    SEARCH
 ========================================================= */
 
-document
-    .getElementById("globalSearch")
-    .addEventListener("input", function() {
+const globalSearch = document.getElementById("globalSearch");
 
-        const value =
-            this.value.trim();
+if (globalSearch) {
+    globalSearch.addEventListener("input", async function() {
+        const value = this.value.trim();
 
         if (!value) return;
 
-        showShop();
+        await showShop();
 
-        document
-            .getElementById("shopSearch")
-            .value = value;
+        const shopSearch =
+            document.getElementById("shopSearch");
+
+        if (shopSearch) {
+            shopSearch.value = value;
+        }
 
         renderShop();
     });
-
+}
 
 document
     .getElementById("shopSearch")
-    .addEventListener("input", renderShop);
+    ?.addEventListener("input", renderShop);
 
 document
     .getElementById("categoryFilter")
-    .addEventListener("change", renderShop);
+    ?.addEventListener("change", renderShop);
 
 document
     .getElementById("priceFilter")
-    .addEventListener("change", renderShop);
+    ?.addEventListener("change", renderShop);
 
 document
     .getElementById("sortFilter")
-    .addEventListener("change", renderShop);
-
+    ?.addEventListener("change", renderShop);
 
 /* =========================================================
-   CATEGORY RENDER
+   CATEGORIES
 ========================================================= */
 
 function renderCategories() {
-
     const grid =
         document.getElementById("categoryGrid");
 
@@ -545,10 +714,9 @@ function renderCategories() {
 
     grid.innerHTML = categories.map(category => {
 
-        const count =
-            products.filter(
-                product => product.category === category
-            ).length;
+        const count = products.filter(
+            product => product.category === category
+        ).length;
 
         return `
             <div
@@ -557,18 +725,16 @@ function renderCategories() {
             >
                 <h3>${escapeHTML(category)}</h3>
                 <p>${count} products</p>
+
                 <div class="category-icon">
                     ${icons[category] || "✦"}
                 </div>
             </div>
         `;
-
     }).join("");
 }
 
-
 function populateCategoryFilter() {
-
     const select =
         document.getElementById("categoryFilter");
 
@@ -576,46 +742,43 @@ function populateCategoryFilter() {
         document.getElementById("adminProductCategory");
 
     if (select) {
-
         select.innerHTML =
             `<option value="all">All Categories</option>` +
-            categories.map(category =>
-                `<option value="${escapeHTML(category)}">
+            categories.map(category => `
+                <option value="${escapeHTML(category)}">
                     ${escapeHTML(category)}
-                </option>`
-            ).join("");
+                </option>
+            `).join("");
     }
 
     if (adminSelect) {
-
         adminSelect.innerHTML =
-            categories.map(category =>
-                `<option value="${escapeHTML(category)}">
+            categories.map(category => `
+                <option value="${escapeHTML(category)}">
                     ${escapeHTML(category)}
-                </option>`
-            ).join("");
+                </option>
+            `).join("");
     }
 }
 
-
 function filterCategory(category) {
+    showShop().then(() => {
+        const filter =
+            document.getElementById("categoryFilter");
 
-    showShop();
+        if (filter) {
+            filter.value = category;
+        }
 
-    document
-        .getElementById("categoryFilter")
-        .value = category;
-
-    renderShop();
+        renderShop();
+    });
 }
 
-
 /* =========================================================
-   PRODUCT CARD
+   PRODUCTS
 ========================================================= */
 
 function productCard(product) {
-
     const isWishlisted =
         wishlist.includes(Number(product.id));
 
@@ -642,9 +805,11 @@ function productCard(product) {
 
                 ${
                     badge
-                        ? `<span class="product-badge">
-                            ${badge}
-                           </span>`
+                        ? `
+                            <span class="product-badge">
+                                ${badge}
+                            </span>
+                        `
                         : ""
                 }
 
@@ -669,7 +834,7 @@ function productCard(product) {
 
                 <div class="product-rating">
                     <span>
-                        ★ ${product.rating}
+                        ★ ${Number(product.rating || 0).toFixed(1)}
                     </span>
 
                     <small>
@@ -688,7 +853,11 @@ function productCard(product) {
                         onclick="event.stopPropagation(); addToCart(${product.id})"
                         ${product.stock <= 0 ? "disabled" : ""}
                     >
-                        ${product.stock <= 0 ? "Sold Out" : "+ Cart"}
+                        ${
+                            product.stock <= 0
+                                ? "Sold Out"
+                                : "+ Cart"
+                        }
                     </button>
 
                 </div>
@@ -699,13 +868,7 @@ function productCard(product) {
     `;
 }
 
-
-/* =========================================================
-   HOME PRODUCTS
-========================================================= */
-
 function renderHomeProducts() {
-
     const grid =
         document.getElementById("homeProducts");
 
@@ -718,13 +881,7 @@ function renderHomeProducts() {
             .join("");
 }
 
-
-/* =========================================================
-   SHOP
-========================================================= */
-
 function renderShop() {
-
     const grid =
         document.getElementById("shopProducts");
 
@@ -733,104 +890,102 @@ function renderShop() {
     const search =
         document
             .getElementById("shopSearch")
-            .value
+            ?.value
             .toLowerCase()
-            .trim();
+            .trim() || "";
 
     const category =
-        document.getElementById("categoryFilter").value;
+        document
+            .getElementById("categoryFilter")
+            ?.value || "all";
 
     const price =
-        document.getElementById("priceFilter").value;
+        document
+            .getElementById("priceFilter")
+            ?.value || "all";
 
     const sort =
-        document.getElementById("sortFilter").value;
+        document
+            .getElementById("sortFilter")
+            ?.value || "default";
 
-    let filtered =
-        [...products];
+    let filtered = [...products];
 
     if (search) {
-
-        filtered =
-            filtered.filter(product =>
-                product.name.toLowerCase().includes(search) ||
-                product.category.toLowerCase().includes(search)
-            );
+        filtered = filtered.filter(product =>
+            product.name
+                .toLowerCase()
+                .includes(search) ||
+            product.category
+                .toLowerCase()
+                .includes(search) ||
+            (product.description || "")
+                .toLowerCase()
+                .includes(search)
+        );
     }
 
     if (category !== "all") {
-
-        filtered =
-            filtered.filter(
-                product => product.category === category
-            );
+        filtered = filtered.filter(
+            product => product.category === category
+        );
     }
 
     if (price !== "all") {
+        filtered = filtered.filter(product => {
+            const p = Number(product.price);
 
-        filtered =
-            filtered.filter(product => {
+            if (price === "0-1000") {
+                return p < 1000;
+            }
 
-                const p =
-                    Number(product.price);
+            if (price === "1000-3000") {
+                return p >= 1000 && p <= 3000;
+            }
 
-                if (price === "0-1000") {
-                    return p < 1000;
-                }
+            if (price === "3000-10000") {
+                return p > 3000 && p <= 10000;
+            }
 
-                if (price === "1000-3000") {
-                    return p >= 1000 && p <= 3000;
-                }
+            if (price === "10000+") {
+                return p > 10000;
+            }
 
-                if (price === "3000-10000") {
-                    return p > 3000 && p <= 10000;
-                }
-
-                if (price === "10000+") {
-                    return p > 10000;
-                }
-
-                return true;
-            });
+            return true;
+        });
     }
 
     if (sort === "priceLow") {
-
-        filtered.sort(
-            (a,b) => a.price - b.price
+        filtered.sort((a, b) =>
+            Number(a.price) - Number(b.price)
         );
     }
 
     if (sort === "priceHigh") {
-
-        filtered.sort(
-            (a,b) => b.price - a.price
+        filtered.sort((a, b) =>
+            Number(b.price) - Number(a.price)
         );
     }
 
     if (sort === "rating") {
-
-        filtered.sort(
-            (a,b) => b.rating - a.rating
+        filtered.sort((a, b) =>
+            Number(b.rating) - Number(a.rating)
         );
     }
 
     if (sort === "name") {
-
-        filtered.sort(
-            (a,b) => a.name.localeCompare(b.name)
+        filtered.sort((a, b) =>
+            a.name.localeCompare(b.name)
         );
     }
 
     if (!filtered.length) {
-
         grid.innerHTML = `
             <div class="empty-state">
                 <strong>No products found</strong>
-                Try another search or filter.
+                <span>Try another search or filter.</span>
             </div>
         `;
-
         return;
     }
 
@@ -838,15 +993,53 @@ function renderShop() {
         filtered.map(productCard).join("");
 }
 
+/* =========================================================
+   LOAD PRODUCTS FROM BACKEND
+========================================================= */
+
+async function loadProducts() {
+    try {
+        const data = await apiRequest("/products");
+
+        if (Array.isArray(data.products)) {
+            products = data.products.map(normalizeProduct);
+            localStorage.setItem(
+                "cartivoProducts",
+                JSON.stringify(products)
+            );
+        }
+
+    } catch (error) {
+        console.error("Products loading error:", error);
+    }
+}
+
+async function loadCategories() {
+    try {
+        const data = await apiRequest("/categories");
+
+        categories = normalizeCategoryList(data);
+
+        if (!categories.length) {
+            categories = defaultCategories;
+        }
+
+        localStorage.setItem(
+            "cartivoCategories",
+            JSON.stringify(categories)
+        );
+
+    } catch (error) {
+        console.error("Categories loading error:", error);
+    }
+}
 
 /* =========================================================
    PRODUCT DETAIL
 ========================================================= */
 
 function openProduct(id) {
-
-    const product =
-        getProduct(id);
+    const product = getProduct(id);
 
     if (!product) return;
 
@@ -856,17 +1049,19 @@ function openProduct(id) {
     const detail =
         document.getElementById("productDetail");
 
+    if (!modal || !detail) return;
+
     const stockClass =
-        product.stock <= 0
+        Number(product.stock) <= 0
             ? "stock-out"
-            : product.stock <= 5
+            : Number(product.stock) <= 5
                 ? "stock-low"
                 : "stock-good";
 
     const stockText =
-        product.stock <= 0
+        Number(product.stock) <= 0
             ? "Out of stock"
-            : product.stock <= 5
+            : Number(product.stock) <= 5
                 ? `Only ${product.stock} left`
                 : `${product.stock} items available`;
 
@@ -892,7 +1087,7 @@ function openProduct(id) {
 
                 <div class="product-rating">
                     <span>
-                        ★ ${product.rating}
+                        ★ ${Number(product.rating || 0).toFixed(1)}
                     </span>
                 </div>
 
@@ -913,7 +1108,11 @@ function openProduct(id) {
                     onclick="addToCart(${product.id}); closeProductModal();"
                     ${product.stock <= 0 ? "disabled" : ""}
                 >
-                    ${product.stock <= 0 ? "Out of Stock" : "Add to Cart"}
+                    ${
+                        product.stock <= 0
+                            ? "Out of Stock"
+                            : "Add to Cart"
+                    }
                 </button>
 
             </div>
@@ -924,70 +1123,104 @@ function openProduct(id) {
     modal.classList.remove("hidden");
 }
 
-
 function closeProductModal() {
-
     document
         .getElementById("productModal")
-        .classList.add("hidden");
+        ?.classList.add("hidden");
 }
-
 
 /* =========================================================
-   WISHLIST
+   WISHLIST - BACKEND
 ========================================================= */
 
-function toggleWishlist(id) {
+async function loadWishlist() {
+    if (!token()) return;
 
-    id = Number(id);
+    try {
+        const data = await apiRequest("/wishlist");
 
-    if (wishlist.includes(id)) {
+        wishlist = (data.wishlist || []).map(
+            product => Number(product.id)
+        );
 
-        wishlist =
-            wishlist.filter(
-                item => item !== id
-            );
+        localStorage.setItem(
+            "cartivoWishlist",
+            JSON.stringify(wishlist)
+        );
 
-        showToast("Removed from wishlist.");
-
-    } else {
-
-        wishlist.push(id);
-
-        showToast("Added to wishlist.");
+    } catch (error) {
+        console.error("Wishlist loading error:", error);
     }
-
-    saveData();
-
-    updateCounts();
-
-    renderHomeProducts();
-    renderShop();
-    renderWishlist();
 }
 
+async function toggleWishlist(id) {
+    id = Number(id);
+
+    if (!token()) {
+        showToast("Please login first.");
+        return;
+    }
+
+    try {
+        if (wishlist.includes(id)) {
+
+            await apiRequest(`/wishlist/${id}`, {
+                method: "DELETE"
+            });
+
+            wishlist = wishlist.filter(
+                item => Number(item) !== id
+            );
+
+            showToast("Removed from wishlist.");
+
+        } else {
+
+            await apiRequest(`/wishlist/${id}`, {
+                method: "POST"
+            });
+
+            wishlist.push(id);
+
+            showToast("Added to wishlist.");
+        }
+
+        localStorage.setItem(
+            "cartivoWishlist",
+            JSON.stringify(wishlist)
+        );
+
+        updateCounts();
+        renderHomeProducts();
+        renderShop();
+        renderWishlist();
+
+    } catch (error) {
+        console.error("Wishlist error:", error);
+        showToast(error.message || "Wishlist update failed.");
+    }
+}
 
 function renderWishlist() {
-
     const grid =
         document.getElementById("wishlistProducts");
 
     if (!grid) return;
 
-    const items =
-        products.filter(
-            product => wishlist.includes(Number(product.id))
-        );
+    const items = products.filter(
+        product =>
+            wishlist.includes(Number(product.id))
+    );
 
     if (!items.length) {
-
         grid.innerHTML = `
             <div class="empty-state">
                 <strong>Your wishlist is empty</strong>
-                Save products you love and find them here later.
+                <span>
+                    Save products you love and find them here later.
+                </span>
             </div>
         `;
-
         return;
     }
 
@@ -995,33 +1228,32 @@ function renderWishlist() {
         items.map(productCard).join("");
 }
 
-
 /* =========================================================
    CART
+   Cart intentionally remains local because backend
+   does not provide a cart endpoint.
 ========================================================= */
 
 function addToCart(id) {
-
-    const product =
-        getProduct(id);
+    const product = getProduct(id);
 
     if (!product) return;
 
-    if (product.stock <= 0) {
-
+    if (Number(product.stock) <= 0) {
         showToast("This product is out of stock.");
         return;
     }
 
-    const existing =
-        cart.find(
-            item => Number(item.id) === Number(id)
-        );
+    const existing = cart.find(
+        item => Number(item.id) === Number(id)
+    );
 
     if (existing) {
 
-        if (existing.qty >= product.stock) {
-
+        if (
+            Number(existing.qty) >=
+            Number(product.stock)
+        ) {
             showToast("Maximum available stock reached.");
             return;
         }
@@ -1036,10 +1268,9 @@ function addToCart(id) {
         });
     }
 
-    saveData();
+    saveLocalData();
 
     updateCounts();
-
     renderCart();
 
     showToast(
@@ -1047,94 +1278,75 @@ function addToCart(id) {
     );
 }
 
-
 function changeCartQty(id, amount) {
+    const item = cart.find(
+        item => Number(item.id) === Number(id)
+    );
 
-    const item =
-        cart.find(
-            item => Number(item.id) === Number(id)
-        );
-
-    const product =
-        getProduct(id);
+    const product = getProduct(id);
 
     if (!item || !product) return;
 
-    item.qty += amount;
+    item.qty += Number(amount);
 
     if (item.qty <= 0) {
-
-        cart =
-            cart.filter(
-                cartItem =>
-                    Number(cartItem.id) !== Number(id)
-            );
+        cart = cart.filter(
+            cartItem =>
+                Number(cartItem.id) !== Number(id)
+        );
     }
 
-    if (item.qty > product.stock) {
-
-        item.qty = product.stock;
-
+    if (item && item.qty > Number(product.stock)) {
+        item.qty = Number(product.stock);
         showToast("Maximum available stock reached.");
     }
 
-    saveData();
+    saveLocalData();
 
     updateCounts();
-
     renderCart();
 }
 
-
 function removeFromCart(id) {
+    cart = cart.filter(
+        item =>
+            Number(item.id) !== Number(id)
+    );
 
-    cart =
-        cart.filter(
-            item =>
-                Number(item.id) !== Number(id)
-        );
-
-    saveData();
+    saveLocalData();
 
     updateCounts();
-
     renderCart();
 
     showToast("Product removed from cart.");
 }
 
-
 function cartTotalValue() {
-
     return cart.reduce(
         (total, item) => {
-
-            const product =
-                getProduct(item.id);
+            const product = getProduct(item.id);
 
             return total +
-                (product
-                    ? product.price * item.qty
-                    : 0);
-
+                (
+                    product
+                        ? Number(product.price) *
+                          Number(item.qty)
+                        : 0
+                );
         },
         0
     );
 }
 
-
 function cartItemCount() {
-
     return cart.reduce(
-        (total,item) =>
-            total + Number(item.qty),
+        (total, item) =>
+            total + Number(item.qty || 0),
         0
     );
 }
 
-
 function renderCart() {
-
     const container =
         document.getElementById("cartItems");
 
@@ -1144,16 +1356,16 @@ function renderCart() {
     if (!container || !total) return;
 
     if (!cart.length) {
-
         container.innerHTML = `
             <div class="empty-state">
                 <strong>Your cart is empty</strong>
-                <span>Add something you love to get started.</span>
+                <span>
+                    Add something you love to get started.
+                </span>
             </div>
         `;
 
         total.textContent = "₹0";
-
         return;
     }
 
@@ -1213,254 +1425,294 @@ function renderCart() {
                     </div>
 
                     <div class="cart-item-price">
-                        ${money(product.price * item.qty)}
+                        ${money(
+                            Number(product.price) *
+                            Number(item.qty)
+                        )}
                     </div>
 
                 </div>
             `;
-
         }).join("");
 
     total.textContent =
         money(cartTotalValue());
 }
 
-
 function openCart() {
-
     renderCart();
 
     document
         .getElementById("cartOverlay")
-        .classList.remove("hidden");
+        ?.classList.remove("hidden");
 
     document
         .getElementById("cartDrawer")
-        .classList.add("open");
+        ?.classList.add("open");
 }
-
 
 function closeCart() {
-
     document
         .getElementById("cartOverlay")
-        .classList.add("hidden");
+        ?.classList.add("hidden");
 
     document
         .getElementById("cartDrawer")
-        .classList.remove("open");
+        ?.classList.remove("open");
 }
-
 
 /* =========================================================
    CHECKOUT
 ========================================================= */
 
 function openCheckout() {
-
     if (!cart.length) {
-
         showToast("Your cart is empty.");
+        return;
+    }
+
+    if (!token()) {
+        showToast("Please login before checkout.");
         return;
     }
 
     closeCart();
 
-    document
-        .getElementById("checkoutName")
-        .value =
-        currentUser?.name || "";
+    const name =
+        document.getElementById("checkoutName");
 
-    document
-        .getElementById("checkoutEmail")
-        .value =
-        currentUser?.email || "";
+    const email =
+        document.getElementById("checkoutEmail");
+
+    if (name) {
+        name.value = currentUser?.name || "";
+    }
+
+    if (email) {
+        email.value = currentUser?.email || "";
+    }
 
     document
         .getElementById("checkoutModal")
-        .classList.remove("hidden");
+        ?.classList.remove("hidden");
 }
-
 
 function closeCheckout() {
-
     document
         .getElementById("checkoutModal")
-        .classList.add("hidden");
+        ?.classList.add("hidden");
 }
 
+const checkoutForm =
+    document.getElementById("checkoutForm");
 
-document
-    .getElementById("checkoutForm")
-    .addEventListener("submit", function(event) {
+if (checkoutForm) {
+    checkoutForm.addEventListener(
+        "submit",
+        async function(event) {
 
-        event.preventDefault();
+            event.preventDefault();
 
-        if (!cart.length) {
-
-            showToast("Your cart is empty.");
-            return;
-        }
-
-        const orderId =
-            "CT-" +
-            Math.floor(
-                10000 +
-                Math.random() * 90000
-            );
-
-        const payment =
-            document.querySelector(
-                'input[name="payment"]:checked'
-            )?.value || "COD";
-
-        const orderItems =
-            cart.map(item => {
-
-                const product =
-                    getProduct(item.id);
-
-                return {
-                    id: product.id,
-                    name: product.name,
-                    price: product.price,
-                    qty: item.qty,
-                    image: product.image
-                };
-            });
-
-        const order = {
-
-            id: orderId,
-
-            customer: {
-                name:
-                    document
-                        .getElementById("checkoutName")
-                        .value.trim(),
-
-                email:
-                    document
-                        .getElementById("checkoutEmail")
-                        .value.trim(),
-
-                phone:
-                    document
-                        .getElementById("checkoutPhone")
-                        .value.trim(),
-
-                city:
-                    document
-                        .getElementById("checkoutCity")
-                        .value.trim(),
-
-                zip:
-                    document
-                        .getElementById("checkoutZip")
-                        .value.trim(),
-
-                address:
-                    document
-                        .getElementById("checkoutAddress")
-                        .value.trim()
-            },
-
-            payment,
-
-            items: orderItems,
-
-            total: cartTotalValue(),
-
-            status: "Placed",
-
-            date: new Date().toISOString()
-        };
-
-
-        /* Reduce stock */
-
-        cart.forEach(item => {
-
-            const product =
-                getProduct(item.id);
-
-            if (product) {
-
-                product.stock =
-                    Math.max(
-                        0,
-                        Number(product.stock) -
-                        Number(item.qty)
-                    );
+            if (!cart.length) {
+                showToast("Your cart is empty.");
+                return;
             }
-        });
 
+            if (!token()) {
+                showToast(
+                    "Please login before placing an order."
+                );
+                return;
+            }
 
-        orders.unshift(order);
+            const payment =
+                document.querySelector(
+                    'input[name="payment"]:checked'
+                )?.value || "COD";
 
-        cart = [];
+            const customerName =
+                document
+                    .getElementById("checkoutName")
+                    ?.value
+                    .trim() || "";
 
-        saveData();
+            const email =
+                document
+                    .getElementById("checkoutEmail")
+                    ?.value
+                    .trim() || "";
 
-        closeCheckout();
+            const phone =
+                document
+                    .getElementById("checkoutPhone")
+                    ?.value
+                    .trim() || "";
 
-        document
-            .getElementById("successOrderId")
-            .textContent = orderId;
+            const city =
+                document
+                    .getElementById("checkoutCity")
+                    ?.value
+                    .trim() || "";
 
-        document
-            .getElementById("successModal")
-            .classList.remove("hidden");
+            const zip =
+                document
+                    .getElementById("checkoutZip")
+                    ?.value
+                    .trim() || "";
 
-        refreshStore();
-    });
+            const address =
+                document
+                    .getElementById("checkoutAddress")
+                    ?.value
+                    .trim() || "";
 
+            if (
+                !customerName ||
+                !email ||
+                !address
+            ) {
+                showToast(
+                    "Please fill all required checkout details."
+                );
+                return;
+            }
+
+            const orderItems = cart.map(item => ({
+                productId: Number(item.id),
+                quantity: Number(item.qty)
+            }));
+
+            try {
+                showToast("Placing your order...");
+
+                const data = await apiRequest(
+                    "/orders",
+                    {
+                        method: "POST",
+                        body: JSON.stringify({
+                            items: orderItems,
+                            customerName,
+                            email,
+                            phone,
+                            address,
+                            city,
+                            zip,
+                            paymentMethod: payment
+                        })
+                    }
+                );
+
+                cart = [];
+
+                saveLocalData();
+
+                await loadProducts();
+                await loadCategories();
+
+                updateCounts();
+                renderCart();
+                renderHomeProducts();
+                renderShop();
+
+                closeCheckout();
+
+                const successId =
+                    document.getElementById(
+                        "successOrderId"
+                    );
+
+                if (successId) {
+                    successId.textContent =
+                        data.order?.orderNumber ||
+                        data.order?.order_number ||
+                        data.order?.id ||
+                        "Order placed";
+                }
+
+                document
+                    .getElementById("successModal")
+                    ?.classList.remove("hidden");
+
+                showToast(
+                    "Order placed successfully!"
+                );
+
+            } catch (error) {
+                console.error(
+                    "Order placement error:",
+                    error
+                );
+
+                showToast(
+                    error.message ||
+                    "Unable to place order."
+                );
+            }
+        }
+    );
+}
 
 function closeSuccess() {
-
     document
         .getElementById("successModal")
-        .classList.add("hidden");
+        ?.classList.add("hidden");
 }
 
-
 /* =========================================================
-   ORDERS
+   CUSTOMER ORDERS
 ========================================================= */
 
-function renderOrders() {
+async function loadMyOrders() {
+    if (!token()) {
+        orders = [];
+        return;
+    }
 
+    try {
+        const data =
+            await apiRequest("/orders/my");
+
+        orders = (data.orders || [])
+            .map(normalizeOrder);
+
+        localStorage.setItem(
+            "cartivoOrders",
+            JSON.stringify(orders)
+        );
+
+    } catch (error) {
+        console.error(
+            "My orders loading error:",
+            error
+        );
+    }
+}
+
+function renderOrders() {
     const container =
         document.getElementById("ordersList");
 
     if (!container) return;
 
-    const email =
-        currentUser?.email;
-
-    const myOrders =
-        orders.filter(
-            order =>
-                order.customer?.email === email
-        );
-
-    if (!myOrders.length) {
-
+    if (!orders.length) {
         container.innerHTML = `
             <div class="empty-state">
                 <strong>No orders yet</strong>
-                Your placed orders will appear here.
+                <span>
+                    Your placed orders will appear here.
+                </span>
             </div>
         `;
-
         return;
     }
 
     container.innerHTML =
-        myOrders.map(order => {
+        orders.map(order => {
 
             const currentIndex =
-                orderStatuses.indexOf(order.status);
+                orderStatuses.indexOf(
+                    order.status
+                );
 
             return `
                 <div class="order-card">
@@ -1468,13 +1720,19 @@ function renderOrders() {
                     <div class="order-top">
 
                         <div>
+
                             <div class="order-id">
                                 ${escapeHTML(order.id)}
                             </div>
 
                             <div class="order-date">
-                                ${new Date(order.date).toLocaleString("en-IN")}
+                                ${
+                                    new Date(
+                                        order.date
+                                    ).toLocaleString("en-IN")
+                                }
                             </div>
+
                         </div>
 
                         <span class="status-pill">
@@ -1483,37 +1741,44 @@ function renderOrders() {
 
                     </div>
 
-
                     <div class="order-products">
 
-                        ${order.items.map(item => `
-                            <div class="order-product">
+                        ${
+                            order.items.map(item => `
+                                <div class="order-product">
 
-                                <img
-                                    src="${escapeHTML(item.image)}"
-                                    alt="${escapeHTML(item.name)}"
-                                >
+                                    <img
+                                        src="${escapeHTML(
+                                            item.image ||
+                                            "https://images.unsplash.com/photo-1567016432779-094069958ea5?auto=format&fit=crop&w=400&q=80"
+                                        )}"
+                                        alt="${escapeHTML(item.name)}"
+                                    >
 
-                                <div>
-                                    <strong>
-                                        ${escapeHTML(item.name)}
-                                    </strong>
+                                    <div>
 
-                                    <small>
-                                        ${item.qty} × ${money(item.price)}
-                                    </small>
+                                        <strong>
+                                            ${escapeHTML(item.name)}
+                                        </strong>
+
+                                        <small>
+                                            ${item.qty}
+                                            ×
+                                            ${money(item.price)}
+                                        </small>
+
+                                    </div>
+
                                 </div>
-
-                            </div>
-                        `).join("")}
+                            `).join("")
+                        }
 
                     </div>
-
 
                     <div class="order-bottom">
 
                         <span>
-                            ${order.payment}
+                            ${escapeHTML(order.payment)}
                         </span>
 
                         <strong>
@@ -1522,41 +1787,45 @@ function renderOrders() {
 
                     </div>
 
-
                     <div class="tracking">
 
-                        ${orderStatuses.map(
-                            (status,index) => `
-                                <div
-                                    class="track-step ${
-                                        index <= currentIndex
-                                            ? "active"
-                                            : ""
-                                    }"
-                                >
-                                    <div class="track-dot"></div>
-                                    <small>
-                                        ${status}
-                                    </small>
-                                </div>
-                            `
-                        ).join("")}
+                        ${
+                            orderStatuses
+                                .filter(status =>
+                                    status !== "Cancelled"
+                                )
+                                .map(
+                                    (status, index) => `
+                                        <div
+                                            class="track-step ${
+                                                index <= currentIndex
+                                                    ? "active"
+                                                    : ""
+                                            }"
+                                        >
+                                            <div class="track-dot"></div>
+
+                                            <small>
+                                                ${status}
+                                            </small>
+                                        </div>
+                                    `
+                                )
+                                .join("")
+                        }
 
                     </div>
 
                 </div>
             `;
-
         }).join("");
 }
-
 
 /* =========================================================
    ADMIN
 ========================================================= */
 
 function openAdmin() {
-
     if (
         !currentUser ||
         currentUser.role !== "admin"
@@ -1567,41 +1836,32 @@ function openAdmin() {
 
     document
         .getElementById("storePage")
-        .classList.add("hidden");
+        ?.classList.add("hidden");
 
     document
         .getElementById("loginPage")
-        .classList.add("hidden");
+        ?.classList.add("hidden");
 
     document
         .getElementById("adminPage")
-        .classList.remove("hidden");
-
-    adminSection(
-        "dashboard",
-        document.querySelector(".admin-nav")
-    );
+        ?.classList.remove("hidden");
 
     refreshAdmin();
 }
 
-
 function closeAdmin() {
-
     document
         .getElementById("adminPage")
-        .classList.add("hidden");
+        ?.classList.add("hidden");
 
     document
         .getElementById("storePage")
-        .classList.remove("hidden");
+        ?.classList.remove("hidden");
 
     refreshStore();
 }
 
-
 function adminSection(section, button) {
-
     const sections = {
         dashboard: "adminDashboard",
         products: "adminProductsSection",
@@ -1612,7 +1872,6 @@ function adminSection(section, button) {
     };
 
     Object.values(sections).forEach(id => {
-
         document
             .getElementById(id)
             ?.classList.add("hidden");
@@ -1621,7 +1880,6 @@ function adminSection(section, button) {
     document
         .getElementById(sections[section])
         ?.classList.remove("hidden");
-
 
     document
         .querySelectorAll(".admin-nav")
@@ -1633,7 +1891,6 @@ function adminSection(section, button) {
         button.classList.add("active");
     }
 
-
     const titles = {
         dashboard: "Dashboard",
         products: "Products",
@@ -1643,58 +1900,99 @@ function adminSection(section, button) {
         orders: "Orders"
     };
 
-    document
-        .getElementById("adminPageTitle")
-        .textContent =
-        titles[section];
+    const title =
+        document.getElementById(
+            "adminPageTitle"
+        );
+
+    if (title) {
+        title.textContent =
+            titles[section] || "Dashboard";
+    }
 
     refreshAdmin();
 }
 
-
 /* =========================================================
-   ADMIN DASHBOARD
+   ADMIN DASHBOARD - BACKEND
 ========================================================= */
 
-function updateAdminDashboard() {
+async function loadAdminDashboard() {
+    try {
+        const data =
+            await apiRequest("/admin/dashboard");
 
-    const revenue =
-        orders.reduce(
-            (total,order) =>
-                total + Number(order.total || 0),
-            0
+        adminDashboardData =
+            data.dashboard || {};
+
+    } catch (error) {
+        console.error(
+            "Dashboard loading error:",
+            error
         );
 
+        adminDashboardData = null;
+    }
+}
+
+function updateAdminDashboard() {
+    const dashboard =
+        adminDashboardData || {};
+
+    const sales =
+        Number(dashboard.revenue || 0);
+
+    const orderCount =
+        Number(dashboard.orders || 0);
+
+    const productCount =
+        Number(dashboard.products || products.length);
+
     const lowStock =
-        products.filter(
-            product =>
-                Number(product.stock) <= 5
-        ).length;
+        Number(
+            dashboard.lowStock ??
+            products.filter(
+                product =>
+                    Number(product.stock) <= 5
+            ).length
+        );
 
+    const salesElement =
+        document.getElementById("adminSales");
 
-    document
-        .getElementById("adminSales")
-        .textContent =
-        money(revenue);
+    const ordersElement =
+        document.getElementById("adminOrders");
 
-    document
-        .getElementById("adminOrders")
-        .textContent =
-        orders.length;
+    const productsElement =
+        document.getElementById("adminProducts");
 
-    document
-        .getElementById("adminProducts")
-        .textContent =
-        products.length;
+    const lowStockElement =
+        document.getElementById("adminLowStock");
 
-    document
-        .getElementById("adminLowStock")
-        .textContent =
-        lowStock;
+    if (salesElement) {
+        salesElement.textContent =
+            money(sales);
+    }
 
+    if (ordersElement) {
+        ordersElement.textContent =
+            orderCount;
+    }
+
+    if (productsElement) {
+        productsElement.textContent =
+            productCount;
+    }
+
+    if (lowStockElement) {
+        lowStockElement.textContent =
+            lowStock;
+    }
 
     const recent =
-        document.getElementById("recentOrders");
+        document.getElementById(
+            "recentOrders"
+        );
 
     if (recent) {
 
@@ -1709,39 +2007,48 @@ function updateAdminDashboard() {
         } else {
 
             recent.innerHTML =
-                orders.slice(0,5).map(order => `
-                    <div class="admin-order-row">
+                orders
+                    .slice(0, 5)
+                    .map(order => `
+                        <div class="admin-order-row">
 
-                        <div>
-                            <strong>
-                                ${escapeHTML(order.id)}
-                            </strong>
+                            <div>
 
-                            <small>
-                                ${escapeHTML(
-                                    order.customer?.name || "Customer"
-                                )}
-                            </small>
+                                <strong>
+                                    ${escapeHTML(order.id)}
+                                </strong>
+
+                                <small>
+                                    ${escapeHTML(
+                                        order.customer?.name ||
+                                        "Customer"
+                                    )}
+                                </small>
+
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    ${money(order.total)}
+                                </strong>
+
+                                <small>
+                                    ${escapeHTML(order.status)}
+                                </small>
+
+                            </div>
+
                         </div>
-
-                        <div>
-                            <strong>
-                                ${money(order.total)}
-                            </strong>
-
-                            <small>
-                                ${escapeHTML(order.status)}
-                            </small>
-                        </div>
-
-                    </div>
-                `).join("");
+                    `)
+                    .join("");
         }
     }
 
-
     const alertBox =
-        document.getElementById("inventoryAlert");
+        document.getElementById(
+            "inventoryAlert"
+        );
 
     if (alertBox) {
 
@@ -1763,47 +2070,85 @@ function updateAdminDashboard() {
         } else {
 
             alertBox.innerHTML =
-                lowProducts.map(product => `
-                    <div class="inventory-alert-row">
+                lowProducts
+                    .map(product => `
+                        <div class="inventory-alert-row">
 
-                        <div>
-                            <strong>
-                                ${escapeHTML(product.name)}
+                            <div>
+
+                                <strong>
+                                    ${escapeHTML(product.name)}
+                                </strong>
+
+                                <small>
+                                    ${escapeHTML(product.category)}
+                                </small>
+
+                            </div>
+
+                            <strong class="${
+                                Number(product.stock) <= 0
+                                    ? "stock-out"
+                                    : "stock-low"
+                            }">
+                                ${
+                                    Number(product.stock) <= 0
+                                        ? "OUT"
+                                        : `${product.stock} left`
+                                }
                             </strong>
 
-                            <small>
-                                ${escapeHTML(product.category)}
-                            </small>
                         </div>
-
-                        <strong class="${
-                            product.stock <= 0
-                                ? "stock-out"
-                                : "stock-low"
-                        }">
-                            ${product.stock <= 0
-                                ? "OUT"
-                                : `${product.stock} left`
-                            }
-                        </strong>
-
-                    </div>
-                `).join("");
+                    `)
+                    .join("");
         }
     }
 }
-
 
 /* =========================================================
    ADMIN PRODUCTS
 ========================================================= */
 
-function renderAdminProducts() {
+async function loadAdminProducts() {
+    try {
+        const data =
+            await apiRequest("/products");
 
+        products =
+            (data.products || [])
+                .map(normalizeProduct);
+
+        localStorage.setItem(
+            "cartivoProducts",
+            JSON.stringify(products)
+        );
+
+    } catch (error) {
+        console.error(
+            "Admin products loading error:",
+            error
+        );
+    }
+}
+
+function renderAdminProducts() {
     const table =
-        document.getElementById("productsTable");
+        document.getElementById(
+            "productsTable"
+        );
 
     if (!table) return;
+
+    if (!products.length) {
+        table.innerHTML = `
+            <tr>
+                <td colspan="5">
+                    No products found.
+                </td>
+            </tr>
+        `;
+        return;
+    }
 
     table.innerHTML =
         products.map(product => `
@@ -1820,6 +2165,7 @@ function renderAdminProducts() {
                         >
 
                         <div>
+
                             <strong>
                                 ${escapeHTML(product.name)}
                             </strong>
@@ -1827,6 +2173,7 @@ function renderAdminProducts() {
                             <small>
                                 #${product.id}
                             </small>
+
                         </div>
 
                     </div>
@@ -1868,28 +2215,38 @@ function renderAdminProducts() {
         `).join("");
 }
 
-
 /* =========================================================
    ADD / EDIT PRODUCT
 ========================================================= */
 
 function openProductAdminModal(product = null) {
-
     populateCategoryFilter();
 
     const modal =
-        document.getElementById("productAdminModal");
+        document.getElementById(
+            "productAdminModal"
+        );
 
     const title =
-        document.getElementById("productAdminTitle");
+        document.getElementById(
+            "productAdminTitle"
+        );
 
-    document
-        .getElementById("productForm")
-        .reset();
+    const form =
+        document.getElementById(
+            "productForm"
+        );
+
+    if (!modal || !form) return;
+
+    form.reset();
 
     if (product) {
 
-        title.textContent = "Edit Product";
+        if (title) {
+            title.textContent =
+                "Edit Product";
+        }
 
         document
             .getElementById("editProductId")
@@ -1925,7 +2282,10 @@ function openProductAdminModal(product = null) {
 
     } else {
 
-        title.textContent = "Add Product";
+        if (title) {
+            title.textContent =
+                "Add Product";
+        }
 
         document
             .getElementById("editProductId")
@@ -1935,132 +2295,165 @@ function openProductAdminModal(product = null) {
     modal.classList.remove("hidden");
 }
 
-
 function closeProductAdminModal() {
-
     document
         .getElementById("productAdminModal")
-        .classList.add("hidden");
+        ?.classList.add("hidden");
 }
 
-
 function editProduct(id) {
-
-    const product =
-        getProduct(id);
+    const product = getProduct(id);
 
     if (product) {
         openProductAdminModal(product);
     }
 }
 
+const productForm =
+    document.getElementById("productForm");
 
-document
-    .getElementById("productForm")
-    .addEventListener("submit", function(event) {
+if (productForm) {
+    productForm.addEventListener(
+        "submit",
+        async function(event) {
 
-        event.preventDefault();
+            event.preventDefault();
 
-        const editId =
-            document
-                .getElementById("editProductId")
-                .value;
-
-        const productData = {
-
-            name:
+            const editId =
                 document
-                    .getElementById("adminProductName")
-                    .value.trim(),
+                    .getElementById(
+                        "editProductId"
+                    )
+                    .value;
 
-            category:
-                document
-                    .getElementById("adminProductCategory")
-                    .value,
+            const productData = {
 
-            price:
-                Number(
+                name:
                     document
-                        .getElementById("adminProductPrice")
+                        .getElementById(
+                            "adminProductName"
+                        )
                         .value
-                ),
+                        .trim(),
 
-            stock:
-                Number(
+                category:
                     document
-                        .getElementById("adminProductStock")
-                        .value
-                ),
+                        .getElementById(
+                            "adminProductCategory"
+                        )
+                        .value,
 
-            rating:
-                Number(
+                price:
+                    Number(
+                        document
+                            .getElementById(
+                                "adminProductPrice"
+                            )
+                            .value
+                    ),
+
+                stock:
+                    Number(
+                        document
+                            .getElementById(
+                                "adminProductStock"
+                            )
+                            .value
+                    ),
+
+                rating:
+                    Number(
+                        document
+                            .getElementById(
+                                "adminProductRating"
+                            )
+                            .value
+                    ) || 4.5,
+
+                image:
                     document
-                        .getElementById("adminProductRating")
+                        .getElementById(
+                            "adminProductImage"
+                        )
                         .value
-                ) || 4.5,
+                        .trim() ||
+                    "https://images.unsplash.com/photo-1567016432779-094069958ea5?auto=format&fit=crop&w=900&q=85",
 
-            image:
-                document
-                    .getElementById("adminProductImage")
-                    .value.trim() ||
-                "https://images.unsplash.com/photo-1567016432779-094069958ea5?auto=format&fit=crop&w=900&q=85",
+                description:
+                    document
+                        .getElementById(
+                            "adminProductDescription"
+                        )
+                        .value
+                        .trim()
+            };
 
-            description:
-                document
-                    .getElementById("adminProductDescription")
-                    .value.trim()
-        };
-
-
-        if (editId) {
-
-            const product =
-                getProduct(editId);
-
-            if (product) {
-
-                Object.assign(
-                    product,
-                    productData
-                );
-
-                showToast("Product updated.");
+            if (!productData.name) {
+                showToast("Product name is required.");
+                return;
             }
 
-        } else {
+            try {
 
-            const newId =
-                products.length
-                    ? Math.max(
-                        ...products.map(
-                            product =>
-                                Number(product.id)
-                        )
-                    ) + 1
-                    : 1;
+                if (editId) {
 
-            products.push({
-                id: newId,
-                ...productData
-            });
+                    await apiRequest(
+                        `/products/${editId}`,
+                        {
+                            method: "PUT",
+                            body: JSON.stringify(
+                                productData
+                            )
+                        }
+                    );
 
-            showToast("Product added.");
+                    showToast(
+                        "Product updated successfully."
+                    );
+
+                } else {
+
+                    await apiRequest(
+                        "/products",
+                        {
+                            method: "POST",
+                            body: JSON.stringify(
+                                productData
+                            )
+                        }
+                    );
+
+                    showToast(
+                        "Product added successfully."
+                    );
+                }
+
+                closeProductAdminModal();
+
+                await loadAdminProducts();
+                await loadProducts();
+
+                refreshAdmin();
+                refreshStore();
+
+            } catch (error) {
+
+                console.error(
+                    "Product save error:",
+                    error
+                );
+
+                showToast(
+                    error.message ||
+                    "Product operation failed."
+                );
+            }
         }
+    );
+}
 
-        saveData();
-
-        closeProductAdminModal();
-
-        refreshAdmin();
-
-        refreshStore();
-    });
-
-
-function deleteProduct(id) {
-
-    const product =
-        getProduct(id);
+async function deleteProduct(id) {
+    const product = getProduct(id);
 
     if (!product) return;
 
@@ -2071,42 +2464,87 @@ function deleteProduct(id) {
 
     if (!confirmed) return;
 
-    products =
-        products.filter(
+    try {
+
+        await apiRequest(
+            `/products/${id}`,
+            {
+                method: "DELETE"
+            }
+        );
+
+        cart = cart.filter(
             item =>
                 Number(item.id) !== Number(id)
         );
 
-    cart =
-        cart.filter(
-            item =>
-                Number(item.id) !== Number(id)
-        );
-
-    wishlist =
-        wishlist.filter(
+        wishlist = wishlist.filter(
             item =>
                 Number(item) !== Number(id)
         );
 
-    saveData();
+        saveLocalData();
 
-    refreshAdmin();
+        await loadAdminProducts();
+        await loadWishlist();
 
-    refreshStore();
+        refreshAdmin();
+        refreshStore();
 
-    showToast("Product deleted.");
+        showToast(
+            "Product deleted successfully."
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Delete product error:",
+            error
+        );
+
+        showToast(
+            error.message ||
+            "Unable to delete product."
+        );
+    }
 }
-
 
 /* =========================================================
    INVENTORY
 ========================================================= */
 
-function renderInventory() {
+async function loadInventory() {
+    try {
+        const data =
+            await apiRequest("/inventory");
 
+        if (Array.isArray(data.inventory)) {
+
+            data.inventory.forEach(item => {
+
+                const product =
+                    getProduct(item.id);
+
+                if (product) {
+                    product.stock =
+                        Number(item.stock);
+                }
+            });
+        }
+
+    } catch (error) {
+        console.error(
+            "Inventory loading error:",
+            error
+        );
+    }
+}
+
+function renderInventory() {
     const table =
-        document.getElementById("inventoryTable");
+        document.getElementById(
+            "inventoryTable"
+        );
 
     if (!table) return;
 
@@ -2164,45 +2602,79 @@ function renderInventory() {
         `).join("");
 }
 
-
-function updateStock(id) {
-
+async function updateStock(id) {
     const input =
         document.getElementById(
             `stock-${id}`
         );
 
-    const product =
-        getProduct(id);
+    if (!input) return;
 
-    if (!input || !product) return;
-
-    product.stock =
+    const stock =
         Math.max(
             0,
             Number(input.value)
         );
 
-    saveData();
+    try {
 
-    renderInventory();
+        await apiRequest(
+            `/inventory/${id}`,
+            {
+                method: "PUT",
+                body: JSON.stringify({
+                    stock
+                })
+            }
+        );
 
-    updateAdminDashboard();
+        const product =
+            getProduct(id);
 
-    refreshStore();
+        if (product) {
+            product.stock = stock;
+        }
 
-    showToast("Stock updated.");
+        saveLocalData();
+
+        await loadProducts();
+
+        renderInventory();
+        updateAdminDashboard();
+        renderHomeProducts();
+        renderShop();
+
+        showToast(
+            "Stock updated successfully."
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Stock update error:",
+            error
+        );
+
+        showToast(
+            error.message ||
+            "Unable to update stock."
+        );
+    }
 }
 
-
 /* =========================================================
-   CATEGORIES
+   ADMIN CATEGORIES
 ========================================================= */
 
-function renderAdminCategories() {
+async function loadAdminCategories() {
+    await loadCategories();
+}
 
+function renderAdminCategories() {
     const grid =
-        document.getElementById("adminCategoryGrid");
+        document.getElementById(
+            "adminCategoryGrid"
+        );
 
     if (!grid) return;
 
@@ -2250,9 +2722,7 @@ function renderAdminCategories() {
         }).join("");
 }
 
-
-function addCategory() {
-
+async function addCategory() {
     const name =
         prompt("Enter new category name:");
 
@@ -2270,24 +2740,48 @@ function addCategory() {
                 clean.toLowerCase()
         )
     ) {
-        showToast("Category already exists.");
+        showToast(
+            "Category already exists."
+        );
         return;
     }
 
-    categories.push(clean);
+    try {
 
-    saveData();
+        await apiRequest(
+            "/categories",
+            {
+                method: "POST",
+                body: JSON.stringify({
+                    name: clean
+                })
+            }
+        );
 
-    refreshAdmin();
+        await loadCategories();
 
-    refreshStore();
+        refreshAdmin();
+        refreshStore();
 
-    showToast("Category added.");
+        showToast(
+            "Category added successfully."
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Add category error:",
+            error
+        );
+
+        showToast(
+            error.message ||
+            "Unable to add category."
+        );
+    }
 }
 
-
-function renameCategory(oldName) {
-
+async function renameCategory(oldName) {
     const newName =
         prompt(
             "Enter new category name:",
@@ -2299,138 +2793,197 @@ function renameCategory(oldName) {
     const clean =
         newName.trim();
 
-    if (!clean || clean === oldName) return;
-
-    if (categories.includes(clean)) {
-
-        showToast("Category already exists.");
+    if (
+        !clean ||
+        clean === oldName
+    ) {
         return;
     }
 
-    const index =
-        categories.indexOf(oldName);
+    const categoryExists =
+        categories.some(
+            category =>
+                category.toLowerCase() ===
+                clean.toLowerCase()
+        );
 
-    if (index === -1) return;
+    if (categoryExists) {
+        showToast(
+            "Category already exists."
+        );
+        return;
+    }
 
-    categories[index] = clean;
+    const oldCategory =
+        categories.find(
+            category =>
+                category === oldName
+        );
 
-    products.forEach(product => {
+    if (!oldCategory) return;
 
-        if (product.category === oldName) {
-            product.category = clean;
+    try {
+
+        const categoryData =
+            await apiRequest(
+                "/categories"
+            );
+
+        const dbCategory =
+            (categoryData.categories || [])
+                .find(
+                    category =>
+                        category.name === oldName
+                );
+
+        if (!dbCategory) {
+            showToast(
+                "Category not found."
+            );
+            return;
         }
-    });
 
-    saveData();
+        await apiRequest(
+            `/categories/${dbCategory.id}`,
+            {
+                method: "PUT",
+                body: JSON.stringify({
+                    name: clean
+                })
+            }
+        );
 
-    refreshAdmin();
+        await loadCategories();
+        await loadProducts();
 
-    refreshStore();
+        refreshAdmin();
+        refreshStore();
 
-    showToast("Category renamed.");
+        showToast(
+            "Category renamed successfully."
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Rename category error:",
+            error
+        );
+
+        showToast(
+            error.message ||
+            "Unable to rename category."
+        );
+    }
 }
 
-
-function deleteCategory(category) {
-
+async function deleteCategory(categoryName) {
     const count =
         products.filter(
             product =>
-                product.category === category
+                product.category === categoryName
         ).length;
 
     if (count > 0) {
-
         showToast(
             "Move products before deleting this category."
         );
-
         return;
     }
 
     const confirmed =
         confirm(
-            `Delete "${category}" category?`
+            `Delete "${categoryName}" category?`
         );
 
     if (!confirmed) return;
 
-    categories =
-        categories.filter(
-            item => item !== category
+    try {
+
+        const data =
+            await apiRequest(
+                "/categories"
+            );
+
+        const category =
+            (data.categories || [])
+                .find(
+                    item =>
+                        item.name === categoryName
+                );
+
+        if (!category) {
+            showToast(
+                "Category not found."
+            );
+            return;
+        }
+
+        await apiRequest(
+            `/categories/${category.id}`,
+            {
+                method: "DELETE"
+            }
         );
 
-    saveData();
+        await loadCategories();
 
-    refreshAdmin();
+        refreshAdmin();
+        refreshStore();
 
-    refreshStore();
+        showToast(
+            "Category deleted successfully."
+        );
 
-    showToast("Category deleted.");
+    } catch (error) {
+
+        console.error(
+            "Delete category error:",
+            error
+        );
+
+        showToast(
+            error.message ||
+            "Unable to delete category."
+        );
+    }
 }
-
 
 /* =========================================================
    ADMIN USERS
 ========================================================= */
 
-function renderUsers() {
+async function loadUsers() {
+    try {
 
+        const data =
+            await apiRequest(
+                "/admin/users"
+            );
+
+        users =
+            data.users || [];
+
+    } catch (error) {
+
+        console.error(
+            "Users loading error:",
+            error
+        );
+
+        users = [];
+    }
+}
+
+function renderUsers() {
     const table =
-        document.getElementById("usersTable");
+        document.getElementById(
+            "usersTable"
+        );
 
     if (!table) return;
 
-    const users = {};
-
-    orders.forEach(order => {
-
-        const email =
-            order.customer?.email ||
-            "unknown@example.com";
-
-        if (!users[email]) {
-
-            users[email] = {
-                name:
-                    order.customer?.name ||
-                    "Customer",
-
-                email,
-
-                orders: 0,
-
-                spent: 0
-            };
-        }
-
-        users[email].orders += 1;
-
-        users[email].spent +=
-            Number(order.total || 0);
-    });
-
-
-    if (
-        currentUser &&
-        currentUser.role !== "admin" &&
-        !users[currentUser.email]
-    ) {
-
-        users[currentUser.email] = {
-            name: currentUser.name,
-            email: currentUser.email,
-            orders: 0,
-            spent: 0
-        };
-    }
-
-
-    const list =
-        Object.values(users);
-
-    if (!list.length) {
-
+    if (!users.length) {
         table.innerHTML = `
             <tr>
                 <td colspan="4">
@@ -2438,45 +2991,90 @@ function renderUsers() {
                 </td>
             </tr>
         `;
-
         return;
     }
 
     table.innerHTML =
-        list.map(user => `
+        users.map(user => {
 
-            <tr>
+            const customerOrders =
+                orders.filter(
+                    order =>
+                        order.customer?.email ===
+                        user.email
+                );
 
-                <td>
-                    ${escapeHTML(user.name)}
-                </td>
+            const spent =
+                customerOrders.reduce(
+                    (sum, order) =>
+                        sum +
+                        Number(order.total || 0),
+                    0
+                );
 
-                <td>
-                    ${escapeHTML(user.email)}
-                </td>
+            return `
+                <tr>
 
-                <td>
-                    ${user.orders}
-                </td>
+                    <td>
+                        ${escapeHTML(
+                            user.name || "Customer"
+                        )}
+                    </td>
 
-                <td>
-                    ${money(user.spent)}
-                </td>
+                    <td>
+                        ${escapeHTML(
+                            user.email
+                        )}
+                    </td>
 
-            </tr>
+                    <td>
+                        ${customerOrders.length}
+                    </td>
 
-        `).join("");
+                    <td>
+                        ${money(spent)}
+                    </td>
+
+                </tr>
+            `;
+        }).join("");
 }
-
 
 /* =========================================================
    ADMIN ORDERS
 ========================================================= */
 
-function renderAdminOrders() {
+async function loadAdminOrders() {
+    try {
 
+        const data =
+            await apiRequest(
+                "/admin/orders"
+            );
+
+        orders =
+            (data.orders || [])
+                .map(normalizeOrder);
+
+        localStorage.setItem(
+            "cartivoOrders",
+            JSON.stringify(orders)
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Admin orders loading error:",
+            error
+        );
+    }
+}
+
+function renderAdminOrders() {
     const table =
-        document.getElementById("adminOrdersTable");
+        document.getElementById(
+            "adminOrdersTable"
+        );
 
     if (!table) return;
 
@@ -2506,7 +3104,8 @@ function renderAdminOrders() {
 
                 <td>
                     ${escapeHTML(
-                        order.customer?.name || "Customer"
+                        order.customer?.name ||
+                        "Customer"
                     )}
                 </td>
 
@@ -2521,15 +3120,19 @@ function renderAdminOrders() {
                 <td>
 
                     <select
-                        onchange="updateOrderStatus('${escapeHTML(order.id)}', this.value)"
+                        onchange="updateOrderStatus(${Number(order.dbId)}, this.value)"
                     >
 
                         ${orderStatuses.map(status => `
                             <option
-                                value="${status}"
-                                ${order.status === status ? "selected" : ""}
+                                value="${escapeHTML(status)}"
+                                ${
+                                    order.status === status
+                                        ? "selected"
+                                        : ""
+                                }
                             >
-                                ${status}
+                                ${escapeHTML(status)}
                             </option>
                         `).join("")}
 
@@ -2542,98 +3145,143 @@ function renderAdminOrders() {
         `).join("");
 }
 
+async function updateOrderStatus(
+    orderId,
+    status
+) {
+    try {
 
-function updateOrderStatus(orderId, status) {
-
-    const order =
-        orders.find(
-            item =>
-                item.id === orderId
+        await apiRequest(
+            `/admin/orders/${orderId}/status`,
+            {
+                method: "PUT",
+                body: JSON.stringify({
+                    status
+                })
+            }
         );
 
-    if (!order) return;
+        await loadAdminOrders();
 
-    order.status = status;
+        renderAdminOrders();
+        renderOrders();
 
-    saveData();
+        await loadAdminDashboard();
 
-    renderAdminOrders();
+        updateAdminDashboard();
 
-    renderOrders();
+        showToast(
+            `Order updated to ${status}.`
+        );
 
-    updateAdminDashboard();
+    } catch (error) {
 
-    showToast(
-        `Order ${orderId} updated to ${status}.`
-    );
+        console.error(
+            "Order status error:",
+            error
+        );
+
+        showToast(
+            error.message ||
+            "Unable to update order status."
+        );
+    }
 }
-
 
 /* =========================================================
-   REFRESH
+   REFRESH STORE
 ========================================================= */
 
-function updateCounts() {
-
-    document
-        .getElementById("cartCount")
-        .textContent =
-        cartItemCount();
-
-    document
-        .getElementById("wishlistCount")
-        .textContent =
-        wishlist.length;
-}
-
-
-function refreshStore() {
-
+async function refreshStore() {
     updateProfile();
+
+    await Promise.all([
+        loadProducts(),
+        loadCategories(),
+        loadWishlist()
+    ]);
 
     updateCounts();
 
     populateCategoryFilter();
 
     renderCategories();
-
     renderHomeProducts();
-
     renderShop();
-
     renderWishlist();
-
     renderCart();
 }
 
+/* =========================================================
+   REFRESH ADMIN
+========================================================= */
 
-function refreshAdmin() {
+async function refreshAdmin() {
+    if (
+        !currentUser ||
+        currentUser.role !== "admin"
+    ) {
+        return;
+    }
+
+    await Promise.all([
+        loadAdminDashboard(),
+        loadAdminProducts(),
+        loadCategories(),
+        loadUsers(),
+        loadAdminOrders()
+    ]);
+
+    await loadInventory();
 
     updateAdminDashboard();
 
     renderAdminProducts();
-
     renderInventory();
-
     renderAdminCategories();
-
     renderUsers();
-
     renderAdminOrders();
 
     populateCategoryFilter();
 }
 
+/* =========================================================
+   COUNTS
+========================================================= */
+
+function updateCounts() {
+    const cartCount =
+        document.getElementById(
+            "cartCount"
+        );
+
+    const wishlistCount =
+        document.getElementById(
+            "wishlistCount"
+        );
+
+    if (cartCount) {
+        cartCount.textContent =
+            cartItemCount();
+    }
+
+    if (wishlistCount) {
+        wishlistCount.textContent =
+            wishlist.length;
+    }
+}
 
 /* =========================================================
-   GLOBAL ESCAPE
+   CLOSE MODALS WITH ESC
 ========================================================= */
 
 document.addEventListener(
     "keydown",
     function(event) {
 
-        if (event.key !== "Escape") return;
+        if (event.key !== "Escape") {
+            return;
+        }
 
         closeCart();
         closeProductModal();
@@ -2644,6 +3292,16 @@ document.addEventListener(
     }
 );
 
+/* =========================================================
+   CLOSE OVERLAY
+========================================================= */
+
+document
+    .getElementById("cartOverlay")
+    ?.addEventListener(
+        "click",
+        closeCart
+    );
 
 /* =========================================================
    INITIAL LOAD
@@ -2651,40 +3309,106 @@ document.addEventListener(
 
 document.addEventListener(
     "DOMContentLoaded",
-    function() {
+    async function() {
 
-        if (currentUser) {
+        try {
 
-            document
-                .getElementById("loginPage")
-                .classList.add("hidden");
+            if (token()) {
 
-            if (currentUser.role === "admin") {
+                try {
 
-                openAdmin();
+                    const data =
+                        await apiRequest(
+                            "/auth/me"
+                        );
+
+                    if (data.user) {
+
+                        currentUser = {
+                            id: data.user.id,
+                            name: data.user.name,
+                            email: data.user.email,
+                            role: data.user.role
+                        };
+
+                        saveLocalData();
+                    }
+
+                } catch (error) {
+
+                    console.warn(
+                        "Session validation failed:",
+                        error.message
+                    );
+
+                    localStorage.removeItem(
+                        "cartivoToken"
+                    );
+
+                    currentUser = null;
+
+                    localStorage.removeItem(
+                        "cartivoCurrentUser"
+                    );
+                }
+            }
+
+            if (currentUser) {
+
+                document
+                    .getElementById("loginPage")
+                    ?.classList.add("hidden");
+
+                if (
+                    currentUser.role === "admin"
+                ) {
+
+                    document
+                        .getElementById("storePage")
+                        ?.classList.add("hidden");
+
+                    openAdmin();
+
+                } else {
+
+                    document
+                        .getElementById("adminPage")
+                        ?.classList.add("hidden");
+
+                    document
+                        .getElementById("storePage")
+                        ?.classList.remove("hidden");
+
+                    await refreshStore();
+                }
 
             } else {
 
                 document
-                    .getElementById("storePage")
-                    .classList.remove("hidden");
+                    .getElementById("loginPage")
+                    ?.classList.remove("hidden");
 
-                refreshStore();
+                document
+                    .getElementById("storePage")
+                    ?.classList.add("hidden");
+
+                document
+                    .getElementById("adminPage")
+                    ?.classList.add("hidden");
             }
 
-        } else {
+        } catch (error) {
 
-            document
-                .getElementById("loginPage")
-                .classList.remove("hidden");
+            console.error(
+                "Initial load error:",
+                error
+            );
 
-            document
-                .getElementById("storePage")
-                .classList.add("hidden");
-
-            document
-                .getElementById("adminPage")
-                .classList.add("hidden");
+            if (!currentUser) {
+                document
+                    .getElementById("loginPage")
+                    ?.classList.remove("hidden");
+            }
         }
     }
 );

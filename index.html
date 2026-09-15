@@ -1,35 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Cartivo - E-Commerce Platform</title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
 
-    <link rel="stylesheet" href="style.css">
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+    <style>
+
+        /* =========================
+           AUTH SWITCH
+        ========================= */
+
+        .auth-switch {
+            margin-top: 18px;
+            text-align: center;
+            font-size: 14px;
+            color: #777;
+        }
+
+        .auth-switch button {
+            border: none;
+            background: transparent;
+            color: #d45a35;
+            font-weight: 700;
+            cursor: pointer;
+            margin-left: 5px;
+            padding: 0;
+            font-family: inherit;
+        }
+
+        .auth-switch button:hover {
+            text-decoration: underline;
+        }
+
+    </style>
+
 </head>
+
 
 <body>
 
+
 <!-- =====================================================
-     LOGIN
+     LOGIN / REGISTER
 ===================================================== -->
 
-<section id="loginPage" class="login-page">
+<section
+    id="loginPage"
+    class="login-page"
+>
+
 
     <div class="login-brand-side">
+
 
         <div class="brand big-brand">
             cartivo<span>.</span>
         </div>
 
+
         <div class="login-copy">
 
-            <p class="orange-label">YOUR EVERYDAY STORE</p>
+            <p class="orange-label">
+                YOUR EVERYDAY STORE
+            </p>
+
 
             <h1>
                 Find it.<br>
@@ -37,15 +100,27 @@
                 Cart it.
             </h1>
 
+
             <p>
                 Shop electronics, fashion, home essentials and
                 lifestyle products — all in one place.
             </p>
 
+
             <div class="login-features">
-                <div>✓ Fast delivery across India</div>
-                <div>✓ Secure checkout</div>
-                <div>✓ Easy 7-day returns</div>
+
+                <div>
+                    ✓ Fast delivery across India
+                </div>
+
+                <div>
+                    ✓ Secure checkout
+                </div>
+
+                <div>
+                    ✓ Easy 7-day returns
+                </div>
+
             </div>
 
         </div>
@@ -55,23 +130,67 @@
 
     <div class="login-form-side">
 
+
         <div class="login-box">
+
 
             <div class="brand mobile-brand">
                 cartivo<span>.</span>
             </div>
 
-            <p class="orange-label">WELCOME BACK</p>
 
-            <h2>Sign in to Cartivo</h2>
+            <!-- LOGIN HEADING -->
 
-            <p class="muted">
-                Enter your details to continue shopping.
-            </p>
+            <div id="loginHeading">
+
+                <p class="orange-label">
+                    WELCOME BACK
+                </p>
+
+                <h2>
+                    Sign in to Cartivo
+                </h2>
+
+                <p class="muted">
+                    Enter your details to continue shopping.
+                </p>
+
+            </div>
+
+
+            <!-- REGISTER HEADING -->
+
+            <div
+                id="registerHeading"
+                class="hidden"
+            >
+
+                <p class="orange-label">
+                    JOIN CARTIVO
+                </p>
+
+                <h2>
+                    Create your account
+                </h2>
+
+                <p class="muted">
+                    Create an account to start shopping.
+                </p>
+
+            </div>
+
+
+            <!-- =================================================
+                 LOGIN FORM
+            ================================================== -->
 
             <form id="loginForm">
 
-                <label>Email address</label>
+
+                <label>
+                    Email address
+                </label>
+
 
                 <input
                     id="loginEmail"
@@ -80,7 +199,11 @@
                     required
                 >
 
-                <label>Password</label>
+
+                <label>
+                    Password
+                </label>
+
 
                 <input
                     id="loginPassword"
@@ -89,16 +212,118 @@
                     required
                 >
 
-                <button class="primary-btn full-btn" type="submit">
+
+                <button
+                    class="primary-btn full-btn"
+                    type="submit"
+                >
                     Continue →
                 </button>
 
+
             </form>
 
-            <div class="demo-login">
-                <strong>Admin demo:</strong>
-                admin@cartivo.com / admin123
+
+            <!-- =================================================
+                 REGISTER FORM
+            ================================================== -->
+
+            <form
+                id="registerForm"
+                class="hidden"
+            >
+
+
+                <label>
+                    Full name
+                </label>
+
+
+                <input
+                    id="registerName"
+                    type="text"
+                    placeholder="Enter your name"
+                    required
+                >
+
+
+                <label>
+                    Email address
+                </label>
+
+
+                <input
+                    id="registerEmail"
+                    type="email"
+                    placeholder="you@example.com"
+                    required
+                >
+
+
+                <label>
+                    Password
+                </label>
+
+
+                <input
+                    id="registerPassword"
+                    type="password"
+                    placeholder="Create a password"
+                    minlength="6"
+                    required
+                >
+
+
+                <button
+                    class="primary-btn full-btn"
+                    type="submit"
+                >
+                    Create Account →
+                </button>
+
+
+            </form>
+
+
+            <!-- =================================================
+                 LOGIN / REGISTER SWITCH
+            ================================================== -->
+
+            <div class="auth-switch">
+
+                <span id="authSwitchText">
+                    Don't have an account?
+                </span>
+
+
+                <button
+                    type="button"
+                    id="authSwitchBtn"
+                    onclick="toggleAuthForm()"
+                >
+                    Create account
+                </button>
+
             </div>
+
+
+            <!-- =================================================
+                 ADMIN DEMO
+            ================================================== -->
+
+            <div
+                class="demo-login"
+                id="adminDemo"
+            >
+
+                <strong>
+                    Admin demo:
+                </strong>
+
+                admin@cartivo.com / admin123
+
+            </div>
+
 
         </div>
 
@@ -111,60 +336,116 @@
      STORE
 ===================================================== -->
 
-<section id="storePage" class="hidden">
+<section
+    id="storePage"
+    class="hidden"
+>
 
-    <!-- PROMO -->
+
+    <!-- =================================================
+         PROMO BAR
+    ================================================== -->
+
     <div class="promo-bar">
-        <span class="promo-badge">POPULAR</span>
+
+        <span class="promo-badge">
+            POPULAR
+        </span>
+
         Free shipping on orders above ₹999
-        <span> • Weekend Sale — Up to 50% OFF • Easy returns within 7 days</span>
+
+        <span>
+            • Weekend Sale — Up to 50% OFF • Easy returns within 7 days
+        </span>
+
     </div>
 
 
-    <!-- NAVBAR -->
+    <!-- =================================================
+         NAVBAR
+    ================================================== -->
 
     <header class="navbar">
 
+
         <div class="nav-inner">
 
-            <div class="brand logo" onclick="showHome()">
+
+            <div
+                class="brand logo"
+                onclick="showHome()"
+            >
                 cartivo<span>.</span>
             </div>
 
+
             <nav class="main-nav">
-                <a onclick="showHome()">Home</a>
-                <a onclick="showShop()">Shop</a>
-                <a onclick="showCategories()">Categories</a>
-                <a onclick="showOrders()">Orders</a>
+
+                <a onclick="showHome()">
+                    Home
+                </a>
+
+                <a onclick="showShop()">
+                    Shop
+                </a>
+
+                <a onclick="showCategories()">
+                    Categories
+                </a>
+
+                <a onclick="showOrders()">
+                    Orders
+                </a>
+
             </nav>
 
+
             <div class="nav-search">
-                <span>⌕</span>
+
+                <span>
+                    ⌕
+                </span>
+
                 <input
                     id="globalSearch"
                     type="text"
                     placeholder="Search products..."
                 >
+
             </div>
 
+
             <div class="nav-actions">
+
 
                 <button
                     class="nav-icon"
                     onclick="showWishlist()"
                     title="Wishlist"
                 >
+
                     ♡
-                    <span id="wishlistCount">0</span>
+
+                    <span id="wishlistCount">
+                        0
+                    </span>
+
                 </button>
+
 
                 <button
                     class="nav-cart"
                     onclick="openCart()"
                 >
+
                     🛒 Cart
-                    <span id="cartCount">0</span>
+
+                    <span id="cartCount">
+                        0
+                    </span>
+
                 </button>
+
 
                 <button
                     class="profile-circle"
@@ -174,23 +455,34 @@
                     A
                 </button>
 
-                <div id="profileMenu" class="profile-menu hidden">
 
-                    <strong id="profileName">Customer</strong>
+                <div
+                    id="profileMenu"
+                    class="profile-menu hidden"
+                >
+
+                    <strong id="profileName">
+                        Customer
+                    </strong>
+
 
                     <small id="profileEmail">
                         customer@example.com
                     </small>
 
+
                     <hr>
+
 
                     <button onclick="showOrders()">
                         My Orders
                     </button>
 
+
                     <button onclick="showWishlist()">
                         Wishlist
                     </button>
+
 
                     <button
                         id="adminMenuButton"
@@ -199,6 +491,7 @@
                     >
                         Admin Panel
                     </button>
+
 
                     <button
                         class="logout-menu"
@@ -209,7 +502,9 @@
 
                 </div>
 
+
             </div>
+
 
         </div>
 
@@ -222,13 +517,19 @@
 
     <main id="homeSection">
 
+
+        <!-- HERO -->
+
         <section class="hero">
 
+
             <div class="hero-content">
+
 
                 <p class="orange-label">
                     WELCOME TO CARTIVO
                 </p>
+
 
                 <h1>
                     Find it.<br>
@@ -236,12 +537,15 @@
                     Cart it.
                 </h1>
 
+
                 <p class="hero-description">
                     Shop electronics, fashion, home essentials and
                     everyday lifestyle products — all in one place.
                 </p>
 
+
                 <div class="hero-buttons">
+
 
                     <button
                         class="primary-btn"
@@ -250,6 +554,7 @@
                         Start Shopping →
                     </button>
 
+
                     <button
                         class="secondary-btn"
                         onclick="showCategories()"
@@ -257,121 +562,248 @@
                         Explore Categories
                     </button>
 
+
                 </div>
+
 
                 <div class="hero-stats">
 
-                    <div>
-                        <strong>10K+</strong>
-                        <small>Happy shoppers</small>
-                    </div>
 
                     <div>
-                        <strong>4.8/5</strong>
-                        <small>Customer rating</small>
+
+                        <strong>
+                            10K+
+                        </strong>
+
+                        <small>
+                            Happy shoppers
+                        </small>
+
                     </div>
 
+
                     <div>
-                        <strong>7 Days</strong>
-                        <small>Easy returns</small>
+
+                        <strong>
+                            4.8/5
+                        </strong>
+
+                        <small>
+                            Customer rating
+                        </small>
+
                     </div>
+
+
+                    <div>
+
+                        <strong>
+                            7 Days
+                        </strong>
+
+                        <small>
+                            Easy returns
+                        </small>
+
+                    </div>
+
 
                 </div>
+
 
             </div>
 
 
             <div class="hero-visual">
 
+
                 <div class="hero-art">
+
 
                     <div class="art-circle"></div>
 
+
                     <div class="art-card art-phone">
+
                         <div class="phone-screen">
-                            <span>cartivo</span>
-                            <b>SHOP</b>
-                            <small>Everything you need</small>
+
+                            <span>
+                                cartivo
+                            </span>
+
+                            <b>
+                                SHOP
+                            </b>
+
+                            <small>
+                                Everything you need
+                            </small>
+
                         </div>
+
                     </div>
+
 
                     <div class="art-card art-bag">
                         🛍️
                     </div>
 
+
                     <div class="art-card art-headphone">
                         🎧
                     </div>
+
 
                     <div class="art-card art-box">
                         📦
                     </div>
 
+
                     <div class="sale-card">
-                        <small>WEEKEND</small>
-                        <strong>50%</strong>
-                        <span>OFF</span>
+
+                        <small>
+                            WEEKEND
+                        </small>
+
+                        <strong>
+                            50%
+                        </strong>
+
+                        <span>
+                            OFF
+                        </span>
+
                     </div>
+
 
                 </div>
 
+
             </div>
+
 
         </section>
 
 
-        <!-- BENEFITS -->
+        <!-- =================================================
+             BENEFITS
+        ================================================== -->
 
         <section class="benefits">
 
-            <div class="benefit">
-                <div class="benefit-icon">🚚</div>
-                <div>
-                    <strong>Fast Delivery</strong>
-                    <p>Quick delivery across India</p>
-                </div>
-            </div>
 
             <div class="benefit">
-                <div class="benefit-icon">🔒</div>
-                <div>
-                    <strong>Secure Payments</strong>
-                    <p>Safe and simple checkout</p>
+
+                <div class="benefit-icon">
+                    🚚
                 </div>
+
+                <div>
+
+                    <strong>
+                        Fast Delivery
+                    </strong>
+
+                    <p>
+                        Quick delivery across India
+                    </p>
+
+                </div>
+
             </div>
 
-            <div class="benefit">
-                <div class="benefit-icon">↩</div>
-                <div>
-                    <strong>Easy Returns</strong>
-                    <p>Hassle-free 7 day returns</p>
-                </div>
-            </div>
 
             <div class="benefit">
-                <div class="benefit-icon">♡</div>
-                <div>
-                    <strong>Quality Products</strong>
-                    <p>Carefully selected products</p>
+
+                <div class="benefit-icon">
+                    🔒
                 </div>
+
+                <div>
+
+                    <strong>
+                        Secure Payments
+                    </strong>
+
+                    <p>
+                        Safe and simple checkout
+                    </p>
+
+                </div>
+
             </div>
+
+
+            <div class="benefit">
+
+                <div class="benefit-icon">
+                    ↩
+                </div>
+
+                <div>
+
+                    <strong>
+                        Easy Returns
+                    </strong>
+
+                    <p>
+                        Hassle-free 7 day returns
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="benefit">
+
+                <div class="benefit-icon">
+                    ♡
+                </div>
+
+                <div>
+
+                    <strong>
+                        Quality Products
+                    </strong>
+
+                    <p>
+                        Carefully selected products
+                    </p>
+
+                </div>
+
+            </div>
+
 
         </section>
 
 
-        <!-- CATEGORIES -->
+        <!-- =================================================
+             CATEGORIES
+        ================================================== -->
 
         <section
             id="categoriesSection"
             class="content-section"
         >
 
+
             <div class="section-heading">
 
+
                 <div>
-                    <p class="orange-label">SHOP BY CATEGORY</p>
-                    <h2>Find what you need</h2>
+
+                    <p class="orange-label">
+                        SHOP BY CATEGORY
+                    </p>
+
+                    <h2>
+                        Find what you need
+                    </h2>
+
                 </div>
+
 
                 <button
                     class="text-btn"
@@ -380,26 +812,41 @@
                     View all →
                 </button>
 
+
             </div>
+
 
             <div
                 id="categoryGrid"
                 class="category-grid"
             ></div>
 
+
         </section>
 
 
-        <!-- BEST SELLERS -->
+        <!-- =================================================
+             BEST SELLERS
+        ================================================== -->
 
         <section class="content-section">
 
+
             <div class="section-heading">
 
+
                 <div>
-                    <p class="orange-label">POPULAR PICKS</p>
-                    <h2>Best sellers</h2>
+
+                    <p class="orange-label">
+                        POPULAR PICKS
+                    </p>
+
+                    <h2>
+                        Best sellers
+                    </h2>
+
                 </div>
+
 
                 <button
                     class="text-btn"
@@ -408,14 +855,18 @@
                     Shop all →
                 </button>
 
+
             </div>
+
 
             <div
                 id="homeProducts"
                 class="product-grid"
             ></div>
 
+
         </section>
+
 
     </main>
 
@@ -429,14 +880,28 @@
         class="content-section hidden"
     >
 
+
         <div class="section-heading">
+
+
             <div>
-                <p class="orange-label">STORE</p>
-                <h2>All Products</h2>
+
+                <p class="orange-label">
+                    STORE
+                </p>
+
+                <h2>
+                    All Products
+                </h2>
+
             </div>
+
+
         </div>
 
+
         <div class="filter-bar">
+
 
             <input
                 id="shopSearch"
@@ -444,32 +909,74 @@
                 placeholder="Search products..."
             >
 
+
             <select id="categoryFilter">
-                <option value="all">All Categories</option>
+
+                <option value="all">
+                    All Categories
+                </option>
+
             </select>
+
 
             <select id="priceFilter">
-                <option value="all">All Prices</option>
-                <option value="0-1000">Under ₹1,000</option>
-                <option value="1000-3000">₹1,000 - ₹3,000</option>
-                <option value="3000-10000">₹3,000 - ₹10,000</option>
-                <option value="10000+">Above ₹10,000</option>
+
+                <option value="all">
+                    All Prices
+                </option>
+
+                <option value="0-1000">
+                    Under ₹1,000
+                </option>
+
+                <option value="1000-3000">
+                    ₹1,000 - ₹3,000
+                </option>
+
+                <option value="3000-10000">
+                    ₹3,000 - ₹10,000
+                </option>
+
+                <option value="10000+">
+                    Above ₹10,000
+                </option>
+
             </select>
+
 
             <select id="sortFilter">
-                <option value="featured">Featured</option>
-                <option value="priceLow">Price: Low to High</option>
-                <option value="priceHigh">Price: High to Low</option>
-                <option value="rating">Top Rated</option>
-                <option value="name">Name A-Z</option>
+
+                <option value="featured">
+                    Featured
+                </option>
+
+                <option value="priceLow">
+                    Price: Low to High
+                </option>
+
+                <option value="priceHigh">
+                    Price: High to Low
+                </option>
+
+                <option value="rating">
+                    Top Rated
+                </option>
+
+                <option value="name">
+                    Name A-Z
+                </option>
+
             </select>
 
+
         </div>
+
 
         <div
             id="shopProducts"
             class="product-grid"
         ></div>
+
 
     </section>
 
@@ -483,19 +990,31 @@
         class="content-section hidden"
     >
 
+
         <div class="section-heading">
 
+
             <div>
-                <p class="orange-label">SAVED FOR LATER</p>
-                <h2>My Wishlist</h2>
+
+                <p class="orange-label">
+                    SAVED FOR LATER
+                </p>
+
+                <h2>
+                    My Wishlist
+                </h2>
+
             </div>
 
+
         </div>
+
 
         <div
             id="wishlistProducts"
             class="product-grid"
         ></div>
+
 
     </section>
 
@@ -509,16 +1028,28 @@
         class="content-section hidden"
     >
 
+
         <div class="section-heading">
 
+
             <div>
-                <p class="orange-label">YOUR ACCOUNT</p>
-                <h2>My Orders</h2>
+
+                <p class="orange-label">
+                    YOUR ACCOUNT
+                </p>
+
+                <h2>
+                    My Orders
+                </h2>
+
             </div>
+
 
         </div>
 
+
         <div id="ordersList"></div>
+
 
     </section>
 
@@ -533,17 +1064,28 @@
         onclick="closeCart()"
     ></div>
 
+
     <aside
         id="cartDrawer"
         class="cart-drawer"
     >
 
+
         <div class="drawer-header">
 
+
             <div>
-                <p class="orange-label">YOUR BAG</p>
-                <h2>Your Cart</h2>
+
+                <p class="orange-label">
+                    YOUR BAG
+                </p>
+
+                <h2>
+                    Your Cart
+                </h2>
+
             </div>
+
 
             <button
                 class="close-btn"
@@ -552,23 +1094,36 @@
                 ×
             </button>
 
+
         </div>
+
 
         <div
             id="cartItems"
             class="cart-items"
         ></div>
 
+
         <div class="cart-summary">
 
+
             <div class="summary-row">
-                <span>Subtotal</span>
-                <strong id="cartTotal">₹0</strong>
+
+                <span>
+                    Subtotal
+                </span>
+
+                <strong id="cartTotal">
+                    ₹0
+                </strong>
+
             </div>
+
 
             <small>
                 Taxes and delivery charges calculated at checkout.
             </small>
+
 
             <button
                 class="primary-btn full-btn"
@@ -577,6 +1132,7 @@
                 Proceed to Checkout
             </button>
 
+
             <button
                 class="secondary-btn full-btn"
                 onclick="closeCart()"
@@ -584,7 +1140,9 @@
                 Continue Shopping
             </button>
 
+
         </div>
+
 
     </aside>
 
@@ -598,7 +1156,9 @@
         class="modal hidden"
     >
 
+
         <div class="modal-box product-modal">
+
 
             <button
                 class="modal-close"
@@ -607,9 +1167,12 @@
                 ×
             </button>
 
+
             <div id="productDetail"></div>
 
+
         </div>
+
 
     </div>
 
@@ -623,7 +1186,9 @@
         class="modal hidden"
     >
 
+
         <div class="modal-box checkout-modal">
+
 
             <button
                 class="modal-close"
@@ -632,46 +1197,107 @@
                 ×
             </button>
 
-            <p class="orange-label">CHECKOUT</p>
 
-            <h2>Complete your order</h2>
+            <p class="orange-label">
+                CHECKOUT
+            </p>
+
+
+            <h2>
+                Complete your order
+            </h2>
+
 
             <form id="checkoutForm">
 
+
                 <div class="form-grid">
 
-                    <div>
-                        <label>Full Name</label>
-                        <input id="checkoutName" required>
-                    </div>
 
                     <div>
-                        <label>Email</label>
-                        <input id="checkoutEmail" type="email" required>
+
+                        <label>
+                            Full Name
+                        </label>
+
+                        <input
+                            id="checkoutName"
+                            required
+                        >
+
                     </div>
 
-                    <div>
-                        <label>Phone</label>
-                        <input id="checkoutPhone" required>
-                    </div>
 
                     <div>
-                        <label>City</label>
-                        <input id="checkoutCity" required>
+
+                        <label>
+                            Email
+                        </label>
+
+                        <input
+                            id="checkoutEmail"
+                            type="email"
+                            required
+                        >
+
                     </div>
 
+
                     <div>
-                        <label>PIN Code</label>
-                        <input id="checkoutZip" required>
+
+                        <label>
+                            Phone
+                        </label>
+
+                        <input
+                            id="checkoutPhone"
+                            required
+                        >
+
                     </div>
+
+
+                    <div>
+
+                        <label>
+                            City
+                        </label>
+
+                        <input
+                            id="checkoutCity"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div>
+
+                        <label>
+                            PIN Code
+                        </label>
+
+                        <input
+                            id="checkoutZip"
+                            required
+                        >
+
+                    </div>
+
 
                     <div class="full">
-                        <label>Address</label>
+
+                        <label>
+                            Address
+                        </label>
+
                         <textarea
                             id="checkoutAddress"
                             required
                         ></textarea>
+
                     </div>
+
 
                 </div>
 
@@ -680,37 +1306,52 @@
                     Payment Method
                 </h3>
 
+
                 <div class="payment-options">
 
+
                     <label class="payment-option">
+
                         <input
                             type="radio"
                             name="payment"
                             value="COD"
                             checked
                         >
+
                         Cash on Delivery
+
                     </label>
 
+
                     <label class="payment-option">
+
                         <input
                             type="radio"
                             name="payment"
                             value="UPI"
                         >
+
                         UPI
+
                     </label>
 
+
                     <label class="payment-option">
+
                         <input
                             type="radio"
                             name="payment"
                             value="Card"
                         >
+
                         Credit / Debit Card
+
                     </label>
 
+
                 </div>
+
 
                 <button
                     type="submit"
@@ -719,9 +1360,12 @@
                     Place Order
                 </button>
 
+
             </form>
 
+
         </div>
+
 
     </div>
 
@@ -735,22 +1379,38 @@
         class="modal hidden"
     >
 
+
         <div class="modal-box success-box">
 
-            <div class="success-icon">✓</div>
 
-            <p class="orange-label">ORDER CONFIRMED</p>
+            <div class="success-icon">
+                ✓
+            </div>
 
-            <h2>Thank you for your order!</h2>
+
+            <p class="orange-label">
+                ORDER CONFIRMED
+            </p>
+
+
+            <h2>
+                Thank you for your order!
+            </h2>
+
 
             <p>
                 Your order has been successfully placed.
             </p>
 
+
             <div class="order-success-id">
+
                 Order ID:
+
                 <strong id="successOrderId"></strong>
+
             </div>
+
 
             <button
                 class="primary-btn"
@@ -759,7 +1419,9 @@
                 View My Orders
             </button>
 
+
         </div>
+
 
     </div>
 
@@ -770,48 +1432,98 @@
 
     <footer>
 
+
         <div class="footer-inner">
 
+
             <div class="footer-brand">
+
 
                 <div class="brand">
                     cartivo<span>.</span>
                 </div>
+
 
                 <p>
                     Your everyday online store for products
                     you actually want.
                 </p>
 
+
             </div>
 
-            <div>
-                <h4>Shop</h4>
-                <a onclick="showShop()">All Products</a>
-                <a onclick="showCategories()">Categories</a>
-                <a onclick="showWishlist()">Wishlist</a>
-            </div>
 
             <div>
-                <h4>Account</h4>
-                <a onclick="showOrders()">My Orders</a>
-                <a onclick="toggleProfileMenu()">Profile</a>
+
+                <h4>
+                    Shop
+                </h4>
+
+                <a onclick="showShop()">
+                    All Products
+                </a>
+
+                <a onclick="showCategories()">
+                    Categories
+                </a>
+
+                <a onclick="showWishlist()">
+                    Wishlist
+                </a>
+
             </div>
 
+
             <div>
-                <h4>Help</h4>
-                <a>Shipping</a>
-                <a>Returns</a>
-                <a>Support</a>
+
+                <h4>
+                    Account
+                </h4>
+
+                <a onclick="showOrders()">
+                    My Orders
+                </a>
+
+                <a onclick="toggleProfileMenu()">
+                    Profile
+                </a>
+
             </div>
+
+
+            <div>
+
+                <h4>
+                    Help
+                </h4>
+
+                <a>
+                    Shipping
+                </a>
+
+                <a>
+                    Returns
+                </a>
+
+                <a>
+                    Support
+                </a>
+
+            </div>
+
 
         </div>
+
 
         <div class="footer-bottom">
+
             © 2026 Cartivo. E-Commerce & Inventory Management Platform.
+
         </div>
 
+
     </footer>
+
 
 </section>
 
@@ -825,13 +1537,23 @@
     class="admin-page hidden"
 >
 
+
+    <!-- =================================================
+         ADMIN SIDEBAR
+    ================================================== -->
+
     <aside class="admin-sidebar">
+
 
         <div class="brand admin-brand">
             cartivo<span>.</span>
         </div>
 
-        <p class="admin-label">ADMIN PANEL</p>
+
+        <p class="admin-label">
+            ADMIN PANEL
+        </p>
+
 
         <button
             class="admin-nav active"
@@ -840,12 +1562,14 @@
             Dashboard
         </button>
 
+
         <button
             class="admin-nav"
             onclick="adminSection('products', this)"
         >
             Products
         </button>
+
 
         <button
             class="admin-nav"
@@ -854,12 +1578,14 @@
             Inventory
         </button>
 
+
         <button
             class="admin-nav"
             onclick="adminSection('categories', this)"
         >
             Categories
         </button>
+
 
         <button
             class="admin-nav"
@@ -868,12 +1594,14 @@
             Customers
         </button>
 
+
         <button
             class="admin-nav"
             onclick="adminSection('orders', this)"
         >
             Orders
         </button>
+
 
         <button
             class="admin-back"
@@ -882,19 +1610,32 @@
             ← Back to Store
         </button>
 
+
     </aside>
 
 
+    <!-- =================================================
+         ADMIN MAIN
+    ================================================== -->
+
     <main class="admin-main">
+
 
         <header class="admin-header">
 
+
             <div>
-                <p class="orange-label">CARTIVO ADMIN</p>
+
+                <p class="orange-label">
+                    CARTIVO ADMIN
+                </p>
+
                 <h1 id="adminPageTitle">
                     Dashboard
                 </h1>
+
             </div>
+
 
             <button
                 class="profile-circle"
@@ -903,85 +1644,164 @@
                 A
             </button>
 
+
         </header>
 
 
-        <!-- ADMIN DASHBOARD -->
+        <!-- =================================================
+             ADMIN DASHBOARD
+        ================================================== -->
 
         <section
             id="adminDashboard"
             class="admin-section"
         >
 
+
             <div class="admin-stats">
 
-                <div class="stat-card">
-                    <span>Total Revenue</span>
-                    <strong id="adminSales">₹0</strong>
-                    <small>From all orders</small>
-                </div>
 
                 <div class="stat-card">
-                    <span>Total Orders</span>
-                    <strong id="adminOrders">0</strong>
-                    <small>All customer orders</small>
+
+                    <span>
+                        Total Revenue
+                    </span>
+
+                    <strong id="adminSales">
+                        ₹0
+                    </strong>
+
+                    <small>
+                        From all orders
+                    </small>
+
                 </div>
 
-                <div class="stat-card">
-                    <span>Total Products</span>
-                    <strong id="adminProducts">0</strong>
-                    <small>Active products</small>
-                </div>
 
                 <div class="stat-card">
-                    <span>Low Stock</span>
-                    <strong id="adminLowStock">0</strong>
-                    <small>Needs attention</small>
+
+                    <span>
+                        Total Orders
+                    </span>
+
+                    <strong id="adminOrders">
+                        0
+                    </strong>
+
+                    <small>
+                        All customer orders
+                    </small>
+
                 </div>
+
+
+                <div class="stat-card">
+
+                    <span>
+                        Total Products
+                    </span>
+
+                    <strong id="adminProducts">
+                        0
+                    </strong>
+
+                    <small>
+                        Active products
+                    </small>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <span>
+                        Low Stock
+                    </span>
+
+                    <strong id="adminLowStock">
+                        0
+                    </strong>
+
+                    <small>
+                        Needs attention
+                    </small>
+
+                </div>
+
 
             </div>
 
 
             <div class="admin-two-column">
 
+
                 <div class="admin-card">
 
+
                     <div class="admin-card-title">
-                        <h3>Recent Orders</h3>
+
+                        <h3>
+                            Recent Orders
+                        </h3>
+
                     </div>
+
 
                     <div id="recentOrders"></div>
 
+
                 </div>
+
 
                 <div class="admin-card">
 
+
                     <div class="admin-card-title">
-                        <h3>Inventory Alerts</h3>
+
+                        <h3>
+                            Inventory Alerts
+                        </h3>
+
                     </div>
+
 
                     <div id="inventoryAlert"></div>
 
+
                 </div>
 
+
             </div>
+
 
         </section>
 
 
-        <!-- ADMIN PRODUCTS -->
+        <!-- =================================================
+             ADMIN PRODUCTS
+        ================================================== -->
 
         <section
             id="adminProductsSection"
             class="admin-section hidden"
         >
 
+
             <div class="admin-toolbar">
 
+
                 <div>
-                    <p class="orange-label">CATALOG</p>
-                    <h2>Products</h2>
+
+                    <p class="orange-label">
+                        CATALOG
+                    </p>
+
+                    <h2>
+                        Products
+                    </h2>
+
                 </div>
+
 
                 <button
                     class="primary-btn"
@@ -990,90 +1810,166 @@
                     + Add Product
                 </button>
 
+
             </div>
+
 
             <div class="admin-card table-card">
 
+
                 <div class="table-wrap">
+
 
                     <table>
 
+
                         <thead>
+
                             <tr>
-                                <th>Product</th>
-                                <th>Category</th>
-                                <th>Price</th>
-                                <th>Stock</th>
-                                <th>Actions</th>
+
+                                <th>
+                                    Product
+                                </th>
+
+                                <th>
+                                    Category
+                                </th>
+
+                                <th>
+                                    Price
+                                </th>
+
+                                <th>
+                                    Stock
+                                </th>
+
+                                <th>
+                                    Actions
+                                </th>
+
                             </tr>
+
                         </thead>
+
 
                         <tbody id="productsTable"></tbody>
 
+
                     </table>
+
 
                 </div>
 
+
             </div>
+
 
         </section>
 
 
-        <!-- ADMIN INVENTORY -->
+        <!-- =================================================
+             ADMIN INVENTORY
+        ================================================== -->
 
         <section
             id="adminInventorySection"
             class="admin-section hidden"
         >
 
+
             <div class="admin-toolbar">
 
+
                 <div>
-                    <p class="orange-label">STOCK CONTROL</p>
-                    <h2>Inventory</h2>
+
+                    <p class="orange-label">
+                        STOCK CONTROL
+                    </p>
+
+                    <h2>
+                        Inventory
+                    </h2>
+
                 </div>
 
+
             </div>
+
 
             <div class="admin-card table-card">
 
+
                 <div class="table-wrap">
+
 
                     <table>
 
+
                         <thead>
+
                             <tr>
-                                <th>Product</th>
-                                <th>Category</th>
-                                <th>Stock</th>
-                                <th>Update</th>
+
+                                <th>
+                                    Product
+                                </th>
+
+                                <th>
+                                    Category
+                                </th>
+
+                                <th>
+                                    Stock
+                                </th>
+
+                                <th>
+                                    Update
+                                </th>
+
                             </tr>
+
                         </thead>
+
 
                         <tbody id="inventoryTable"></tbody>
 
+
                     </table>
+
 
                 </div>
 
+
             </div>
+
 
         </section>
 
 
-        <!-- ADMIN CATEGORIES -->
+        <!-- =================================================
+             ADMIN CATEGORIES
+        ================================================== -->
 
         <section
             id="adminCategoriesSection"
             class="admin-section hidden"
         >
 
+
             <div class="admin-toolbar">
 
+
                 <div>
-                    <p class="orange-label">ORGANIZATION</p>
-                    <h2>Categories</h2>
+
+                    <p class="orange-label">
+                        ORGANIZATION
+                    </p>
+
+                    <h2>
+                        Categories
+                    </h2>
+
                 </div>
+
 
                 <button
                     class="primary-btn"
@@ -1082,101 +1978,181 @@
                     + Add Category
                 </button>
 
+
             </div>
+
 
             <div
                 id="adminCategoryGrid"
                 class="admin-category-grid"
             ></div>
 
+
         </section>
 
 
-        <!-- ADMIN USERS -->
+        <!-- =================================================
+             ADMIN USERS
+        ================================================== -->
 
         <section
             id="adminUsersSection"
             class="admin-section hidden"
         >
 
+
             <div class="admin-toolbar">
 
+
                 <div>
-                    <p class="orange-label">CUSTOMERS</p>
-                    <h2>Customers</h2>
+
+                    <p class="orange-label">
+                        CUSTOMERS
+                    </p>
+
+                    <h2>
+                        Customers
+                    </h2>
+
                 </div>
 
+
             </div>
+
 
             <div class="admin-card table-card">
 
+
                 <div class="table-wrap">
+
 
                     <table>
 
+
                         <thead>
+
                             <tr>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Orders</th>
-                                <th>Total Spent</th>
+
+                                <th>
+                                    Name
+                                </th>
+
+                                <th>
+                                    Email
+                                </th>
+
+                                <th>
+                                    Orders
+                                </th>
+
+                                <th>
+                                    Total Spent
+                                </th>
+
                             </tr>
+
                         </thead>
+
 
                         <tbody id="usersTable"></tbody>
 
+
                     </table>
+
 
                 </div>
 
+
             </div>
+
 
         </section>
 
 
-        <!-- ADMIN ORDERS -->
+        <!-- =================================================
+             ADMIN ORDERS
+        ================================================== -->
 
         <section
             id="adminOrdersSection"
             class="admin-section hidden"
         >
 
+
             <div class="admin-toolbar">
 
+
                 <div>
-                    <p class="orange-label">SALES</p>
-                    <h2>Orders</h2>
+
+                    <p class="orange-label">
+                        SALES
+                    </p>
+
+                    <h2>
+                        Orders
+                    </h2>
+
                 </div>
 
+
             </div>
+
 
             <div class="admin-card table-card">
 
+
                 <div class="table-wrap">
+
 
                     <table>
 
+
                         <thead>
+
                             <tr>
-                                <th>Order</th>
-                                <th>Customer</th>
-                                <th>Total</th>
-                                <th>Status</th>
-                                <th>Update</th>
+
+                                <th>
+                                    Order
+                                </th>
+
+                                <th>
+                                    Customer
+                                </th>
+
+                                <th>
+                                    Total
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                                <th>
+                                    Update
+                                </th>
+
                             </tr>
+
                         </thead>
+
 
                         <tbody id="adminOrdersTable"></tbody>
 
+
                     </table>
+
 
                 </div>
 
+
             </div>
+
 
         </section>
 
+
     </main>
+
 
 </section>
 
@@ -1190,7 +2166,9 @@
     class="modal hidden"
 >
 
+
     <div class="modal-box">
+
 
         <button
             class="modal-close"
@@ -1199,53 +2177,95 @@
             ×
         </button>
 
-        <p class="orange-label">CATALOG</p>
+
+        <p class="orange-label">
+            CATALOG
+        </p>
+
 
         <h2 id="productAdminTitle">
             Add Product
         </h2>
 
+
         <form id="productForm">
+
 
             <input
                 id="editProductId"
                 type="hidden"
             >
 
+
             <div class="form-grid">
 
+
                 <div class="full">
-                    <label>Product Name</label>
-                    <input id="adminProductName" required>
+
+                    <label>
+                        Product Name
+                    </label>
+
+                    <input
+                        id="adminProductName"
+                        required
+                    >
+
                 </div>
 
-                <div>
-                    <label>Category</label>
-                    <select id="adminProductCategory" required></select>
-                </div>
 
                 <div>
-                    <label>Price</label>
+
+                    <label>
+                        Category
+                    </label>
+
+                    <select
+                        id="adminProductCategory"
+                        required
+                    ></select>
+
+                </div>
+
+
+                <div>
+
+                    <label>
+                        Price
+                    </label>
+
                     <input
                         id="adminProductPrice"
                         type="number"
                         min="0"
                         required
                     >
+
                 </div>
 
+
                 <div>
-                    <label>Stock</label>
+
+                    <label>
+                        Stock
+                    </label>
+
                     <input
                         id="adminProductStock"
                         type="number"
                         min="0"
                         required
                     >
+
                 </div>
 
+
                 <div>
-                    <label>Rating</label>
+
+                    <label>
+                        Rating
+                    </label>
+
                     <input
                         id="adminProductRating"
                         type="number"
@@ -1254,19 +2274,38 @@
                         step="0.1"
                         value="4.5"
                     >
+
                 </div>
 
-                <div class="full">
-                    <label>Image URL</label>
-                    <input id="adminProductImage">
-                </div>
 
                 <div class="full">
-                    <label>Description</label>
-                    <textarea id="adminProductDescription"></textarea>
+
+                    <label>
+                        Image URL
+                    </label>
+
+                    <input
+                        id="adminProductImage"
+                    >
+
                 </div>
+
+
+                <div class="full">
+
+                    <label>
+                        Description
+                    </label>
+
+                    <textarea
+                        id="adminProductDescription"
+                    ></textarea>
+
+                </div>
+
 
             </div>
+
 
             <button
                 class="primary-btn full-btn"
@@ -1275,19 +2314,105 @@
                 Save Product
             </button>
 
+
         </form>
 
+
     </div>
+
 
 </div>
 
 
-<!-- TOAST -->
+<!-- =====================================================
+     TOAST
+===================================================== -->
 
-<div id="toast" class="toast"></div>
+<div
+    id="toast"
+    class="toast"
+></div>
+
+
+<!-- =====================================================
+     AUTH TOGGLE
+===================================================== -->
+
+<script>
+
+function toggleAuthForm() {
+
+    const loginForm =
+        document.getElementById("loginForm");
+
+    const registerForm =
+        document.getElementById("registerForm");
+
+    const loginHeading =
+        document.getElementById("loginHeading");
+
+    const registerHeading =
+        document.getElementById("registerHeading");
+
+    const switchText =
+        document.getElementById("authSwitchText");
+
+    const switchButton =
+        document.getElementById("authSwitchBtn");
+
+    const adminDemo =
+        document.getElementById("adminDemo");
+
+
+    if (
+        registerForm.classList.contains("hidden")
+    ) {
+
+        loginForm.classList.add("hidden");
+
+        registerForm.classList.remove("hidden");
+
+        loginHeading.classList.add("hidden");
+
+        registerHeading.classList.remove("hidden");
+
+        switchText.textContent =
+            "Already have an account?";
+
+        switchButton.textContent =
+            "Sign in";
+
+        adminDemo.classList.add("hidden");
+
+
+    } else {
+
+        registerForm.classList.add("hidden");
+
+        loginForm.classList.remove("hidden");
+
+        registerHeading.classList.add("hidden");
+
+        loginHeading.classList.remove("hidden");
+
+        switchText.textContent =
+            "Don't have an account?";
+
+        switchButton.textContent =
+            "Create account";
+
+        adminDemo.classList.remove("hidden");
+
+    }
+
+}
+
+</script>
 
 
 <script src="script.js"></script>
 
+
 </body>
+
 </html>
